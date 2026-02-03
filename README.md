@@ -1,4 +1,4 @@
-# Statistical Genetics and Genetic Epidemiology!
+# Statistical Genetics and Genetic Epidemiology
 
 ## Content
 
