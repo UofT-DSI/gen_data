@@ -1,5 +1,4 @@
-# Statistical Genetics and Genetic Epidemiology
-
+# Genetic Analysis Toolbox Microcredential
 ## Content
 
 * [Description](#description)
