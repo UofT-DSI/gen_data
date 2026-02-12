@@ -55,13 +55,13 @@ Participants are encouraged to engage actively during the learning module. They 
 
 Each session will consist of slides to introduce topics, live coding to demonstrate the topics, and occasional breakout rooms/live polls to reinforce the topics. The technical facilitator will introduce the concepts through a collaborative live coding session using R and other specialized genetic sofwares. The technical facilitator will upload any live coding files to this repository for participants to revisit under `./04_this_cohort`. 
 
-## Requirements
-* Participants are expected to have completed Shell and git learning modules.
-* Participants are encouraged to ask questions and collaborate with others to enhance learning.
-* Participants must have a computer and an internet connection to participate in online activities.
-* Participants must not use generative AI such as ChatGPT to generate code to complete assignments. It should be used as a supportive tool to seek out answers to questions you may have.
-* We expect Participants to have completed the instructions mentioned in the [onboarding repo](https://github.com/UofT-DSI/onboarding/).
-* We encourage participants to default to having their camera on at all times, and turning the camera off only as needed. This will greatly enhance the learning experience for all participants and provides real-time feedback for the instructional team. 
+## Schedule
+* Class 1: Intro and overview (slide 01), Getting started with matplotlib (slide 02)
+* Class 2: Choosing the right visualization (slide 04)
+* Class 3: Reproducible data visualization (slide 03), Customizing our plots (slide 05)
+* Class 4: Subplots and combining visualizations (slide 06), Accessible data visualization (slide 07)
+* Class 5: Data viz as advocacy (slide 08), Beyond matplotlib (slide 09) 
+
 
 ## Resources
 Feel free to use the following as resources:
