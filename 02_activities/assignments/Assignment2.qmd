@@ -1,0 +1,127 @@
+---
+title: "Assignment #2"
+format: html
+---
+
+You will need [**PLINK2**](https://zzz.bwh.harvard.edu/plink/) installed and available in your PATH. The dataset for this assignment consists of the following binary PLINK files: `gwa.A2.bed`, `gwa.A2.bim`, `gwa.A2.fam` , available at the following Google Drive link: <https://drive.google.com/drive/folders/1rHoy3z52Yyj985ukjjtLhfIBxchpyYtZ?usp=drive_link>. Please download all three files and save them to your local folder.
+
+## Submission Information
+
+🚨 **Please review our [Assignment Submission Guide](https://github.com/UofT-DSI/onboarding/blob/main/onboarding_documents/submissions.md)** 🚨 for detailed instructions on how to format, branch, and submit your work. Following these guidelines is crucial for your submissions to be evaluated correctly.
+
+### Submission Parameters:
+
+-   Submission Due Date: \`FILL IN\`
+-   The branch name for your repo should be: `assignment-2`
+-   What to submit for this assignment:
+    -   This Quarto document (assignment_2.qmd) should be populated and should be the only change in your pull request.
+-   What the pull request link should look like for this assignment: `https://github.com/<your_github_username>/r/pull/<pr_id>`
+    -   Open a private window in your browser. Copy and paste the link to your pull request into the address bar. Make sure you can see your pull request properly. This helps the technical facilitator and learning support staff review your submission easily.
+
+### Checklist:
+
+-   Create a branch called `assignment-2`.
+-   Ensure that your repository is public.
+-   Review [the PR description guidelines](https://github.com/UofT-DSI/onboarding/blob/main/onboarding_documents/submissions.md#guidelines-for-pull-request-descriptions) and adhere to them.
+-   Verify that your link is accessible in a private browser window.
+
+### Criteria
+
+| Criteria | Complete | Incomplete |
+|:--------------|:----------------------------------|:----------------------|
+| **Data inspection** | Correct sample and SNP counts; phenotype plot with a brief comment on Gaussianity. | Counts or phenotype description/plot missing or incorrect. |
+| **QC & LD pruning** | Correct PLINK2 QC command and thresholds. | QC/pruning commands, thresholds, or output datasets missing or incorrect. |
+| **Relatedness & PCA** | Correct use of PLINK2 command to obtain unrelated samples and PCA run on pruned SNPs. | Relatedness step, unrelated dataset, or PCA analysis missing or incorrect. |
+| **GWAS & visualisation** | Linear regression GWAS with PCs as covariates; Manhattan and QQ plots produced. | GWAS command, or Manhattan/QQ plots missing or clearly incorrect. |
+
+#### Question 1: Data inspection
+
+Before you run any models, first get familiar with the dataset. You may find `data.table::fread()` in R helpful for reading `.bim` and `.fam` files.
+
+(i) Read the `.fam` file. How many samples does the dataset contain?
+
+```{r}
+# Your code here...
+```
+
+(ii) Read the `.bim` file. How many SNPs does the dataset contain?
+
+```{r}
+# Your code here...
+```
+
+(iii) Make a histogram (or density plot) of the phenotype. Does it look roughly Gaussian?
+
+```{r}
+# Your code here...
+```
+
+#### Question 2: Quality control (QC)
+
+Now we will perform QC using PLINK2 for the genotype files in `gwa.A2`.
+
+(i) Using PLINK2 from the command line (bash), perform basic QC with the following filters: MAF ≥ 0.05, SNP missingness (`--geno`) ≤ 0.01, individual missingness (`--mind`) ≤ 0.10, and HWE p-value ≥ 0.00005, and output the QC’ed dataset as `gwa.qc.A2`.
+
+```{bash}
+# Your code here...
+```
+
+#### Question 3: Relatedness
+
+In this question, you will use **PLINK2’s built-in KING-robust kinship** (`--king-cutoff`) detect and remove related individuals.
+
+i)  Perform LD pruning on `gwa.qc.A2` using PLINK2 with the following parameters: `--indep-pairwise 500 50 0.05`, and then generate a new dataset containing only the pruned SNPs.
+
+```{bash}
+# Your code here...
+```
+
+(ii) Use PLINK2 on the LD-pruned dataset to identify a set of unrelated individuals up to (approximately) 2nd-degree relatives (use a kinship cutoff of 0.0884).
+
+```{bash}
+# Your code here...
+```
+
+(iii) Using the unrelated individual list from part (ii), create a dataset containing only unrelated individuals and name it `gwa.qc_unrelated.A2`.
+
+```{bash}
+# Your code here...
+```
+
+#### Question 4: principal component analysis (PCA)
+
+(i) Using PLINK2, perform PCA on the unrelated, LD-pruned dataset to obtain principal components.
+
+    (Hint: Refer to the PCA section in the GWAS Tutorial II. You should use a `*.prune.in` file to select a set of independent SNPs before performing PCA.)
+
+```{bash}
+# Your code here...
+```
+
+#### Question 5: GWAS analyses
+
+We now test for association between each SNP and the continuous phenotype, adjusting for population structure using the top 3 PCs.
+
+Assume that:
+
+-   You will run GWAS on the unrelated, QC’ed dataset `gwa.qc_unrelated.A2`.
+
+-   You have a covariate file (e.g., the `*.eigenvec` output from the PCA analysis) containing PC1–PC3 for each individual.
+
+(i) Using PLINK2, run a linear regression GWAS using `gwa.qc_unrelated.A2` as the input dataset. Adjust for PCs 1–3 as covariates.
+
+```{bash}
+# Your code here...
+```
+
+(ii) Create a Manhattan plot of the GWAS results.
+
+```{r}
+# Your code here...
+```
+
+(iii) Create a QQ plot of the GWAS p-values.
+
+```{r}
+# Your code here...
+```
