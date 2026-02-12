@@ -1,4 +1,4 @@
-# Genetic Analysis Toolbox Microcredential
+# Genetic Analysis Toolbox 
 ## Content
 
 * [Description](#description)
@@ -20,13 +20,9 @@ This course provides students with the knowledge foundations necessary to conduc
 ## Learning Outcomes
 By the end of the module, participants will be able to:
 
-**Week 1:**
-
 * Understand basic molecular genetics concepts and common genetic models.
 * Distinguish between Mendelian and complex trait inheritance.
 * Understand the principles of population genetics, including allele frequencies, genetic drift, and Hardy-Weinberg equilibrium.
-
-**Week 2:**
 * Understand key designs and statistical models used in genetic association studies, including case-control and regression-based approaches.
 * Learn how to implement genome-wide association studies (GWAS), including key quality control steps and software tools.
 
@@ -44,19 +40,11 @@ There are two assignments.
 **Questions can be submitted to the #questions channel on Slack**
 
 * Technical Facilitator:
-<!--
-  * **Thomas Rosenthal** (he/him)  
-    [thomas.rosenthal@utoronto.ca](mailto:thomas.rosenthal@utoronto.ca)
--->
+  * **Fan Wang** (she/her)  
+    [fbaobao926@gmail.com](mailto:fbaobao926@gmail.com)
 * Learning Support Staff:
-<!--
-  * **James Li** (he/him)  
-  [james.zefang.li@gmail.com](mailto:james.zefang.li@gmail.com)
-  * **Laura MacKew** (she/her)  
-  [lauramackew@gmail.com](mailto:lauramackew@gmail.com)
-  * **Niyaz Nazari** (she/her)  
-  [niyaz.mnazari@gmail.com](mailto:niyaz.mnazari@gmail.com)
--->
+  * **Eric Sanders** (he/him)  
+  [](mailto:)
 
 
 ## Delivery of the Learning Module
@@ -65,13 +53,7 @@ This module will include live learning sessions and optional, asynchronous work 
  
 Participants are encouraged to engage actively during the learning module. They key to developing the core skills in each learning module is through practice. The more participants engage in coding along with the instructional team, and applying the skills in each module, the more likely it is that these skills will solidify. 
 
-Each session will consist of slides to introduce topics, live coding to demonstrate the topics, and occasional breakout rooms/live polls to reinforce the topics. The technical facilitator will introduce the concepts through a collaborative live coding session using R and other specialized genetic sofwares. The technical facilitator will upload any live coding files to this repository for participants to revisit under `./04_this_cohort/live_code`. 
-
-## Schedule 
-
-* Week 1 will focus on review of molecular genetics and basic genetic models
-* Week 2 will focus on population genetics
-* Week 3 will focus on association testing
+Each session will consist of slides to introduce topics, live coding to demonstrate the topics, and occasional breakout rooms/live polls to reinforce the topics. The technical facilitator will introduce the concepts through a collaborative live coding session using R and other specialized genetic sofwares. The technical facilitator will upload any live coding files to this repository for participants to revisit under `./04_this_cohort`. 
 
 ## Requirements
 * Participants are expected to have completed Shell, git nd R learning modules.
@@ -106,7 +88,6 @@ Feel free to use the following as resources:
 ├── 02_activities
 ├── 03_instructional_team
 ├── 04_this_cohort
-├── 05_src
 ├── LICENSE
 └── README.md
 ```
@@ -116,7 +97,6 @@ Feel free to use the following as resources:
 * **activities**: Contains self-assessments, graded assignments, and rubrics for evaluating assignments.
 * **instructional_team**: Resources for the instructional team.
 * **this_cohort**: Additional materials and resources for this cohort.
-* **src**: Source code, databases, logs, and required dependencies (requirements.txt) needed during the module.
 * **.gitignore**: Files to exclude from this folder, specified by the Technical Facilitator
 * **LICENSE**: The license for this repository.
 * **README**: This file.
