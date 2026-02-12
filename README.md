@@ -43,8 +43,6 @@ There are two assignments.
   * **Fan Wang** (she/her)  
     [fbaobao926@gmail.com](mailto:fbaobao926@gmail.com)
 * Learning Support Staff:
-  * **Eric Sanders** (he/him)  
-  [](mailto:)
 
 
 ## Delivery of the Learning Module
@@ -56,27 +54,24 @@ Participants are encouraged to engage actively during the learning module. They 
 Each session will consist of slides to introduce topics, live coding to demonstrate the topics, and occasional breakout rooms/live polls to reinforce the topics. The technical facilitator will introduce the concepts through a collaborative live coding session using R and other specialized genetic sofwares. The technical facilitator will upload any live coding files to this repository for participants to revisit under `./04_this_cohort`. 
 
 ## Schedule
-* Class 1: Intro and overview (slide 01), Getting started with matplotlib (slide 02)
-* Class 2: Choosing the right visualization (slide 04)
-* Class 3: Reproducible data visualization (slide 03), Customizing our plots (slide 05)
-* Class 4: Subplots and combining visualizations (slide 06), Accessible data visualization (slide 07)
-* Class 5: Data viz as advocacy (slide 08), Beyond matplotlib (slide 09) 
-
+* Class 1: Introduction to Statistical Genetics (slide 01)
+* Class 2: Population Genetics (slide 02)
+* Class 3: Aggregation Analysis, Heritability and Segregation Analysis (slide 03)
+* Class 4: Association Testing I (slide 04)
+* Class 5: Association Testing II (slide 05)
+* Class 6: Population Stratification & Genotype Imputation (slide 06)
+* Class 7: GWAS Analyses (slide 07)
+* Class 8: Post-GWAS Analyses I (slide 08)
+* Class 9: Post-GWAS Analyses II (slide 09)
 
 ## Resources
 Feel free to use the following as resources:
 
-### Documents
-<!--
-- [Cheatsheet](https://www.sqlitetutorial.net/sqlite-cheat-sheet/)
-- [W3Schools Tutorial](https://www.w3schools.blog/sqlite-tutorial)
--->
+### Textbook
+- The Fundamentals of Modern Statistical Genetics (Nan Laird & Christoph Lange).
 
 ### Videos
-<!--
-- [What is SQLite?](https://www.youtube.com/watch?v=p2tOmltUh34)
-- [SQLite Playlist](https://www.youtube.com/playlist?list=PLWENznQwkAoxww-cDEfIJ-uuPDfFwbeiJ)
--->
+- Introductory Genomics Videos: [BigBio YouTube Channel – Genomics Playlists](https://www.youtube.com/c/BigBiovideos/playlists?app=desktop)
 
 ## Folder Structure
 
