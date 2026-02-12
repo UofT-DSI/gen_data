@@ -1,4 +1,4 @@
-# Genetic Analysis Toolbox 
+# Genetic Data Analysis Toolbox 
 ## Content
 
 * [Description](#description)
@@ -43,8 +43,6 @@ There are two assignments.
   * **Fan Wang** (she/her)  
     [fbaobao926@gmail.com](mailto:fbaobao926@gmail.com)
 * Learning Support Staff:
-  * **Eric Sanders** (he/him)  
-  [](mailto:)
 
 
 ## Delivery of the Learning Module
@@ -55,28 +53,25 @@ Participants are encouraged to engage actively during the learning module. They 
 
 Each session will consist of slides to introduce topics, live coding to demonstrate the topics, and occasional breakout rooms/live polls to reinforce the topics. The technical facilitator will introduce the concepts through a collaborative live coding session using R and other specialized genetic sofwares. The technical facilitator will upload any live coding files to this repository for participants to revisit under `./04_this_cohort`. 
 
-## Requirements
-* Participants are expected to have completed Shell and git learning modules.
-* Participants are encouraged to ask questions and collaborate with others to enhance learning.
-* Participants must have a computer and an internet connection to participate in online activities.
-* Participants must not use generative AI such as ChatGPT to generate code to complete assignments. It should be used as a supportive tool to seek out answers to questions you may have.
-* We expect Participants to have completed the instructions mentioned in the [onboarding repo](https://github.com/UofT-DSI/onboarding/).
-* We encourage participants to default to having their camera on at all times, and turning the camera off only as needed. This will greatly enhance the learning experience for all participants and provides real-time feedback for the instructional team. 
+## Schedule
+* Class 1: Introduction to Statistical Genetics (slide 01)
+* Class 2: Population Genetics (slide 02)
+* Class 3: Aggregation Analysis, Heritability and Segregation Analysis (slide 03)
+* Class 4: Association Testing I (slide 04)
+* Class 5: Association Testing II (slide 05)
+* Class 6: Population Stratification & Genotype Imputation (slide 06)
+* Class 7: GWAS Analyses (slide 07)
+* Class 8: Post-GWAS Analyses I (slide 08)
+* Class 9: Post-GWAS Analyses II (slide 09)
 
 ## Resources
 Feel free to use the following as resources:
 
-### Documents
-<!--
-- [Cheatsheet](https://www.sqlitetutorial.net/sqlite-cheat-sheet/)
-- [W3Schools Tutorial](https://www.w3schools.blog/sqlite-tutorial)
--->
+### Textbook
+- The Fundamentals of Modern Statistical Genetics (Nan Laird & Christoph Lange).
 
 ### Videos
-<!--
-- [What is SQLite?](https://www.youtube.com/watch?v=p2tOmltUh34)
-- [SQLite Playlist](https://www.youtube.com/playlist?list=PLWENznQwkAoxww-cDEfIJ-uuPDfFwbeiJ)
--->
+- Introductory Genomics Videos: [BigBio YouTube Channel – Genomics Playlists](https://www.youtube.com/c/BigBiovideos/playlists?app=desktop)
 
 ## Folder Structure
 
@@ -94,7 +89,7 @@ Feel free to use the following as resources:
 
 * **.github**: Contains issue templates, pull request templates and workflows for the repository.
 * **materials**: Module slides.
-* **activities**: Contains self-assessments, graded assignments, and rubrics for evaluating assignments.
+* **activities**: Contains graded assignments, and rubrics for evaluating assignments.
 * **instructional_team**: Resources for the instructional team.
 * **this_cohort**: Additional materials and resources for this cohort.
 * **.gitignore**: Files to exclude from this folder, specified by the Technical Facilitator
