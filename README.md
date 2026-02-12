@@ -9,7 +9,7 @@
 * [Schedule](#schedule)
 * [Requirements](#requirements)
 * [Resources](#resources)
-  + [Documents](#documents)
+  + [Textbook](#Textbook)
   + [Videos](#videos)
 * [Folder Structure](#folder-structure)
 
@@ -18,13 +18,8 @@
 This course provides students with the knowledge foundations necessary to conduct statistical analysis of genetic association study data. It features a series of lectures and hands-on coding sessions covering key topics, including fundamental concepts in population genetics, population structure in genetic association studies, quality control in genetic data and genome-wide association studies. The course places strong emphasis on the use of modern computational tools such as PLINK, MEGMA and GRAF-pop, and real-world data applications to preparing students for both academic and applied careers in statistical genetics and genetic epidemiology.
 
 ## Learning Outcomes
-By the end of the module, participants will be able to:
 
-* Understand basic molecular genetics concepts and common genetic models.
-* Distinguish between Mendelian and complex trait inheritance.
-* Understand the principles of population genetics, including allele frequencies, genetic drift, and Hardy-Weinberg equilibrium.
-* Understand key designs and statistical models used in genetic association studies, including case-control and regression-based approaches.
-* Learn how to implement genome-wide association studies (GWAS), including key quality control steps and software tools.
+By the end of the module, participants will be able to apply foundational skills to analyze and interpret genetic data, an area of growing importance across academic, clinical, and industry settings. Understanding and using methods from genetic association studies is critical for identifying genetic risk factors, improving disease prediction models, and advancing precision medicine. By equipping learners with the skills to conduct rigorous, reproducible analyses of genetic data, this micro-credential supports the development of competencies that are increasingly valued in both research and applied health sectors. Real-world data applications and modern toolsets will prepare learners for meaningful work in statistical genetics and genetic epidemiology across academic and industry career pathways.
 
 ## Assignments
 
@@ -32,8 +27,8 @@ Participants should review the [Assignment Submission Guide](https://github.com/
 
 There are two assignments.
 
-1. [Assignment 1](./02_activities/assignments/Assignment1.md)
-1. [Assignment 2](./02_activities/assignments/Assignment2.md)
+1. [Assignment 1](./02_activities/assignments/Assignment1.qmd)
+1. [Assignment 2](./02_activities/assignments/Assignment2.qmd)
 
 ## Contacts
 
@@ -47,13 +42,14 @@ There are two assignments.
 
 ## Delivery of the Learning Module
 
-This module will include live learning sessions and optional, asynchronous work periods. During live learning sessions, the Technical Facilitator will introduce and explain key concepts and demonstrate core skills. Learning is facilitated during this time. Before and after each live learning session, the instructional team will be available for questions related to the core concepts of the module. Optional work periods are to be used to seek help from peers, the Learning Support team, and to work through the assignments in the learning module, with access to live help. Content is not facilitated, but rather this time should be driven by participants. We encourage participants to come to these work periods with questions and problems to work through. 
- 
-Participants are encouraged to engage actively during the learning module. They key to developing the core skills in each learning module is through practice. The more participants engage in coding along with the instructional team, and applying the skills in each module, the more likely it is that these skills will solidify. 
+This module will include live learning sessions and optional, asynchronous work periods. During live learning sessions, the Technical Facilitator will introduce and explain key concepts and demonstrate core skills. Learning is facilitated during this time. Before and after each live learning session, the instructional team will be available for questions related to the core concepts of the module. Optional work periods are to be used to seek help from peers and the Learning Support, and to work through the assignments in the learning module, with access to live help. Content is not facilitated; rather, this time should be driven by participants. We encourage participants to come to these work periods with questions and problems to work through.
 
-Each session will consist of slides to introduce topics, live coding to demonstrate the topics, and occasional breakout rooms/live polls to reinforce the topics. The technical facilitator will introduce the concepts through a collaborative live coding session using R and other specialized genetic sofwares. The technical facilitator will upload any live coding files to this repository for participants to revisit under `./04_this_cohort`. 
+Participants are encouraged to engage actively during the learning module. The key to developing the core skills in each learning module is through practice. The more participants engage in coding along with the instructional team and apply the skills in each module, the more likely it is that these skills will solidify.
+
+Each session will consist of slides to introduce topics and live coding for some lectures to reinforce the topics. The technical facilitator will reinforce the concepts through a collaborative live coding session using R and other specialized genetic software. The technical facilitator will upload any live coding files to this repository for participants to revisit under `./04_this_cohort`. 
 
 ## Schedule
+
 * Class 1: Introduction to Statistical Genetics (slide 01)
 * Class 2: Population Genetics (slide 02)
 * Class 3: Aggregation Analysis, Heritability and Segregation Analysis (slide 03)
@@ -63,6 +59,19 @@ Each session will consist of slides to introduce topics, live coding to demonstr
 * Class 7: GWAS Analyses (slide 07)
 * Class 8: Post-GWAS Analyses I (slide 08)
 * Class 9: Post-GWAS Analyses II (slide 09)
+
+## Requirements
+
+* Basic understanding of R. Learners should be able to:
+  * Clean and summarize data
+  * Make basic plots
+  * Troubleshoot simple errors
+  * Run R scripts and import simple datasets
+* Learners should be familiar with key concepts in statistical inference, including:
+  * Distributions of basic random variables (e.g., binomial, normal)
+  * Likelihood-based methods, including estimation and hypothesis testing
+  * Basic regression techniques (e.g., linear and logistic regression)
+* English language proficiency
 
 ## Resources
 Feel free to use the following as resources:
