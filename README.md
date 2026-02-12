@@ -1,4 +1,4 @@
-# Genetic Analysis Toolbox 
+# Genetic Data Analysis Toolbox 
 ## Content
 
 * [Description](#description)
