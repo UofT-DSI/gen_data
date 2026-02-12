@@ -1,0 +1,152 @@
+---
+title: "Assignment #1"
+format: html
+---
+
+## Assignment 1
+
+You only need to write lines of code for each question. When answering questions that ask you to identify or interpret something, the length of your response doesn’t matter. For example, if the answer is just ‘yes,’ ‘no,’ or a number, you can just give that answer without adding anything else.
+
+We will go through comparable code and concepts in the live learning session. If you run into trouble, start by using the help help() function in R, to get information about the datasets and function in question. The internet is also a great resource when coding (though note that no outside searches are required by the assignment!). If you do incorporate code from the internet, please cite the source within your code (providing a URL is sufficient).
+
+Please bring questions that you cannot work out on your own to office hours, work periods or share with your peers on Slack. We will work with you through the issue.
+
+You will need to install [PLINK](https://zzz.bwh.harvard.edu/plink/) and run the analyses. PLINK is a free, open-source whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner.
+
+#### Question 1: Data inspection
+
+Before fitting any models, it is essential to understand the data. Use R or bash code to answer the following questions about the `gwa.qc.A1.fam`, `gwa.qc.A1.bim`, and `gwa.qc.A1.bed` files, available at the following Google Drive link: <https://drive.google.com/drive/folders/11meVqGCY5yAyI1fh-fAlMEXQt0VmRGuz?usp=drive_link>. Please download all three files and save them to your local folder.
+
+(i) Read the .fam file. How many samples does the dataset contain?
+
+```         
+# Your answer here...
+```
+
+(ii) What is the 'variable type' of the response variable (i.e.Continuous or binary)?
+
+```         
+# Your answer here...
+```
+
+(iii) Read the .bim file. How many SNPs does the dataset contain?
+
+```         
+# Your answer here...
+```
+
+#### Question 2: Allele Frequency Estimation
+
+(i) Load the genotype matrix for SNPs rs1861, rs3813199, rs3128342, and rs11804831 using additive coding. What are the allele frequencies (AFs) for these four SNPs?
+
+```         
+# Your code here...
+```
+
+(ii) What are the minor allele frequencies (MAFs) for these four SNPs?
+
+```         
+# Your code here...
+```
+
+#### Question 3: Hardy–Weinberg Equilibrium (HWE) Test
+
+(i) Conduct the Hardy–Weinberg Equilibrium (HWE) test for all SNPs in the .bim file. Then, load the file containing the HWE p-value results and display the first few rows of the resulting data frame.
+
+```         
+# Your code here...
+```
+
+(ii) What are the HWE p-values for SNPs rs1861, rs3813199, rs3128342, and rs11804831?
+
+```         
+# Your code here...
+```
+
+#### Question 4: Genetic Association Test
+
+(i) Conduct a linear regression to test the association between SNP rs1861 and the phenotype. What is the p-value?
+
+```         
+# Your code here...
+```
+
+(ii) How would you interpret the beta coefficient from this regression?
+
+```         
+# Your answer here...
+```
+
+(iii) Plot the scatterplot of phenotype versus the genotype of SNP rs1861. Add the regression line to the plot.
+
+```         
+# Your code here...
+```
+
+(iv) Convert the genotype coding for rs1861 to recessive coding.
+
+```         
+# Your code here...
+```
+
+(v) Conduct a linear regression to test the association between the recessive-coded rs1861 and the phenotype. What is the p-value?
+
+```         
+# Your code here...
+```
+
+(vi) Plot the scatterplot of phenotype versus the recessive-coded genotype of rs1861. Add the regression line to the plot.
+
+```         
+# Your code here...
+```
+
+(vii) Which model fits better? Justify your answer.
+
+```         
+# Your answer here...
+```
+
+### Criteria
+
+| Criteria | Complete | Incomplete |
+|------------------------|------------------------|------------------------|
+| **Data Inspection** | Correct sample/SNP counts and variable type identified. | Missing or incorrect counts or variable type. |
+| **Allele Frequency Estimation** | Correct allele and minor allele frequencies computed. | Frequencies missing or wrong. |
+| **Hardy–Weinberg Equilibrium Test** | Correct PLINK command and p-value extraction in R. | PLINK command or extraction incorrect/missing. |
+| **Genetic Association Test** | Correct regressions, plots, coding, and interpretation. | Regression, plots, or interpretation missing/incomplete. |
+
+### Submission Information
+
+📌 Please review our [Assignment Submission Guide](https://github.com/UofT-DSI/onboarding/blob/main/onboarding_documents/submissions.md) for detailed instructions on how to format, branch, and submit your work. Following these guidelines is crucial for your submissions to be evaluated correctly.
+
+#### Note:
+
+If you like, you may collaborate with others in the cohort. If you choose to do so, please indicate with whom you have worked with in your pull request by tagging their GitHub username. Separate submissions are required.
+
+------------------------------------------------------------------------
+
+#### Submission Parameters
+
+-   Submission Due Date: `11:59 PM – 09/18/2025`
+
+-   Branch name for your repo should be: `assignment-1`
+
+-   What to submit for this assignment:
+
+    -   This R Markdown (`assignment_1.Rmd`) should be populated and should be the only change in your pull request.
+
+-   What the pull request link should look like for this assignment: `https://github.com/<your_github_username>/StatGen/pull/<pr_id>`
+
+    -   Open a private window in your browser. Copy and paste the link to your pull request into the address bar. Make sure you can see your pull request properly. This helps the technical facilitator and learning support staff review your submission easily.
+
+------------------------------------------------------------------------
+
+Checklist:
+
+-   Created a branch with the correct naming convention.
+-   Ensured that the repository is public.
+-   Reviewed the PR description guidelines and adhered to them.
+-   Verified that the link is accessible in a private browser window.
+
+If you encounter any difficulties or have questions, please don't hesitate to reach out to our team via our Slack at `#cohort-XX-help`. Our Technical Facilitators and Learning Support staff are here to help you navigate any challenges.

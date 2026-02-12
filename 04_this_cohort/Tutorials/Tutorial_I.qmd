@@ -16,6 +16,10 @@ A PLINK binary dataset consists of three files:
 -   **gwa.qc.bim** - SNP annotation file: chromosome, SNP ID, base-pair position, alleles
 -   **gwa.qc.fam** - Sample information file: IDs, sex, phenotype
 
+Please download the three files from the following Google Drive link: <https://drive.google.com/drive/folders/1v-FbDqu95wdUje3foFXMdXrBjYEAJTB2?usp=drive_link>
+
+You can then save them to your local folder.
+
 ```{r setup, include=FALSE}
 # Set the working directory for the entire R Markdown file
 knitr::opts_knit$set(root.dir = "/Users/macbook/work/Code/Dataset2/")
@@ -39,7 +43,7 @@ head gwa.qc.fam
 ```
 
 | **Column Name** | **Description** |
-|------------------|------------------------------------------------------|
+|----|----|
 | **FID** | Family ID (set to 0 if not used) |
 | **IID** | Individual ID (unique for each person) |
 | **PAT** | Paternal ID (set to 0 if unknown) |
@@ -53,7 +57,7 @@ head gwa.qc.bim
 ```
 
 | **Column Name** | **Description** |
-|-------------------------|-----------------------------------------------|
+|----|----|
 | **CHR** | Chromosome number |
 | **SNP** | SNP ID (e.g., rs number) |
 | **CM** | Genetic distance (usually 0) |

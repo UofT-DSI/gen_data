@@ -1,0 +1,228 @@
+---
+title: "Tutorial II - GWAS Analysis"
+output: html_document
+---
+
+##### In this practical we will carry out a complete genome-wide association study (GWAS) on a small example dataset containing about 4,000 individuals and over 300K SNPs using PLINK2. PLINK2 is a widely used, open-source toolkit for GWAS and basic genetic data management. You should have the [**PLINK2**](https://www.cog-genomics.org/plink/2.0/) installed on your machine.
+
+### STEP 0
+
+We will work with simulated case–control data (2,000 cases and 2,000 controls) described in the following papers:
+
+<https://www.nature.com/articles/nprot.2010.116.>
+
+<https://www.nature.com/articles/nprot.2010.182.>
+
+Please download the three PLINK binary files: `gwa.bed`, `gwa.bim`, and `gwa.fam` from the following Google Drive link: <https://drive.google.com/drive/folders/1EE7syaxoXmh9wKzJVMY0GfA2os3BF0Xp?usp=drive_link.>
+
+You can then save them to your local folder.
+
+### STEP 1
+
+#### Quality Control
+
+In this step we perform basic QC: we remove genotyped SNPs and individuals with too much missing data, and we only keep common variants (MAF ≥ 0.05).
+
+```{r setup, include=FALSE}
+# Set the working directory for the entire R Markdown file
+knitr::opts_knit$set(root.dir = "/Users/macbook/work/Code/Dataset3/")
+knitr::opts_chunk$set(echo = TRUE)
+library(data.table)
+library(qqman)
+```
+
+```{bash,results='hide',message=FALSE, warning=FALSE}
+cd /Users/macbook/work/Code/Dataset3/
+./plink2 --bfile gwa --maf 0.05 --geno 0.01 --mind 0.1 --hwe 0.00005 --make-bed --out gwa.qc
+```
+
+Explanation of the main arguments:
+
+-   **maf** – keeps SNPs with minor allele frequency strictly greater than 0.05. Given the small sample size, we focus on common variants.
+
+-   **geno** – excludes SNPs with ≥1% missing genotypes.
+
+-   **mind** – removes individuals whose genotype missingness is ≥10%.
+
+-   **hwe** – removes markers that strongly deviate from Hardy–Weinberg equilibrium (p-value \< 5×10⁻⁵).
+
+For details on these filters, see: <https://zzz.bwh.harvard.edu/plink/thresh.shtml#hwd>
+
+A broader overview of QC options is given here: <https://zzz.bwh.harvard.edu/plink/summary.shtml>
+
+**OUTPUT FILES**: `gwa.qc.bed`, `gwa.qc.bim` and `gwa.qc.fam`
+
+#### LD Pruning
+
+We next create a subset of approximately independent SNPs. This LD-pruned set will be used for PCA and removal of related individuals.
+
+```{bash,results='hide',message=FALSE, warning=FALSE}
+./plink2 --bfile gwa.qc --indep-pairwise 500 50 0.05 --out gwa.qc_pruned
+```
+
+The three numbers supplied to --indep-pairwise are:
+
+-   Window size in SNPs (here, 500).
+
+-   Step size (the window is shifted by 50 SNPs at a time).
+
+-   LD threshold (r²) (0.05 in this example).
+
+Within each window PLINK computes LD for all SNP pairs, removes one SNP from any pair with r² above the chosen threshold, then slides the window and repeats the process.
+
+We then build a new dataset using only the pruned SNPs:
+
+```{bash,results='hide',message=FALSE, warning=FALSE}
+./plink2 --bfile gwa.qc --extract gwa.qc_pruned.prune.in --make-bed --out gwa.qc_pruned
+```
+
+Additional information on pruning can be found here: <https://zzz.bwh.harvard.edu/plink/summary.shtml#prune>
+
+**OUTPUT FILES**: `gwa.qc_pruned.bed`, `gwa.qc_pruned.bim` and `gwa.qc_pruned.fam`
+
+#### Detecting related or duplicate samples
+
+Because the linear regression models used later assume that samples are independent, it is good practice to remove close relatives or duplicate individuals before running a GWAS.
+
+PLINK2 implements the KING-robust kinship method internally. We can use the --king-cutoff option on the LD-pruned dataset to identify a set of unrelated individuals. A cutoff of 0.0884 corresponds roughly to removing up to 2nd-degree relatives.
+
+```{bash,results='hide',message=FALSE, warning=FALSE}
+./plink2 --bfile gwa.qc_pruned --king-cutoff 0.0884 --out gwa_king
+```
+
+This command uses the pruned SNP set to estimate pairwise kinship and then automatically chooses a subset of individuals that are mutually unrelated up to the specified cutoff. It produces ID files such as:
+
+`gwa_king.king.cutoff.in.id` – IDs of individuals to keep (unrelated set)
+
+`gwa_king.king.cutoff.out.id` – IDs of individuals to remove
+
+We then create a dataset of unrelated samples:
+
+```{bash,results='hide',message=FALSE, warning=FALSE}
+cd /Users/macbook/work/Code/Dataset3/
+./plink2 --bfile gwa.qc --keep gwa_king.king.cutoff.in.id --make-bed --out gwa.qc_unrelated
+```
+
+#### Principal-component analysis (PCA)
+
+To account for population structure, we compute principal components from pruned SNPs in the unrelated dataset.
+
+We reuse the same `gwa.qc_pruned.prune.in` file to keep the same set of approximately independent SNPs:
+
+```{bash,results='hide',message=FALSE, warning=FALSE}
+./plink2 --bfile gwa.qc_unrelated --extract gwa.qc_pruned.prune.in --make-bed --out gwa.qc_unrelated_pruned
+```
+
+Now perform PCA:
+
+```{bash,results='hide',message=FALSE, warning=FALSE}
+./plink2 --bfile gwa.qc_unrelated_pruned --pca 20 --out gwa_unrel_PCA
+```
+
+`gwa_unrel_PCA.eigenvec` – individual-level principal components (by default, the top 20 PCs).
+
+`gwa_unrel_PCA.eigenval` – eigenvalues corresponding to each component.
+
+These PCs represent major axes of genetic variation (ancestry) in the dataset. More information on PCA with PLINK can be found here: <https://speciationgenomics.github.io/pca/>
+
+### Step 2
+
+#### Logistic regression GWAS
+
+Once QC, pruning, PCA, and relatedness filtering are complete, we can run the association test. We will fit a logistic regression model where:
+
+**Phenotype (case/control) \~ SNP dosage + PC1 + PC2 + PC3**
+
+You can later experiment with including more PCs to see how the results change.
+
+```{bash,results='hide',message=FALSE, warning=FALSE}
+cd /Users/macbook/work/Code/Dataset3
+./plink2 --bfile gwa.qc --ci 0.95 --logistic --covar gwa_unrel_PCA.eigenvec  -covar-name PC1,PC2,PC3 --adjust --out gwa.qc_assoc
+```
+
+Explanation of the main options:
+
+-   **--logistic** : performs SNP-wise logistic regression.
+
+-   **--covar gwa_unrel_PCA.eigenvec** : uses the PCA output (PC scores for each individual) as a covariate file.
+
+-   **--covar-name PC1,PC2,PC3** : includes PC1, PC2, and PC3 from that file as covariates.
+
+-   **--ci 0.95** : requests 95% confidence intervals for effect sizes.
+
+-   **--adjust** : produces multiple-testing adjusted p-values.
+
+With PLINK2, the main association results are written to: `gwa.qc_unrelated_assoc.PHENO1.glm.logistic`
+
+#### Manhattan and QQ plot in R
+
+To visualise the GWAS output, we use the qqman package to create Manhattan and Q–Q plots.
+
+```{r}
+
+#install.packages("data.table")
+#install.packages("qqman")
+
+setwd('/Users/macbook/work/Code/Dataset3')
+# Load PLINK2 logistic results
+assoc <- data.table::fread("gwa.qc_assoc.PHENO1.glm.logistic.hybrid")
+
+head(assoc)
+
+# Keep only the additive test (one row per SNP)
+assoc_add <- assoc[TEST == "ADD"]
+
+# qqman expects columns named CHR, BP, SNP, and P.
+# In PLINK2 output they are #CHROM, POS, ID, and P.
+setnames(assoc_add, c("#CHROM","POS","ID"), c("CHR","BP","SNP"))
+
+# Manhattan plot
+manhattan(assoc_add,
+          chr = "CHR",
+          bp  = "BP",
+          snp = "SNP",
+          p   = "P",
+          xlab = "",
+          ylab = "",
+          suggestiveline = FALSE,
+          cex.axis = 1.5,
+          col = c("lightblue", "lightslateblue"))
+
+# Q-Q plot
+qq(assoc_add$P, main = "Q-Q plot of GWAS p-values")
+
+```
+
+For more examples and plotting options, see the qqman vignette: <https://cran.r-project.org/web/packages/qqman/vignettes/qqman.html>
+
+#### Appendix – Overview of commonly used genetic analysis tools
+
+Below is a short description of several tools that are frequently used in GWAS and related analyses:
+
+[PLINK]{.underline} – Classic GWAS toolkit for QC, data management, and many single-variant association tests.
+
+[PLINK2]{.underline} – Next-generation version of PLINK with extended functionality and improved performance.
+
+[Bcftools]{.underline} – Command-line programs for viewing, filtering, and manipulating VCF/BCF variant files.
+
+[VCFtools]{.underline} – Suite of utilities for summarising, filtering, and converting VCF data.
+
+[REGENIE]{.underline} – Fast whole-genome regression framework for single-variant and gene-based tests in large cohorts.
+
+[SAIGE]{.underline} – Mixed-model method that accommodates unbalanced case–control ratios and large sample sizes.
+
+[GCTA]{.underline} – Software for estimating SNP-heritability, genetic correlation, and performing related analyses.
+
+[KING]{.underline} – Toolkit for inferring kinship, detecting sample duplicates, and exploring population structure.
+
+[FastPCA]{.underline} – Efficient algorithms to compute principal components on large genotype matrices.
+
+[STRUCTURE]{.underline} – Bayesian clustering approach for inferring population structure and assigning individuals to populations.
+
+[ADMIXTURE]{.underline} – Fast maximum-likelihood method for estimating ancestry proportions in admixed individuals.
+
+[ANNOVAR]{.underline} – Framework for functionally annotating genetic variants.
+
+[GATK]{.underline} – Broad Institute toolkit for variant calling and processing of high-throughput sequencing data.
+
+[TensorQTL]{.underline} – GPU-optimised software for rapid QTL mapping.
