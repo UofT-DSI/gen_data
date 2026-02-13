@@ -15,11 +15,12 @@
 
 ## Description
 
-This course provides students with the knowledge foundations necessary to conduct statistical analysis of genetic association study data. It features a series of lectures and hands-on coding sessions covering key topics, including fundamental concepts in population genetics, population structure in genetic association studies, quality control in genetic data and genome-wide association studies. The course places strong emphasis on the use of modern computational tools such as PLINK, MEGMA and GRAF-pop, and real-world data applications to preparing students for both academic and applied careers in statistical genetics and genetic epidemiology.
+
+This module provides learners with the knowledge foundations necessary to conduct statistical analysis of genetic association study data. It features a series of lectures and hands-on coding sessions covering key topics, including fundamental concepts in population genetics, population structure in genetic association studies, quality control in genetic data and genome-wide association studies. The microcredential places strong emphasis on the use of modern computational tools such as PLINK, LocusFocus, and real-world data applications to preparing learners for both academic and applied careers in statistical genetics and genetic epidemiology. 
 
 ## Learning Outcomes
 
-By the end of the module, participants will be able to apply foundational skills to analyze and interpret genetic data, an area of growing importance across academic, clinical, and industry settings. Understanding and using methods from genetic association studies is critical for identifying genetic risk factors, improving disease prediction models, and advancing precision medicine. By equipping learners with the skills to conduct rigorous, reproducible analyses of genetic data, this micro-credential supports the development of competencies that are increasingly valued in both research and applied health sectors. Real-world data applications and modern toolsets will prepare learners for meaningful work in statistical genetics and genetic epidemiology across academic and industry career pathways.
+By the end of the module, participants will be able to ....
 
 ## Assignments
 
