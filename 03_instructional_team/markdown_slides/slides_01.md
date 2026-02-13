@@ -4,174 +4,71 @@ theme: xaringan-themer
 _class: invert
 paginate: true
 ---
-# Introduction to Data Access and Storage
+# Introduction to Statistical Genetics
 
 ```
 $ echo "Data Sciences Institute"
 ```
 
 ---
+# Learning Objectives
 
-# Introduction:
-
-## $\rightarrow$ **Welcome**
-
-## What is SQL?
-
-## Data Modelling
-
----
-
-# Welcome / About Us
-
----
-
-# About Us (Thomas)
-
-- Started with SQL in first job after graduating
-- Data Analyst in US healthcare until moving to Canada in 2018
-- Transitioned to Data Engineer at Plan Canada
-- Pursued Master of Information at UofT for R and Python focus
-- Currently working on AI Governance and Ethics at Dataiku
-- **_Have a 3 year old Samoyed named Alto who takes up a lot of my free time 👉_**
-
-![bg right:40% w:350](./images/01_happy_alto.png)
-
----
-
-# About Us (James)
-
-- UofT Engineering undergrad and master 🦫
-- Licensed engineer in an oil & gas company sending robots into pipelines 🤘
-- DSI cohort 3
-- Self-taught woodworking hobbyist 🪚
-- Real hobbies: motorcycle 🛵, leisure skating ⛸️, camping ⛺️
-
-![bg right:35% w:350](./images/01_james.png)
-
----
-
-# About Us (Laura)
-
-- Over four years of experience in Full Stack Development creating database models and schemas as well as optimizing high-volume data workflows
-- Worked as a Teaching Assistant at York University in Statistics breaking down complex concepts and providing one-on-one support for technical challenges
-- Honours BSc in Psychology and survived a Web Development Bootcamp
-- DSI cohort 5
-- 7 years as a Research Analyst at the Centre for Addiction and Mental Health coordinating research studies, analyzing large datasets as well as created visualizations for clinical research (and co-authored a paper or 3)
-- Cat lover, research nerd and hairstyle chameleon 
-
-![bg right:35% w:350](./images/01_laura.png)
-
----
-
-# About Us (Niyaz)
-
-- Master's in Artificial Intelligence with a deep understanding of machine learning algorithms, data science, and advanced computational techniques
-- 15 years of experience in software development, database design, and query optimization
-- DSI cohort 2
-- Co-founder of a company offering web design, SEO, and Google Ads services in Canada
-- Experienced mentor and facilitator in product development, focusing on code reviews and Agile practices to ensure quality and continuous improvement
-- I always enjoy helping others learn while continuously learning myself
-
-![bg right:35% w:350](./images/01_niyaz.png)
-
----
-
-# Welcome / Course Content
-
+- This course provides an INTRODUCTION to concepts and fundamentals in statistical genetics.
+- At the end of the course, I hope you will:
+  - Understand foundational principles of population genetics.
+  - Learn statistical methods commonly used in genetic data analysis.
+  - Understand and apply computational and statistical methods used in the design and analysis of genome-wide studies.
+  
 ---
 
 # Course Content
 
-- Data Modelling, Data Structures, Schemas, Basic Data Management, Normal Forms
-- Basic SQL Syntax
-- Essential SQL Syntax
-- Advanced Techniques
-- Importing and Exporting Data to and from SQL
-- SQL's relationship to the Machine Learning Pipeline
-- Data Stewardship, Ethics, and SQL in the Wild
-
+- Background in molecular genetics and basic genetic models
+- Concepts from population genetics
+- Principles of inheritance
+- Aggregation, heritability and segregation analysis
+- Genome-wide association studies (GWAS) 
+  - Quality control
+  - Genotype imputation
+  - Multiple testing
+  - Meta-analyses  
+  - Population stratification adjustment
+  
 ---
 
-# Course Tools
+# Background Needed
 
-- [DB Browser for SQLite](https://sqlitebrowser.org/dl/): *Where we will write code*
-- [GitHub](https://github.com/UofT-DSI/sql): *Module Overview*
-- [Etherpad](https://pad.riseup.net/p/SQL_DSI_April2025): *Where we will keep track of session progress*
-  - **Visit and complete the sign in prompt at the start every session**
-- [SQLite documentation](https://www.sqlite.org/index.html): *For SQL specific questions*
-- [DrawIO](https://www.drawio.com/) or [Lucid](https://www.lucidchart.com/pages/): *For Assignments*
-- [Code Share](https://codeshare.io/): *To share code during our live coding sessions*
-  - This is for convenience only during live coding sessions, use the repo after the session instead
-- Mentimeter (links vary): *Small in-class quizzes, easiest to participate on your phone if available, ungraded*
+- Assume no formal training in genetics.
+  - Basic concepts in molecular genetics will be introduced in the class.
+- Familiarity with key concepts in statistical inference, including:
+  - Elementary probability and statistical methods
+  - Distributions of basic random variables (e.g., binomial, normal)
+  - Likelihood-based methods: estimation and hypothesis testing
+  - Basic regression techniques (e.g., linear, logistic)
 
 ---
 
 # GitHub Repo
 
-[https://github.com/UofT-DSI/sql](https://github.com/UofT-DSI/sql)
+[https://github.com/UofT-DSI/gen_data/](https://github.com/UofT-DSI/gen_data/)
 
 - Schedule
-- These slides (HTML & PDF)
-- Our database for live coding
+- These slides (PDF)
 - All in-class code
 - Assignment details and rubrics
 - Policies, due dates, etc
 
 ---
 
-# 🚨 It is crucial you visit the repo throughout the course, as I may make minor changes and push new content.
+# Online Resources
 
----
+- **Textbook**: *The Fundamentals of Modern Statistical Genetics* (Nan Laird & Christoph Lange).
 
-# Course Content
+- **Introductory Genomics Videos**: [BigBio YouTube Channel – Genomics Playlists](https://www.youtube.com/c/BigBiovideos/playlists?app=desktop)
 
-- This course is an _Introduction_ to SQL
-- At the end of the course, I hope you will:
-  - Feel comfortable with SQL
-  - Know how to search for the right thing on Stack Overflow
-  - Read documentation
+- Other useful resources beyond the scope of this course:
+  - **Biomedical Data Resource Guide**: [StatsUpAI – Curated Biomedical Datasets](https://statsupai.org/datasets.html)
 
-- We won't cover advanced topics like:
-  - Stored Procedures, Triggers, Jobs
-  - DBA work (monitoring, server setup, etc)
-  - Complex ETL or tooling
-
-
-![bg right:35% w:400](images/01_sql.png)
-
----
-
-
-# Assignments
-
-- Two assignments, released on Monday of each week.
-- Broken into three sections:
-  - Section 1 focuses on database design
-  - Sections 2 and 3 on SQL writing
-- Each sections states about when you can start working on the answers
-- Review questions/answers in Office Hours course support
-- Database design sections are more time consuming
-  - Especially Assignment 2. **Do not put this off too much.**
-- SQL sections are designed to be relatively easy (with a couple of hard questions)
-  - Reaffirms what we wrote together
-  - Doing work on your own helps reinforce the learning
-- ChatGPT probably won't help you much
-
----
-
-
-# Grading 
-
-- Pass/Fail. Do the work, pass the course :) 
-
-- Assignment 1: 30% of mark
-- Assignment 2: 70% of mark
-- Review rubrics for full details
-
-- Class Attendance: *not graded this cohort, come anyways!*
-  - Let myself or course support know if you are unable to attend a lesson
-  - Code along!! Best way to learn.
 ---
 
 
@@ -179,761 +76,356 @@ $ echo "Data Sciences Institute"
 
 ---
 
-# Welcome / Quick Technical Check
+# What You’ll Learn Today
+
+- **Foundations of genetic variation**
+  - DNA → chromosomes → genes
+  - Common variant types (e.g.,SNPs)
+
+- **From variants to traits**
+  - Mendelian vs. complex disease
+  - Inheritance models: dominant / recessive / additive (genotype coding 0/1/2)
+
+##### By the end of this lecture, you should be able to define alleles/genotypes, recognize common variant classes, explain penetrance, and map a coded genotype into a simple regression model.
+
+-----
+
+# What is Statistical Genetics?
+
+- Statistical genetics is an interdisciplinary field at the interface between statistics and genetics and is concerned with the development of statistical methods for problems in genetics.
+- Genetics is a subfield of biology concerned with the study of heredity (transmission of genetic material from parents to offspring) and genetic variation.
 
 ---
 
+![bg right:100% w:1000](./images/human_genome.png)
 
-# Quick Technical Check
-
-Make sure to install DB Browser for SQLite by our next session.
-
-- If you haven't already, please download it here: [https://sqlitebrowser.org/dl//](https://sqlitebrowser.org/dl/).
-
-For live coding:
-- Please download/fork the FarmersMarket.db from our GH repo:
-  - [FarmersMarket.db](../../05_src/sql/farmersmarket.db)
-- Open it in SQLite with the "Open Database" button and navigate to wherever you have saved it
+---
+ # Deoxyribonucleic Acid (DNA)
+ 
+- DNA is the basic biological material of inheritance; it determines how proteins are manufactured in the body
+- Each strand of DNA is a long molecule made up of a linear sequence of subunits/base
+pairs: A,T,G,C.
+- A-T and G-C matching: information on one strand is sufficient.
+- ‘Size’ of the genome: ≈ 3 billion of DNA base pairs
+![bg right:35% w:500](./images/DNA.png)
 
 ---
 
+ # Deoxyribonucleic Acid (DNA) 
+ ![Sales Figure, w:700](./images/DNA_combineplot.png) 
 
-# **Install Issues?**
+___
 
-**If yes, please message your course support**
+ # Chromosomes 
+ 
+- Each chromosome has a double helix structure: two long strands of DNA, bound to each other lengthwise. 
+- 23 pairs of chromosomes: 22 homologous pairs (Autosomes) and 1 pair of sex chromosomes (XX female, XY male).
+- In each pair, one copy is inherited from the mother and one from the father.
+- Where genetic material is stored and in the nucleus of every cell.
+![bg right:35% w:400](./images/chr.png)
+---
+
+ # Double Helix Structure
+
+
+- Each chromosome has two long strands of DNA.
+- **Homologous chromosome pair**:
+
+    ![w:800](./images/DNA_combineplot2.png) 
+ 
+---
+
+ # Double Helix Structure
+ 
+- Each chromosome has two long strands of DNA.
+- **Homologous chromosome pair**:
+
+    ![Sales Figure, w:800](./images/DNA_combineplot3.png) 
+ 
 
 ---
 
-# Introduction:
-
-## Welcome
-
-## $\rightarrow$ **What is SQL?**
-
-## Data Modelling
-
-
----
-
-# What is SQL? / SQL
+# Human Genome
+- 3 billion nucleotides (A,C,G,T) in the whole human genome.s
+  – Paired, double helix
+- About 3 million of them differ between people (0.1% difference) - Genetic Variations.
+- Most of these variations are in ‘junk DNA’.
+  - Not directly code for proteins.
+  - May have regulatory or unknown functions.
+- Minority of these variations change how products of genes (proteins) behave.
+- Scientists study which variations are linked to specific traits or diseases.
 
 ---
 
-# SQL Fundamentals
+# Mutations 
 
-- SQL: Structured Query Language
-  - Pronounced as either S.Q.L. (ess-cue-ell) or “sequel”
-- SQL is a _query_ language rather than a programming language
-  - Querying is closer to telling a computer *what you want*, rather than *what it has to do*
-  - SQL code is often less reproducible than other programming languages because it's domain specific
-      - Some SQL code, especially more advanced procedural code, is reproducible within the same flavour
-  - SQL's domain is databases and is based on set theory
+- Mutations are **changes in DNA**.
 
+  ![Sales Figure, w:1100](./images/mutation1.png)
 
 ---
 
-# SQL Fundamentals
+# Effects of Mutations 
 
-- Designed to manage data within Relational Database Management Systems (RDBMs), e.g.
-  - MSSQL
-  - Oracle DB
-  - MySQL/MariaDB
-  - PostgreSQL
-
----
-
-# SQL Formatting
-
-- Like other programming/query languages, SQL has reserved keywords/commands to perform instructional operations 
-  - Generally, these keywords are written in all caps: `SELECT`
-  - Most modern interpreters no longer require this, but it is the expected standard
-
-- All statements/queries should end with a semicolon
-  - A few SQL constructs (like common table expressions, we'll get to these later) require them, otherwise they are optional 
-      - I'll almost certainly forget to use them
-      - There's some debate over whether or not it's best practice
-
----
-
-
-# SQL Formatting
-
-- In SQL, white space and/or line breaks do not matter 
-  - Readability is important
-    - Try to keep SQL statements to a reasonable screen width
-    - Use sensible line breaks
-    - Offset subqueries with indents
-
----
-
-# SQL Formatting
-
-- Code is commented in/out with `--` rather than `#`
-- Code blocks can be commented out with `/* */`
+- Mutations can be very detrimental to an organism.
+  - May cause proteins to malfunction.
+  - cells that rely on the proteins may not function properly.
   
-```
-/* 
+- Most of these deleterious mutations remain rare in the population, because they are rarely transmitted to the next generation.
 
-somecode spanning
-multiple lines
+- Many of the mutations have no effect.
+  - e.g., TCT and TCA both code for the same amino acid (protein building block), so changing one to the other has no impact.
 
-*/
-```
-
----
-
-# What is SQL? / Flavours
-
----
-
-# Flavours
--  RDBMs differ from one to the next:
-    - different keywords 
-      - e.g. return only 10 rows:
-        `SELECT TOP 10...` vs `SELECT ... LIMIT 10`
-    - different syntax
-      - e.g. not equal: 
-      `!=` or `<>` (or both)
-    - other, more nuanced/complex differences
-      - e.g. architecture, data types, etc
-
----
-# Flavours
-
-- We are using _**SQLite**_:
-  - Super easy to get setup
-  - Requires almost no overhead
-  - Open source, _free_
-  - Similar enough in syntax to learn on
-  - Used all over the world and in many applications  
-      - e.g. Firefox uses a SQLite backend to write a user's history locally
-      
----
-
-
-# Flavours
-
-- Broad observations about Open Source systems:
-  - Excellent at what they are designed for
-  - Varying data types (SQLite has some unique ones!)
-  - Not every command exists, but workarounds are usually possible
-  - Some utilize RDBMs that feel extremely outdated
 
 
 ---
 
-# Flavours
+# Mutations Give Rise to Genetic Variants
 
-- Broad observations about enterprise systems:
-  - Powerful and designed to handle edge cases
-  - Feel a bit more refined
-      - Can be version dependent
-  - Tend to "lock in" businesses/organizations
-      - Migration is costly, sometimes outrageously so
-  - Newer players (Snowflake, Databricks, etc) and cloud providers (Azure, AWS, GCP, etc) offer a lot more functionality than just database querying
-      - Sometimes use different terminology to describe SQL tasks 
+  ![Sales Figure, w:700](./images/mutations_variant.png)
+
+---
+
+# Genetic Variants/Polymorphism
+
+- A **polymorphism** is a part of DNA that can differ between individuals.
+- These variations come from mutations that happened over long periods of human history.
+- The different versions (or "states") of a polymorphism are called **alleles**.
+- In statistical terms: a polymorphism is a random variable and an allele is one of the outcomes in the sample space.
 
 
 ---
 
+# Types of Genetic Variants
 
-# What is SQL? / Environments for SQL
+- A **single nucleotide polymorphism (SNP)** is a type of genetic variation where a single nucleotide (A, C, G, or T) differs between individuals.
+  - An **allele** at a SNP refers to one of the possible nucleotide bases — A, C, G, or T.
 
----
-
-
-# Databases
-
-- Relational databases are a collection of tables, views, procedural code, and other SQL-assisting artefacts
-  - Generally the data stored in a database will be related to a real-world concept
-  - Backends to data-collecting systems are often databases
-      - e.g. CRMs, EMR software, ERPs, web-based applications
-  - Usually not connected to other databases unless deemed necessary
-  - Often transactional, meaning data is actively being written to by frontend systems
-  - Tables are normalized
-
-
----
-
-# Databases
-
-- There are also non-relational databases, often referred to as NoSQL
-  - We won't cover these
-  - Common tools include: Amazon DynamoDB, Azure CosmosDB, MongoDB, Google Cloud Datastore
-
-
----
-
-# Data Warehouses and Data Marts
-
-- Data Warehouses are highly structured collections of (usually tabular) data
-  - Data has been processed for a specific purpose, e.g. analytics
-  - Data has been centralized
-      - Often with the assistance of ETL (Extract, Transform, Load) tools
-  - Have a lot of overhead, require governance, and strict rigidity
-  - Tables are denormalized
-  - Very common for enterprises, but losing traction in many industries
-
-
----
-
-# Data Warehouses and Data Marts
-
-- Data Marts are created from Data Warehouses to focus on a single subject 
-  - Designed to make Data Warehouses easier to use
-  - Data is structured, but flexibility is driven by the purpose of the Data Mart
-  - Some denormalized tables may be normalized or undergo even greater normalization
-      - _The subject/purpose of the Data Mart might drive these types of decisions_
-  - Common for enterprises that have Data Warehouses
-
----
-
-
-# Data Lakes and Data Swamps
-
-- Data Lakes allow on-demand access to raw, semi-structured, structured, and unstructured data
-  - Not defined by a specific purpose
-  - Highly scalable
-  - Can be transactional, if systems are designed to produce outputs into Data Lakes
-  - Often data sources for machine learning pipelines live in Data Lakes
-  - Inexpensive compared to Data Warehouses
-  - Increasingly common for enterprises to shift towards Data Lakes, especially with support from newer tools like Snowflake, Databricks, etc, which can maximize the analytical value of a Data Lake
-
-
----
-# Data Lakes and Data Swamps
-
-- Data Swamps...are poorly governed Data Lakes
-  - Lack of documentation, lack of governance, poorly designed Data Lakes become Swamps
-  - Avoid building these
-
-
----
-
-
-# What questions do you have?
-
----
-
-
-# Introduction:
-
-## Welcome
-
-## What is SQL?
-
-## $\rightarrow$ **Data Modelling**
-
----
-
-
-# Data Modelling Topics (its a lot!)
-
-- Relational Database Management Systems
-
-- Data Models
-
-- Structure of Data
-
-- Constraints
-
-- Entity Relationship Diagrams
-
-- Attributes of an ERD: Entities & Relationships
-
-- Relationship Examples
-
-- Conceptual, Logical, Physical Models
-
-- Assignment 1: Design a Logical Model
-
----
-
-# Relational Database Management Systems
-
--  Relational Database Management Systems (RDBMs) are software designed to:
-  - Store large amounts of data
-  - Utilize a query language to allow easy retrieval of the data
-  - Allow multiple users to access the data simultaneously
-  - Manage permissions for data access
-  - Mitigate data corruption and unauthorized access
-
----
-
-# Relational Database Management Systems
-
-- Generally, data is stored in a _database_
-  - A database is a collection of information
-  - Within a database, a collection of objects (e.g. tabular data "tables") is stored
-
-
----
-
-# Relational Database Management Systems
-
-- RDBMs allow users to define interactions between these objects, such as:
-  - Establish the relationship between objects 
-  - Define procedural scripts to query specific data or trigger an action
-  - Schedule routine work (e.g. procedures to run, maintenance, etc) 
-
----
-
-# Data Models
-- A data model is a notation for describing data or information
-
-- Data models consist of:
-  - Structure of the data
-  - Operations 
-  - Constraints on the data
-  - Relationships
-
----
-
-# Structure of Data
-
-- SQL is comprised of tables
-
-| Breed    | Affectionate w/ Family | Good w/ Other Dogs | Shedding | Coat Type | Coat Length | Playfulness | Energy |
-|----------|------------------------|--------------------|----------|-----------|-------------|-------------|--------|
-| Pugs     | 5                      | 4                  | 4        | Smooth    | Short       | 5           | 3      |
-| Akitas   | 3                      | 1                  | 3        | Double    | Medium      | 3           | 4      |
-| Samoyeds | 5                      | 3                  | 3        | Double    | Long        | 5           | 4      |
-
----
-
-# Structure of Data
-
-- Tables have Attributes and Observations
-  - In SQL we call Attributes "Columns"
-      - e.g. Breed, Coat Type, Coat Length
-  - and Observations "Rows"
-      - e.g. Samoyed, Double, Long
-
-- SQL databases require tables to be named
-  - e.g. We can call this table "breed_traits"
+  - Appear about every 300 base pairs $\rightarrow$ ≈ 10 million SNPs.
   
----
-
-# Structure of Data
-
-- Columns are defined (and restricted, i.e. constrained) by data types
-- Common ones include:
-  - `INT` (integers: 1,2,3,-1,-2,-3)
-      - most systems conserve storage space specifying their range 
-  - `FLOAT`, `DECIMAL`, `REAL` (decimal: 5.5, 3.333333)
-  - `VARCHAR`, `NVARCHAR`, `TEXT` (text strings, with a maximum length associated: 'abc')
-  - `DATE`, `DATETIME`, `TIME` (dates and times: '2023-01-09', '11:11:11.000')
-- These may vary slightly by flavour (in SQLite they are simpler and less restricted)
-
+    ![Sales Figure, w:500](./images/SNP_human.png)
 
 ---
 
-# Structure of Data
+# Types of Genetic Variants
 
-- Data types are important:
-  - They affect operation speed, storage size, data validity
-      - Speed: it's computationally less expensive to compute smaller values
-      - Storage: small is usually better, but the wrong size will affect systems; e.g. Psy's Gangnam Style exceeded 2,147,483,647 (32-bit signed, 2^32/2-1) views, causing YouTube to expand the view counter to 9,223,372,036,854,775,807 (64-bit signed, 2^64/2-1)
-      - Validity: ensures columns contain the right type of data for operations, e.g. avoiding 5 + 'ten' = ??
-      
----
-
-# Constraints
-- Data Models also specify constraints
-- Constraints are rules that must be followed:
-  - Referential-Integrity constraints
-      - Ensure that values in one table have corresponding values in another table
-  - Attribute Constraints
-      - Ensure that certain types of values are always consistent within columns
-      - May also ensure whether values are unique, not missing, etc
-
----
-
-# Constraints
-- **NULL** and **NOT NULL**
-  - If a value can be missing or not
-- **UNIQUE**
-  - All values are different
-- **PRIMARY KEY (PK)**
-    - Ensures each value in a column is unique within the table (e.g. an ID field)
-    - One PK per table
-    - Cannot be NULL
-    - Ensures database integrity by restricting record deletion
-
----
-
-# Constraints
-
-- **FOREIGN KEY (FK)**
-    - Creates a linkage between a column in one table and a column in another table
-        - Generally, foreign keys are linked to primary keys
-        - Sometimes share the same name as the linked column, but this isn't required
-        - Linkage requires data types to be the same
-    - As many FKs as needed per table
-    - May be NULL
-    - Record can be deleted
-
----
-
-# Constraints
-
-**Why do we need Primary and Foreign Keys?**
-- Formalizing the relationship between PKs and FKs ensures:
-  - New records added to tables require a matching value when a relationship exists
-      - *orders* are made by *customers* 
-      - *orders* refer to *products* that exist
-  - Deleted records don't make data elsewhere meaningless
-      - *customers* who have had *orders* can't be deleted without deleting the orders first
-      - *orders* referring to *products* can't be deleted without deleting the products first
-- The PK-FK relationship can sometimes feel a bit backwards: by establishing an FK we are determining what is allowed to happen!
-
----
-
-# Constraints
-
-| customer_id (PK) | address            | name |
-|---------|--------------------|------|
-| 10      | 42 Wallaby Way     | TR   |
-| 11      | 221B Baker St      | NN   |
-| 12      | 124 Conch St    | JZ   |
-| 13      | 4 Privet Dr     | LM   |
-
-
-| order_id (PK) | customer_id (FK) | product_id (FK) |
-|----------|---------|------------|
-| 93       | 11      | 123        |
-| 94       | 11      | 789        |
-| 95       | 13      | 456        |
-| 96       | 10      | 101        |
-
----
-
-# Constraints
-
-| product_id (PK) | name  | price |
-|------------|-------|-------|
-| 123        | Pen   | 2     |
-| 456        | Wand   | 17     |
-| 789        | Notepad | 6    |
-| 101        | Lamp  | 15    |
-
+- **Variable number of tandem repeats (VNTR)**: Specific DNA sequences that are repeated immediately adjacent to each other for a variable number of times.
+  - e.g. 16, 14 and 11 repeats of CA.
+  - **Microsatellites** consist of small sequences (1-6) that are repeated.
+  - The number of repeats can vary widely from one person to the next, therefore they are used often in forensic DNA and paternity testing, and in linkage mapping.
+- **Indels**: extra base pairs (between 1 and 1000) can be inserted/deleted between two specific base pairs.
+- **Structural variants**: duplications, deletions, inversions, translocations
+- **CNV (copy number variants)**: large insertions/ deletions
 
 
 ---
 
-# Constraints
+# Types of Genetic Variants
 
-**Why then do we *require* PKs to be unique** 
-- The PK is an identifier for each row
-  - Much like how we all have various "ID" numbers to identify us to schools/organizations/governments/etc
-  - Some identifying data isn't inherently unique (e.g. name, date of birth) because others can share the same values
-- Ensures we are identifying the correct corresponding row of the relationship
-  - *This* order was made by *this* customer for *this* product
-      - The customer_id in the customer table is unique so that we know exactly which customer made the purchase
-      - The product_id in the product table is unique so that we know exactly what was purchased
+![Sales Figure, w:700](./images/geneticvariant.png)
 
 ---
 
-# Constraints
 
-| customer_id (PK) | address            | name |
-|---------|--------------------|------|
-| 11      | 221B Baker St      | NN   |
+# Genes 
+- A gene is an ordered sequence of nucleotides located in a particular position on a particular chromosome that **encodes a specific functional product** (a protein or RNA molecule).
+- A gene is a segment of DNA consists of several coding segments (**exons**), separated by non-coding sequences (**introns**).
+- Introns do not code for specific proteins, but they are not junk and may regulate exons.
 
+![bg right:40% w:500](./images/gene2.png)
 
-| order_id (PK) | customer_id (FK) | product_id (FK) |
-|----------|---------|------------|
-| 93       | 11      | 123        |
-| 94       | 11      | 789        |
-
-
-| product_id (PK) | name  | price |
-|------------|-------|-------|
-| 123        | Pen   | 2     |
-| 789        | Notepad | 6    |
-
-- The customer_id in the order table does not need to be unique: **Why?**
-  - Because a customer can make more than one order
+---
+# Genes 
+- **Gene sizes vary** from about 1K DNA base pairs to more than 1 million bp.
+- About **20,000 - 30,000 genes** throughout the genome.
+- Genes themselves do not directly affect traits.
+- Proteins - the coded product of genes - are the ones influencing traits.
+- Through the processes of **transcription** and **translation**, information from genes is used to make proteins. 
+![bg right:40% w:500](./images/genes_traits.png)
 
 ---
 
-# Constraints
+# Proteins
 
-**What about *composite* keys?**
-- Sometimes no single column in a table is unique
-  - In this case, in order to make a PK unique, we build "composite" keys
-- Composite keys use a combination of columns to uniquely identify each row
-- This can be useful to enforce relationships between two or more attributes
-- Quite a few of Farmers Market PKs are composite keys
-  - customer_purchases for example uses a composite key on product_id, vendor_id, market_date
+- Proteins are strings of amino acids.
+- There are **20 different amino acids** that are coded by codons.
+- A **codon** is a sequence of **3 letters** (nucleotides) in DNA or RNA.
+- There are 64 possible codons (4 bases: A, T, C, G — and combinations of 3)
+- Multiple codons can code for the same amino acid.
+  - For example: TCT and TCA both code for Serine.
+  - This redundancy helps protect against mutations.
+
+---
+
+# Codon Change Causes Sickle Cell Trait
+
+- A Variant in the Hemoglobin Gene Causing Sickle Cell Anemia
+
+    ![Sales Figure, w:600](./images/protein.png) 
+ 
 
 ---
 
-# Entity Relationship Diagrams
+# Alleles and Genotypes
 
-- Entity Relationship Diagrams (ERDs) are diagrams depicting the structure of tables within a database
-  - This both _identifies the tables_ and _describes their relationships_ 
-
-- ERDs are useful for:
-  - Database design
-  - Debugging
-  - Writing logical, consistent, and efficient queries
-
-
----
-# Entity Relationship Diagrams
+**Genotype**: the two alleles at each chromosomal location (a pair of chromosomes) for a given individual.
   
-- There are three levels of detail for ERD depictions:
-  - Conceptual model
-  - Logical model
-  - Physical model
+- Most SNPs are bi-allelic; two alleles can be either G-C or A-T (matching).
+- Could code them A (say for G-C) and a (for A-T).
+
+![bg right:50% w:600](./images/genotype1.png)
 
 ---
 
-# Attributes of an ERD Entity
+# Alleles and Genotypes
 
-- For a given table:
-  - Name
-  - Relationship to another table
-  - Column Names
-  - Column Types
-  - Primary Keys (if present)
-  - Foreign Keys (if present)
+- A SNP with two alleles (A and a) has 3 possible (unordered) genotypes: AA, Aa/aA, aa.
+- **Homozygous** genotype: same allelic type (AA or aa);
+- **Heterozygous** genotype: different allelic type (Aa/aA).
+
+    ![Sales Figure, w:900](./images/genotype3.png)
 
 ---
 
-# Attributes of an ERD Relationship
-- Defines which columns are related
-- Defines what type of relationship exists:
-  - One-to-One
-  - One-to-Many
-  - Many-to-Many
+# Recap
+
+- Human genomes and **paired** chromosomes
+- DNA has double helix structure: a 4-letter (A-T, G-C) system.
+- Variations/Mutations
+  - polymorphisms/genetic variants ≡ discrete random variables
+  - alleles ≡ outcomes of a random variable
+  - **SNP** ≡ a r.v. with two outcomes
+  - Microsatellite ≡ a random variable with typically 3-30 outcomes
+    
+- **Genotype** data of a polymorphism/genetic variant: paired alleles (from the
+paired chromosomes.
 
 ---
 
+# Mendel’s Inheritance Laws
 
-# Relationship Examples
+- **Law of Segregation (The "First Law")**: every individual has two alleles and each parent passes a randomly selected copy to each of its offspring.
+- **Law of Independent Assortment (The "Second Law")**: alleles/genes for different traits are passed independently (only true if the genes are not linked).
 
-**One-to-One**: where a given row within a table is associated with only a single row in another table
+![bg right:50% w:600](./images/mendel2.png)
+    
+----
 
-Table 1: Country — Table 2: Capital City
+# Exercise 
 
-
-| Table 1:Country |     | Table 2:Capital |
-|-----------------|-----|-----------------|
-| Canada          | 1:1 | Ottawa          |
-| USA             | 1:1 | Washington DC   |
-| Mexico          | 1:1 | Mexico City     |
-
-
----
-
-![bg w:400 ](images/01_na_capitals.png)
+If the father’s genotype is **dD** and the mother’s genotype is **dd**, what is the probability that an offspring’s genotype is dd, dD, or DD?
 
 
----
 
-# Relationship Examples
+-----
 
-**One-to-Many**: where a given row within a table can be referenced by multiple rows in another table
+# Application of Mendel’s First Law
 
----
-
-# Relationship Examples
-
-Table 1: Country — Table 2: States 
-
-| Table 1:Country |     | Table 2:States    |
-|-----------------|-----|-------------------|
-| Canada          | 1:∞ | Alberta           |
-| Canada          | 1:∞ | British Columbia  |
-| Canada          | 1:∞ | ...(11 more rows) |
-| USA             | 1:∞ | Alabama           |
-| USA             | 1:∞ | Alaska            |
-| USA             | 1:∞ | ...(48 more rows) |
-| Mexico          | 1:∞ | Aguascalientes    |
-| Mexico          | 1:∞ | Baja California   |
-| Mexico          | 1:∞ | ...(30 more rows) |
-
----
-
-![bg w:400 ](images/01_na_states.png)
-
----
-
-# Relationship Examples
-
-**Many-to-Many**: where multiple rows within a table can be referenced by multiple rows in another table
-
-For this example, consider different ways to define "European" membership, such as whether or not a country: 1) is a member of the EU, 2) uses the Euro, or 3) has abolished  border controls (Schengen Agreement)
+![Sales Figure, w:800](./images/mendel_application.png)
 
 
 ---
-
-Table 1: Country — Table 2: Membership
-
-| Country       | Country ID |
-|---------------|------------|
-| Slovenia      | 001        |
-| Sweden        | 002        |
-| Switzerland   | 003        |
-| ...(more countries) | ...  |
+# Mendelian vs. Complex Diseases
 
 
-| Membership | Member ID |
-|------------|-----------|
-| EU         | 10        |
-| Eurozone   | 11        |
-| Schengen   | 12        |
+ ![Sales Figure, w:800](./images/mendelian.png)
+ 
+---
+
+# Example of a Mendelian (rare) Disease
+
+- <u>Sickle cell anemia</u>: Mendelian disease that affects red blood cells, i.e. red blood cells have a sickle (rather than round) shape which results in an abnormal blood flow, blocked blood vessels and severe anemia.
+- Widely recognized as inherited disorder for centuries in sub-Saharan Africa because of the way it appeared in families.
+- Laboratory studies showed that the sickle shape was due to a genetic variant that changed the molecular structure of hemoglobin.
+- Interestingly, the variant that causes sickle cell anemia protects against malaria. This explains the high prevalence of this variant in the population despite its deleterious effect: balancing selection.
 
 ---
 
-# Relationship Examples
+# Example of a Complex (common) Disease
 
-Table: Different countries align differently within these definition
+- Alzheimer’s disease (AD) is a complex disorder with a strong genetic component, first described in 1906.
+- Brain disorder with progressive destruction of brain cells leading to loss of memory and other cognitive impairment.
+- Late onset (>65), but a small fraction of cases develop AD very early (late 30’s or 40s).
+- Early onset AD is more likely to have a family history (familial AD).
+- Over 200 rare variants in three genes have been reported in familial AD.
+- Late onset AD is far more common: genetic causes (over 75 loci from GWAS), but also environmental risk factors such as head injury, high blood pressure, diabetes.
 
-| Country ID |     | Member ID |
-|------------|-----|-----------|
-| 001        | ∞:∞ | 10        |
-| 001        | ∞:∞ | 11        |
-| 001        | ∞:∞ | 12        |
-| 002        | ∞:∞ | 10        |
-| 002        | ∞:∞ | 12        |
-| 003        | ∞:∞ | 12        |
+--- 
 
-We can create additional Many-to-Many relationships if we created a table including NATO/UN membership, because many non-European countries are NATO/UN members.
+# Genetic Models
 
----
-
-![bg w:1000 ](images/01_euro_status.png)
-
----
-
-
-
-# Conceptual Models
-
-- Define the tables (objects/entities) and their relationships
-- Our Farmers Market database: 
-  - 10 tables
-  - Relationships between these tables
-      - e.g. product and product_category: *what type of thing a product is*
-      - product and customer_purchases: *what products a customer has bought*
-      - product and vendor_inventory: *what products each vendor has available*
-  - Not all tables share a relationship to one another, but all tables have at least one relationship
+- A genetic model describes the relationship (usually probabilistic) between an individual’s genotype and their phenotype (or trait).
+- Binary trait Y: affection status (Y=1 vs. Y=0).
+- Continuous trait Y: quantitative phenotype (BMI, height, cholesterol).
+- The genetic model can be deterministic (i.e. the genotype determines the phenotype exactly in Mendelian diseases). 
+- Most often the model is probabilistic (i.e. the genotype influences the probability of disease: **P(Y|G) (aka penetrance function in genetics)**. 
 
 ---
 
-![bg w:1000 ](images/01_farmers_market_cm.png)
-     
----
+# Simple Disease Models - Binary Traits
 
-
-# Logical Models
-
-- Add additional detail to the conceptual model by adding column names for each table
-- Often indicate the type of relationship 
-  - One-to-One
-  - One-to-Many
-  - Many-to-Many
+- $A, a$: the two alleles at a disease locus; $A$ is the risk allele.
+- If the genetic locus has no effect on disease then $P(Y=1 \mid aa)=P(Y=1 \mid A a)=P(Y=1 \mid AA)$.
+- **Dominant**: $P(Y=1 \mid AA)=P(Y=1 \mid A a)=1, P(Y=1 \mid a a)=0$.
+- **Recessive**: $P(Y=1 \mid A A)=1, P(Y=1 \mid A a)=P(Y=1 \mid a a)=0$.
+- These deterministic models **hold only rarely for simple Mendelian diseases**.
+- More realistic are stochastic models with reduced penetrance and phenocopies.
 
 ---
 
-# Logical Models
+# Simple Disease Models - Binary Traits
 
-- Our (partial) Farmers Market database: 
-  - product (5 columns) shares a One-to-Many relationship with vendor_inventory (5 columns) on product_id
-  - product_category (2 columns) shares a One-to-Many relationship with product (5 columns) on product_category_id
-  - `_______` shares a `_______` relationship with `_______` on vendor_id
+- Reduced penetrance: the probabilities above are less than 1.
+  - e.g. in the recessive model $\mathrm{P}(\mathrm{Y}=1 \mid \mathrm{DD})<1$.
 
----
-
-![bg w:700](images/01_farmers_market_lm.png)
-
----
-
-
-# Physical Models
-
-- Add additional detail to the logical model by adding key type and column data type
-- Our (partial) Farmers Market database: 
-  - vendor_id (int) is the PK for vendor, which shares a One-to-Many relationship with vendor_inventory on vendor_id (FK)
-  - product_id (int) is a FK for vendor_inventory (*so elsewhere in this diagram, we'd connect this to a PK of another table*)
-  - market_date (date) is the PK for vendor_inventory
-      - **why?** 💭💬 **Think, Pair, Share**
+- Phenocopy means probability $P(Y=1 \mid d d)>0$ 
+  - Disease can be caused by a different genetic locus than the one under consideration.
+  
+- **Additive** if the penetrance of the heterozygous genotype is midway between the two homozygous genotypes.
 
 ---
 
+# Penetrance Function for a Binary Trait
 
-![bg w:1000](images/01_farmers_market_pm.png)
+ ![Sales Figure, w:700](./images/penetrance.png)
+
+---
+
+# Quantitative Traits
+
+- For **quantitative traits**: a natural choice for the penetrance function is a normal density with a mean depending on the genotype. 
+- A more general approach uses a generalized linear model (GLM):
+$$
+g(E(Y \mid X))=b_0+X^{\prime} b_1, ~\text{where}~ g ~\text{is the link function.}
+$$
+
+- <u>Logistic</u> function for binary traits: $\log \frac{E(Y \mid X)}{1-E(Y \mid X)}=b_0+X^{\prime} b_1,$
+- <u>Identity function</u> for continuous traits: $E(Y \mid X)=b_0+X^{\prime}b_1$
+- X (the coded genotype) reflects the mode of inheritance.
+- Test for genetic effect: $H_0: b_1=0$ ( $b_1=$ effect size).
 
 
 ---
 
-### What questions do you have about Data Modelling?
+# Penetrance Function for a Continuous Trait
+
+ ![Sales Figure, w:700](./images/penetrance_c.png)
 
 ---
 
-# Assignment 1
+# Genotype Coding
+
+ ![Sales Figure, w:700](./images/geno_coding.png)
 
 ---
 
-# Assignment 1, Section 1: Meet the farmersmarket.db
-
-**Prompt 1)**
-Choose two tables and create a logical data model. There are lots of tools you can do this (including drawing this by hand), but I'd recommend [Draw.io](https://www.drawio.com/) or [LucidChart](https://www.lucidchart.com/pages/). 
-
-A logical data model must contain:
-- table name
-- column names
-- relationship type
-
----
-
-# Assignment 1, Section 1: Meet the farmersmarket.db
-
-Please do not pick the exact same tables that I have already diagrammed. For example, you shouldn't diagram the relationship between `product` and `product_category`, but you could diagram `product` and `customer_purchases`.
-
-*HINTS*:
-- You will need to use the Browse Data tab in the main window to figure out the relationship types.
-- You can't diagram tables that don't share a common column (see )
-- The column names can be found in a few spots (DB Schema window in the bottom right, the Database Structure tab in the main window by expanding each table entry, at the top of the Browse Data tab in the main window)
-
----
-
-# Assignment 2
-
----
-
-
-#  Assignment 2: Design a Logical Model
-
-**Prompt 1)**Create a logical model for a small bookstore. 📚
-
-At the minimum it should have employee, order, sales, customer, and book entities (tables). Determine sensible column and table design based on what you know about these concepts. Keep it simple, but work out sensible relationships to keep tables reasonably sized. 
-
-Additionally, include a date table. 
-
-There are several tools online you can use, I'd recommend [Draw.io](https://www.drawio.com/) or [LucidChart](https://www.lucidchart.com/pages/).
-
-*HINT:* You do not need to create any data for this prompt. This is a conceptual model only. 
-
----
-
-#  Assignment 2: Design a Logical Model
-
-**Prompt 2)** We want to create employee shifts, splitting up the day into morning and evening. Add this to the ERD.
-
----
-
-#  Assignment 2: Design a Logical Model
-
-**Prompt 3)** The store wants to keep customer addresses. Propose two architectures for the CUSTOMER_ADDRESS table, one that will retain changes, and another that will overwrite. Which is type 1, which is type 2? 
-
-*HINT:* search type 1 vs type 2 slowly changing dimensions. 
-
----
-
+# What's Next
+- Fundamental principles of population genetics
+- Estimation of allele frequency
+- Population substructure
+- Hardy–Weinberg equilibrium
+- Mode of inheritance
+- Association testing
 
 ### What questions do you have about anything from today?
 

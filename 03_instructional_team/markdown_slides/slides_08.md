@@ -6,71 +6,412 @@ paginate: true
 ---
 
 
-# Post-GWAS Analyses II
+# Post-GWAS Analyses I
 
 ```
 $ echo "Data Sciences Institute"
 ```
-
------
+------
 
 # What You Will Learn Today
 
-- Functional annotation primer: ENCODE, Roadmap, GTEx and molecular QTLs.
-- How to integrate GWAS with eQTL and other functional data (colocalization frameworks).
-- Key tools and workflows: COLOC, Simple Sum, LocusFocus.
-- Hands-on perspective: 
-  using web tools (e.g. LocusFocus) to visualize GWAS + eQTL signals and perform practical colocalization analysis.
+- **What GWAS teaches us**: polygenicity, effect sizes, and cross-ancestry considerations.
+- **Post-GWAS fine-mapping basics**: Regular approaches and Bayesian approaches.
+- **Functional annotation primer**: ENCODE, Roadmap, GTEx and molecular QTLs.
+-------
+
+# What have we learned so far from GWAS?
 
 <!--
+By performing GWAS studies, scientists have successfully identified the
+association of hundreds of thousands to millions of SNPs to a single
+phenotype. 
 
 
-# Effect Allele Consistency 
+Example of GWAS catalog /extracted from lei's slides
+-->
 
-- As datasets for PRS come from different GWAS experiments, it is critical to ensure consistency.
+- Large-scale GWAS have mapped hundreds of thousands to millions of SNP-phenotype associations.
+- Example (2021): The GWAS Catalog listed 4,865 publications and 247,051 associations.
+  - These reported SNPs help illuminate molecular mechanisms of common diseases and the biological pathways underlying traits of interest.
+- Associations for some SNPs linked to rare diseases have been tested intensively.
+- Yet classic GWAS alone have not yielded solid, mechanistic insight into how variants drive phenotypes.
 
-- Datasets vary in allele coding (e.g., REF/ALT, A1/A2, effect/other, Illumina TOP/BOTTOM, HapMap forward, PLINK $1 / 2$, Affy A/B).
+-------
 
-- The effect allele must match between summary stats and target data to avoid sign errors.
+# GWAS SNP-Trait Discovery Timeline
 
-- Action: read dataset docs, harmonize strands, and confirm effect-allele labeling before scoring.
+
+
+  ![Sales Figure, w:850](./images/gwas_timeline.png)
+
+
+-------
+
+# Practical Lessons from GWAS
+
+- Complex traits are highly polygenic, with thousands of variants contributing small increments of risk or trait change.
+
+- For common variants, single-variant effect sizes are typically modest; odds ratios frequently fall in the 1.05-1.20 range.
+
+- For height, a well-powered model trait, the effect sizes are on the order of $\sim 1$ millimeter.
+
+- Because effects are small and testing is genome-wide, large cohorts are needed to reach stringent significance (e.g., $\mathrm{p}<5 \times 10^{-8}$ ).
 
 
 --------
 
-# SNP-level QC for PRS
+# Practical Lessons from GWAS
 
-- The QC assessment at the SNP level is crucial to avoid misleading PRS. 
-- SNPs level errors include
-  - mismatching SNPs (inconsistent SNPs due to position difference in genomic position or nucleotide type)
-  - existence of duplicate SNP
-  - Ambiguous SNPs (researchers have no idea about SNP strand: C/G or A/T)
-  - missing alleles
+- A GWAS peak typically marks a cluster of nearby variants (about 10–100 kb) that move together because of linkage disequilibrium.
 
-- Higher values of heritability indicate that the phenotype is explained best by the genotype. 
+- Multiple independent association signals can reside within the same locus.
 
-- Recommend heritability >0.5 to perform PRS analysis.
+- The majority of GWAS associations lie outside protein-coding exons; these variants are believed to act mainly by regulating gene expression (e.g., enhancer or promoter activity) rather than by changing amino-acid sequence.
 
-- To estimate heritability, researchers should use LD score regression that could be used to distinguish polygenicity (SNPs effects) and confounding biases, including cryptic relatedness and population stratification.
+- Allele frequencies, LD structure, and effect sizes at disease loci can vary across ancestries.
 
-# Colocalization Analysis
+- Pleiotropy (the same variant or locus is associated with multiple traits) is ubiquitous.
 
-- Colocalization integrates functional annotations with GWAS results to test whether the same causal variant(s) underlie multiple association signals.
+---------
 
-- Annotation/QTL resources typically include:
-  - gene expression (eQTLs), protein expression (pQTLs), exon splicing (sQTLs), DNA methylation (mQTLs)
-  - chromatin acetylation and chromatin accessibility (caQTLs)
-  
-- Both parametric and non‑parametric strategies are used.
+# Practical Lessons from GWAS
 
-- Common ideas:
-  - Model **shared** vs. **distinct** causal variants across two traits/datasets.
-  - Use summary statistics and LD to compute posterior support or test statistics for colocalization.
-  
-- Outputs typically include posterior probabilities for hypotheses (e.g., shared causal variant) or calibrated test p-values.
+- Many individual GWAS are underpowered to detect the smallest effects; nonetheless, the large number of contributing variants means genuine signals still emerge.
+
+- Even when a variant’s effect on a biomarker is small, the clinical impact can be substantial: the implicated gene may encode a tractable drug target, and modulating it can yield large therapeutic benefits.
+
+- For example, common variants near HMGCR only have a small influence on LDL-cholesterol, but drugs targeting the encoded protein reduce LDL by ~30\%.
+
+
+--------
+
+# From GWAS discovery to Medicines
+
+- The overarching aim of human genetics is to enable translational medicine-turning genetic insights into better diagnostics, prevention, and therapies.
+
+- Genetically supported targets are more likely to progress successfully through clinical development, including to phase III trials and eventual approval.
+
+- E.g. People with loss-of-function mutations in SLC30A8 (the ZnT-8 transporter) have a lower risk of type 2 diabetes, leading to companies to develop ZnT-8 antagonists for diabetes therapies.
+
+-----
+
+# Success Stories: From GWAS to Clinical Impact
+
+
+  ![Sales Figure, w:700](./images/gwas_drug.png)
+
+
+------
+
+
+# Post-GWAS Analyses
+
+
+------
+
+# Motivation
+
+- pGWAS (post-GWAS) is a crucial step to move beyond SNP-level associations toward biological mechanism.
+
+- Beyond the basic task of identifying genetic associations, several post-GWAS analyses can be performed:
+  1. Fine-mapping: statistical approach to identifying causal variants.
+  2. CRISPR experiments: experimental techniques
+  3. Polygenic Risk Score (PRS): predicting trait values based on genotype profiles.
+  4. Others: colocalization, TWAS, network inference, G×G and G×E analyses, etc.
+
+-----------
+
+# Confounding in GWAS -LD
+
+- One major issue is confounding caused by local correlation among sites (linkage disequilibrium), which makes it difficult to distinguish true signal from variants that are merely correlated.
+
+  ![Sales Figure, w:700](./images/finemap.png)
+
+---------
+<!--
+# Fine-mapping
+
+- Goal: identify causal variants and estimate the number of putative causal variants per locus.
+- A central step in establishing causality is to eliminate confounding arising from linkage disequilibrium (LD).
+  ![bg right:50% w:600](./images/finemap_example1.png)
+----------
 -->
+
+# What is fine-mapping?
+
+- GWAS often identifies a broad locus with many associated SNPs.
+- Due to **linkage disequilibrium (LD)**, many SNPs in the locus are correlated
+  and show similar p-values.
+- Fine-mapping asks:
+  - Which SNP(s) in this region are most likely to be **causal**?
+  - How many **independent signals** are there?
+- Goal: identify specific variants that are the best causal candidates.
+- This is a key step before functional follow-up and experimental validation.
+
+----------
+
+# Heuristic fine-mapping: LD-based candidate selection
+
+- Idea: use the **LD pattern around the lead SNP** to pick nearby SNPs
+  that are likely to be causal.
+
+- **LD thresholding:**
+  - Compute pairwise LD ($r^2$) between the lead SNP and other SNPs.
+  - Keep SNPs with LD above a threshold (e.g. $r^2 > 0.6$) as **candidate causal SNPs**.
+
+- **LD clustering :**
+  - Hierarchical clustering of all SNPs in a region based on their pairwise $r^2$ to create clusters.
+  
+  
+---------  
+  
+# Heuristic Fine-mapping: LD-based Candidate Selection
+
+- Visualization tools such as **LocusZoom** or **Haploview**:
+    - Combining the GWAS lead SNP with SNPs in the same LD block to select potential causal SNPs. 
+
+  ![bg right:50% w:500](./images/locuszoom.png)
+
+---
+
+# Heuristic Fine-mapping: LD-based Candidate Selection
+
+- Heuristic LD-based methods are useful for **initial candidate selection**, but not sufficient on their own to define causal variants.
+- **Limitations:**
+  - Relies on **arbitrary thresholds** for LD and window size.
+  - Does **not** model the **joint effects** of multiple SNPs on the trait.
+  - Does **not** provide an objective measure (e.g. probability) that a SNP
+    is causal—interpretation is partly **subjective**.
+  - More rigorous approaches (penalized regression, Bayesian fine-mapping)
+    explicitly model multiple SNPs together and quantify uncertainty.
+
+---------
+
+# Heuristic Fine-mapping: Conditional Analysis
+
+- Start from the **lead SNP** in a locus (smallest p-value).
+- Use **conditional analysis / forward stepwise regression**:
+  - Fit a regression model (linear or logistic) with the current set of SNPs
+    in the locus (initially just the lead SNP).
+  - For each remaining SNP, test its effect **conditional on** the SNPs
+    already in the model (add one candidate SNP at a time).
+  - Add the SNP with the **smallest conditional p-value** if it is below a
+    pre-specified threshold (e.g. $5 \times 10^{-8}$ or a locus-specific threshold).
+  - Repeat these steps until **no remaining SNP** has a significant
+    conditional p-value → the SNPs in the final model are treated as
+    **independent association signals** in the locus.
+
+------
+
+# Heuristic Fine-mapping: Conditional Analysis
+
+- Implemented in tools such as:
+  - **PLINK** (e.g. `--condition`, `--condition-list`, stepwise conditional analysis)
+  - **GCTA-COJO** (conditional and joint multiple-SNP analysis)
+  ![bg right:50% w:600](./images/conditional_analysis.png)
+  
+  
+--------
+
+# Fine-mapping: Penalized Regression Models
+
+- **Jointly model many SNPs** in a region using regression.
+- Let $Y$ be the phenotype, $X$ the genotype matrix, and $\beta$ the SNP effects.
+- Penalized regression estimates $\beta$ while shrinking small effects towards zero:
+  - Examples: **lasso**, **elastic net**, other sparse penalties.
+- Objective (elastic net form):
+  $$
+  \min_{\beta}\; \frac{1}{2n}\|Y - X\beta\|^2
+  + \lambda\big(\alpha\|\beta\|_1 + (1-\alpha)\|\beta\|_2^2\big).
+  $$
+- Result: a sparse model where only a few SNPs have non-zero effects → candidate causal SNPs.
+
+---
+
+# Fine-mapping: Penalized Regression Models
+
+- Works best with **individual-level data** and many correlated SNPs.
+- **Tuning parameter** $\lambda$ (and $\alpha$) chosen by cross-validation to minimize prediction error.
+- Advantages over forward selection:
+  - More stable when SNPs are highly correlated.
+  - Simultaneously estimates effect sizes and performs variable selection.
+- Limitations:
+  - Aims to choose a good model for $Y$, not to quantify causal probabilities.
+  - This motivates Bayesian variable selection / Bayesian fine-mapping.
+
+---
+
+# Ingredients of Bayesian inference
+
+- We have an unknown quantity $\theta$:
+  - e.g. effect size, or an indicator “SNP $j$ is causal”.
+- **Prior** $p(\theta)$:
+  - Our belief about $\theta$ *before* seeing the data.
+- **Likelihood** $p(\text{data} \mid \theta)$:
+  - How likely the observed data are, if $\theta$ had a given value.
+- **Posterior** $p(\theta \mid \text{data})$:
+  - Our updated belief about $\theta$ *after* seeing the data.
+- Bayes’ rule:
+  $$
+  p(\theta \mid \text{data}) =
+  \frac{p(\text{data} \mid \theta)\, p(\theta)}{p(\text{data})}
+  \;\propto\; p(\text{data} \mid \theta)\, p(\theta).
+  $$
+
+---
+
+# Bayesian fine-mapping: big picture
+
+- Same goal as penalized regression: decide **which SNPs have non-zero effects**.
+- Key difference: Bayesian methods assign **probabilities to many models**, not just pick one best model.
+- We specify a **prior** over which SNPs are causal (e.g. all equally likely, or a fixed expected number per region) and update it with the data using Bayes’ rule.
+- Output:
+  - **Posterior probabilities** for different models (combinations of causal SNPs),
+  - **Posterior inclusion probabilities (PIPs)** for each SNP.
+- This gives a clear **probabilistic interpretation** of fine-mapping results.
+
+-----
+
+# Bayesian Fine-mapping
+
+- For $m$ SNPs, define an indicator vector $c = (c_1,\dots,c_m)$:
+  - $c_j = 1$ if SNP $j$ is causal, $c_j = 0$ otherwise.
+  - There are $2^m$ possible $c$ vectors → $2^m$ possible causal models.
+  
+- Using Bayes' formula, for a specified model $M_{\mathrm{c}}$:
+
+$$
+P(M_{c} \mid D)=\frac{P(D \mid M_{c}) \cdot P(M_{c})}{P(D)}
+$$
+
+- The posterior probabilities for different models can be used to determine the posterior probability of including each SNP in any of the models (PIP).
+
+
+------
+  
+# Posterior Inclusion Probability (PIP)
+
+- PIP for SNP $i$: sum of posteriors over all models that include SNP $i$ as causal.
+
+$$P I P_i=\sum_c I(~\text{model containing SNP i as causal}~) P(M_{c} \mid D)$$
+
+- Use PIP ranks to prioritize putative causal variants.
+
+- Caution in high-LD regions: probability spreads across correlated SNPs.
+
+- Posterior expected number of causal SNPs $\approx \Sigma PIP_{i}$ over the region.
+
 -------
 
+
+# Credible Sets
+
+- "A level $\rho$ credible set is defined to be a subset of correlated variables (with correlation within the set greater than some threshold $r$ ) that has probability $\rho$ or greater of containing at least one effect variable (i.e. causal SNP)."
+
+- In short, it defines a set of variants likely to contain the causal SNP(s).
+
+- Procedure:
+  1. Rank SNPs by PIP (largest $\rightarrow$ smallest).
+  2. Accumulate PIPs until reaching coverage a (e.g., $95 \%$ or $99 \%$ ).
+  3. Selected variants form the a credible set.
+  
+#### Question: Are credible sets unique for a given level $\rho$?
+
+--------
+
+# Discussion
+
+- Answer: Not necessarily. 
+- Ties or near-ties in PIPs can yield multiple valid sets; software typically reports one (often the smallest) based on its ranking rules.
+  
+  ![Sales Figure, w:750](./images/susie.png)
+
+-------
+<!--
+# Functional Annotation in Fine-Mapping
+
+- Bayesian models can incorporate additional knowledge (e.g. functional annotation) in terms of prior to help disentangle highly correlated variables.
+
+  ![Sales Figure, w:800](./images/finemap_example2.png)
+
+
+-----
+
+# Functional Annotation in Fine-Mapping
+
+  ![Sales Figure, w:800](./images/carma.png)
+  
+------
+
+--->
+
+# Practical Workflow \& Tools
+
+- Typical inputs: GWAS summary statistics, ancestry-matched LD reference panels, and (optionally) functional annotations.
+- Steps:
+  - Define regions (around lead SNPs; PLINK --clump for sentinel signals).
+  - Run Bayesian fine-mapping to obtain PIPs \& credible sets.
+  - Outputs to show: top-PIP variants, credible set sizes, locus zoom-style plots.
+- Tools: CAVIAR, FINEMAP, SuSiE, CARMA
+
+--------
+
+# Hypothetical Examples
+
+- The purple bars represent additional variant-level statistics produced by fine-mapping.
+   - β-values for penalized regression
+   - PIPs for Bayesian methods 
+
+- The light grey boxes represent the regions selected by fine-mapping.
+
+![bg right:35% w:300](./images/fine_map_all.png)
+
+
+-------
+
+# More Complex Issues
+
+- Many GWAS results come from meta-analyses without individual-level data.
+
+- Sample size varies by SNP in the meta-analysis, leading to inconsistencies.
+
+- LD information is often taken from external reference panels.
+
+- Mismatches between external LD and GWAS summary stats can invalidate fine-mapping.
+
+- Leverage high-dimensional functional annotations to improve inference.
+
+<!--
+- ##### We’ll dive deeper into fine-mapping strategies for these scenarios in the Advanced Computational Genomics course!
+-->
+
+---------
+
+# Fine-mapping methods: summary
+
+- **Heuristic LD-based methods**
+  - Use LD thresholds and visual inspection to pick SNPs near lead SNPs.
+  - Fast and intuitive, but arbitrary and non-probabilistic.
+
+- **Penalized regression**
+  - Jointly models many SNPs, encourages sparse solutions.
+  - Better than simple forward selection in high-LD regions.
+
+- **Bayesian fine-mapping**
+  - Models uncertainty over many possible causal configurations.
+  - Produces PIPs and credible sets → probabilistic interpretation.
+
+--------
+
+# Functional Follow-up
+
+- Fine-mapping prioritizes putative causal variants at GWAS loci that can be subjected to functional studies.
+- Massively parallel CRISPR perturbation of GWAS loci:
+
+  ![Sales Figure, w:700](./images/finemap_crisper.png)
+
+-------
 
 # Functional Annotation
 
@@ -143,387 +484,12 @@ The Encyclopedia of DNA Elements (ENCODE) is a public research project that aims
 
 ---------
 
-# Colocalization Analyses
-
-
-
-
----------
-# Genetic Association Analysis - Review
-
- $$
-g\left\{E\left[\left(\begin{array}{c}
-y_1 \\
-y_2 \\
-\vdots \\
-y_n
-\end{array}\right)\right]\right\}=\left(\begin{array}{c}
-g_{1, j} \\
-g_{2, j} \\
-\vdots \\
-g_{n, j}
-\end{array}\right) \beta_j+\left(\begin{array}{ccc}
-x_{1,1} & \cdots & x_{1, q} \\
-\vdots & \ddots & \vdots \\
-x_{n, 1} & \cdots & x_{n, q}
-\end{array}\right)\left(\begin{array}{c}
-\gamma_1 \\
-\gamma_2 \\
-\vdots \\
-\gamma_q
-\end{array}\right)
-$$
-
-- $y_i$ : phenotype for $i^{\text {th }}$ individual
-- $g_{i, j}$ : genotype for $i^{\text {th }}$ individual at $j^{\text {th }}$ SNP; $g_{i j}=0,1$ or 2
-- $x_{i, j}$ : other covariates
-- Repeat the regression analysis ( $H_0: \beta_j=0$ ) for $j=1,2, \ldots, M$. 
-  $\rightarrow$ GWAS summary statistics: $Z=\left(Z_1, Z_2, \ldots Z_m\right)$.
-
-
-----------
-
-# Expression Quantitative Trait Loci (eQTL)
-
-  ![Sales Figure, w:700](./images/eQTL.png)
-
-
-eQTL study:
- - $y_i$ : (normalized) gene expression (for a particular gene and tissue)
- - eQTL summary statistics: $T=\left(T_1, T_2, \ldots T_m\right)$
-
-
-
-----------
-
-# Visualizing GWAS and eQTLs
-
-  ![bg right:50% w:550](./images/migwas_eqtl.png)
-
-
-- We want to test whether eQTL p-values and GWAS p-values have similar/overlapping pattern at the set of same SNPs $\rightarrow$ Colocalization analysis
-
-
--------
-
-# Visualizing GWAS and eQTLs
-
-
-  ![Sales Figure, w:600](./images/eqtl_gwas2.png)
-
-
---------
-
-# Composite Null Hypothesis
-
-
-  ![Sales Figure, w:600](./images/coloc_null1.png)
-
-
--------
-
-# Composite Null Hypothesis
-
-
-  ![Sales Figure, w:600](./images/coloc_null2.png)
-
-
-
--------
-
-# Challenges
-
-  ![Sales Figure, w:800](./images/challenge.png)
-
-
--------
-
-# Exercise: Colocalization vs LD
-
-Consider a locus where:
-- GWAS identifies a strong association with type 2 diabetes (lead SNP: A).
-- An eQTL study in pancreatic islets finds a strong association with expression
-  of gene X in the same region, but the lead eQTL SNP is different (lead SNP: B).
-
-Question:
-1. Why might the lead GWAS SNP and the lead eQTL SNP be different
-   even if there is a shared causal variant?
-
----------
-
-# Methods to Integrate GWAS and eQTL Data
-
-- **Bayesian approaches** aim to identify shared causal variants contributes to both the disease outcome and gene expression variation.
-  - **COLOC , eCAVIAR, GWAS-PW**.etc.
-- **Frequentist-based methods:**
-- Methods that impute gene expression based on a reference, and then associate imputed expression with the trait:
-  - **PrediXcan and TWAS**
-- Integration methods based on Mendelian randomization:
-  - **SMR, SMR-multi**, etc.
-- Overlapping pattern:
-  - **Simple Sum2**
-
-
-------
-
-# COLOC
-
-
-- Calculates posterior probability for 5 cases (from H0 to H4)
-  $$
-  P\left(H_h \mid D\right) \propto \sum_{S \in S_h} P(D \mid S) P(S)
-  $$
-
-
-  ![bg right:50% w:500](./images/coloc.png)
-
-
-- Prior probabilities: Set at SNP level - typically $\mathrm{P}_1=P_2=10^{-4}$ for association with one trait, and $P_{12}=10^{-6}$ for colocalization (shared association).
-
-
--------
-# Extension of COLOC
-
-- GWAS-PW (Pickrell et al. 2016):
-  - Extends COLOC by empirically estimating priors from the genome-wide data for the five hypotheses.
-  - Incorporates sample relatedness
-  
-  
-- COLOC2 (Dobbyn et al. 2017):
-  - Uses estimated proportions in GWAS-PW as priors (or optionally, coloc default or user-specified priors) in the calculation of the posterior probability.
-  - For a locus with multiple independent eQTL signals, adopting **a forward stepwise conditional analysis for the eQTL study**.
-  - For a gene with $k$ independent eQTLs, they run $k$ colocalization models.
-
-------
-
-
-# Application
-
-- GWAS signature for IREB2 Colocalizes with the Conditional eQTL signature.
-
-
-  ![bg right:60% w:600](./images/coloc_example.png)
-  
-------
-
-# Pros and Cons of COLOC2
-
-- Advantages:
-  - Quick computation by Approximate Bayes Factor without iterative computation scheme (such as Markov Chain Monte Carlo) is required.
-  - Distinguished evidence for non-colocalization.(H0-H4)
-
-- Limitations:
-  - Single-causal-variant assumption per trait within the region (can mislead in polygenic/allelic-heterogeneity settings).
-  - Conditional analysis can be costly when extending to multiple signals or larger regions.
-
-
---------
-
-# SuSiE-COLOC
-
-- SuSiE is a fine-mapping framework to distinguish multiple signals for a given trait, and is more computationally efficient than the forward stepwise conditional analysis.
-- SuSiE outputs a $95 \%$ credible set selecting a subset of L signals with inferred causal SNPs.
-- If $L_1$ and $L_2$ signals are selected for trait1 and trait2, respectively, we run COLOC $L_1 \times L_2$ times on all possible pairs of signals between the traits.
-
----------
-
-# ECAVIAR
-(Hormozdiari et al. 2016)
-
-- Simultaneously performing fine-mapping for GWAS and eQTL studies by considering almost all combinations of causal status between SNPs
-- Estimate the posterior probability that the same variant is causal in both studies :
-
-$$
-\mathrm{P}\left(c_i^{(\mathrm{p})}=1, c_i^{(\mathrm{e})}=1 \mid S^{(\mathrm{p})}, S^{(\mathrm{e})}\right)=\mathrm{P}\left(c_i^{(\mathrm{p})}=1 \mid S^{(\mathrm{p})}\right) \times \mathrm{P}\left(c_i^{(\mathrm{e})}=1 \mid S^{(\mathrm{e})}\right).
-$$
-
-  - $c_i^{(p)}$ and $c_i^{(e)}$: indicator that SNP $i$ is causal in the GWAS (phenotype) study and eQTL study, respectively.
-  - $S^{(p)}$ and $S^{(e)}$ : vector of $Z$-scores from the GWAS and eQTL study, respectively. 
-
--------
-
-# Pros and Cons of ECAVIAR
-
-Advantage:
-- Higher true positive rate compared to COLOC when multiple variants are causal in a locus with low LD.
-
-Limitations:
-- Computation can be very long when number of SNPs is huge
-- Imposes an assumption on the maximum number of causal SNPs in a locus (six)
-- The posterior probability of colocalization will be averaged across several variants in high LD, resulting in ambiguous colocalization conclusions.
-
-
--------
-
-# Extensions to Multi-Trait Colocalization
-
-- **Moloc** evaluates all possible configurations of shared vs. distinct causal variants across traits.
-  - Computationally intense: number of configurations $=2^T-1$ (for T traits)
-  - Good when you want explicit posterior probabilities for all trait-sharing scenarios
-- **Hyprcoloc** uses a greedy algorithm to group traits that share a causal variant.
-  - Prioritizes traits that colocalize strongly first, then expands to others
-  - Hyprcoloc is suited for large numbers of traits (e.g., >10).
-
-
-------
-
-# Further Issues
-
-- eCAVIAR evaluates multiple causal configurations but is computationally intensive with many SNPs.
-- SuSiE-COLOC reduces complexity but still requires $\mathrm{L}_1 \times \mathrm{L}_2$ coloc runs.
-- Reduced power when there is high LD
-- Few formal corrections for multiple hypotheses across loci.
-- Posterior probabilities (e.g., PPH4) must be interpreted with caution in genome-wide scans.
-- Adjusting priors using false positive report probability (FPRP) to control for multiple testing.
-
-
-------
-
-# Simple Sum
-
-- A frequentist integration method that combines GWAS and eQTL signals within a locus.
-- Particularly powerful in regions with high LD and allelic heterogeneity (multiple causal variants).
-- The extension Simple Sum 2 (SS2) is designed to control type I error under a composite null, correct for multiple testing, and handle meta-analysis / sample relatedness.
-
---------
-  
-# Chi-square ($\chi^2$) Distribution: Quick Review
-
-- Fact from probability: if $Z \sim N(0,1)$, then **$Z^2 \sim \chi^2_1$**.
-- Consider **independent** $Z_1, \dots, Z_k \sim N(0,1)$.
-  - Define a statistic $S = \sum_{j=1}^k Z_j^2$.
-  - Then $S \sim \chi^2_k$, a chi-square distribution with **$k$ degrees of freedom**.
-- In practice, SNP Z-scores within a locus are **correlated** because of LD.
-
-------
-
-# Weighted $\chi^2$ Distributions: Quick Review
-
-- Let $Z = (Z_1,\dots,Z_k)^\top \sim N(0,\Sigma)$, where $\Sigma$ is the LD (correlation) matrix.
-
-- Consider the statistic $S = \sum_{j=1}^k Z_j^2.$
- 
-- Using the eigenvalues $f_1,\dots,f_k$ of the LD matrix $\Sigma$, we can write
-  $$
-  S \;\overset{d}{\approx}\; \sum_{j=1}^k f_j \chi^2_{1,j},
-  $$
-  a **weighted sum of independent $\chi^2_1$ variables**.
-
-- Intuition: each eigenvalue $f_j$ represents how much variation comes
-  from one “independent direction” of the LD structure; larger $f_j$
-  give more weight in the sum.
----------
-
-# Quadratic Forms: Quick Review
-
-- Many region- or gene-level test statistics can be written as a **quadratic form**  
-    $S = \sum_{i} a_{i,j}Z_{i}Z_{j}=Z^\top A Z$, for some symmetric matrix $A$ (e.g. weights on SNPs).
-  - For example, $A=I$. 
-  
-- In practice, software computes the eigenvalues and then uses this weighted $\chi^2$ distribution to obtain the **p-value** under the null (i.e., $Z \sim N(0,\Sigma)$):
-  $$
-  S = Z^\top A Z \;\overset{d}{\approx}\; \sum_{j=1}^m d_j \chi^2_{1,j}.
-  $$
-- $T$ behaves like a **weighted sum of independent $\chi^2_{1}$ variables**,  with weights are the eigenvalues $d_j$ of matrix $\Sigma^{1/2} A \Sigma^{1/2}$.
----
-
-# Simple Sum 
-
-[Gong*, Wang*, Xiao*, et al., 2019. PLOS Genetics.]
-- Dichotomized eQTL evidence (threshold $\tau$ ):
-  $$
-  S S=\frac{1}{\sum_{j=1}^m I\left(\left|T_j\right| \geq \tau\right)} \sum_{j=1}^m Z_j^2 I\left(\left|T_j\right| \geq \tau\right)-\frac{1}{\sum_{j=1}^m I\left(\left|T_j\right|<\tau\right)} \sum_{j=1}^m Z_j^2 I\left(\left|T_j\right|<\tau\right)
-  $$
-  
-  ![Sales Figure, w:650](./images/ss1.png)
---------  
-
-# Simple Sum 
-
-- $\boldsymbol{S S}=\sum_{\boldsymbol{j}} Z_j^2\left[\frac{\boldsymbol{T}_{\boldsymbol{j}}^2-\frac{\sum_{\boldsymbol{j}} \boldsymbol{T}_{\boldsymbol{j}}^2}{\boldsymbol{m}}}{\left(\sum_{\boldsymbol{j}} \boldsymbol{T}_{\boldsymbol{j}}^2-\frac{\sum_{\boldsymbol{j}} \boldsymbol{T}_{\boldsymbol{j}}^2}{\boldsymbol{m}}\right)^2}\right]=Z^{\prime} \boldsymbol{A} Z, ~ A=\operatorname{diag}\left(a_j\right), a_j=\left[\frac{T_j^2-\frac{\sum_j T_j^2}{m}}{\left(\sum_j T_j^2-\frac{\sum_j T_j^2}{m}\right)^2}\right].$
-
-
-  ![Sales Figure, w:1000](./images/ss_type1.png)
-
---------
-
-
-# Simple Sum 2
-
-- Stage 1: Formally test eQTLs by $\sum_{j=1}^m T_j^2$.
-
-- Under the null of no eQTLs ( $H_{01}$ and $H_{03}$ ), $\sum_{j=1}^m T_j^2 \sim \sum_{j=1}^m f_j \chi_1^2$, where $f_j^{\prime} s$ are the eigenvalues of $\Sigma$ (LD matrix).
-
-- Stage 2: Perform the Simple Sum test $\sum_j Z_j^2\left[\frac{T_j^2-\frac{\sum_j T_j^2}{m}}{\left(\sum_j T_j^2-\frac{\sum_j T_j^2}{m}\right)^2}\right]$.
-
-- The type I error rate for a single test under composite null hypothesis is controlled at $\alpha$.
-- Bounded by the maximum type $I$ error rates for the stage 1 and the stage 2 test.
-
--------
-
-
-# Complex Data Scenarios
-
-- Many gene-tissue tests: extend to multiple gene-tissue pairs and control the family-wise error rate (FWER) across tests (e.g., Bonferroni correction).
-- Meta-analysis with related individuals: combine sub-studies by modeling the covariance of SS2 test statistics to account for relatedness.
-- Sample overlap: explicitly account for overlap/relatedness between GWAS and eQTL cohorts, adjusting cross-study correlations when performing inference.
-
-
-
---------
-
-# LocusFocus 
-
-(https://locusfocus.research.sickkids.ca/)
-
-- SS2 is implemented in this web-based tool, which enables integration of GWAS summary statistics with any secondary SNP-level dataset such as eQTL, mQTL, or other phenotypic associations from GWAS. 
-
-- The tool is developed to **conduct set/gene-based testing, colocalization analysis** and **visualization of signals**.
-
-- The eQTL summary statistics from GTEx V8 are made available for selection within the web server to test colocalization with tissues and genes. 
-
-- COLOC2 colocalization testing is also available.
-
----------
-
-# LocusFocus Input
-
-
-  ![Sales Figure, w:1000](./images/locusfocus_input.png)
-  
-------
-
-# LocusFocus Output
-
-  ![Sales Figure, w:1200](./images/locusfocus_output.png)
-  
----------
-
-
-# [Demo of LocusFocus](https://locusfocus.research.sickkids.ca/) 
-
-
-
----------
-
-# Discussion: What can colocalization tell us (and not tell us)?
-
-- Suppose colocalization analysis suggests a shared signal between a GWAS trait
-  and an eQTL for gene X in a relevant tissue.
-
-Questions:
-1. What are **limitations** of relying only on colocalization to infer causality?
-2. What additional data or analyses would you want before declaring gene X causal?
-
------------
-
 # What's Next
 
 
-- Next lecture:
+- How to integrate GWAS with eQTL and other functional data (colocalization frameworks).
+- Web tools to visualize GWAS + eQTL signals and perform practical colocalization analysis.
 
-  - PheWAS \& Biobanks
-  - Risk Prediction
   
 ### What questions do you have about anything from today?
 
