@@ -20,7 +20,17 @@ This module provides learners with the knowledge foundations necessary to conduc
 
 ## Learning Outcomes
 
-By the end of the module, participants will be able to ....
+By the end of the module, participants will be able to:
+
+* 1. Explain foundational concepts in statistical and population genetics, including genetic variation, allele/genotype frequencies, and Hardy–Weinberg Equilibrium.
+
+* 2. Design and interpret GWAS analyses, selecting appropriate association models (including mixed models) and evaluating results in the presence of linkage disequilibrium and polygenicity.
+
+* 3. Implement and justify standard GWAS workflows, including data quality control, multiple testing considerations, and replication/validation strategies.
+
+* 4. Identify, assess, and correct key confounders, especially population stratification, using approaches such as PCA, genomic control, and mixed models.
+
+* 5. Interpret and communicate post-GWAS analyses, including fine-mapping and colocalization with molecular QTLs (e.g., eQTLs).
 
 ## Assignments
 
