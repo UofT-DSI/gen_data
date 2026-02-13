@@ -16,7 +16,7 @@
 ## Description
 
 
-This module provides learners with the knowledge foundations necessary to conduct statistical analysis of genetic association study data. It features a series of lectures and hands-on coding sessions covering key topics, including fundamental concepts in population genetics, population structure in genetic association studies, quality control in genetic data and genome-wide association studies. The microcredential places strong emphasis on the use of modern computational tools such as PLINK, LocusFocus, and real-world data applications to preparing learners for both academic and applied careers in statistical genetics and genetic epidemiology. 
+This module provides learners with the knowledge foundations necessary to conduct statistical analysis of genetic association studies data. It features a series of lectures and hands-on coding sessions covering key topics, including fundamental concepts in population genetics, population structure in genetic association studies, quality control in genetic data and genome-wide association studies. The module places strong emphasis on the use of modern computational tools such as PLINK, LocusFocus, and real-world data applications to prepare learners for both academic and applied careers in statistical genetics and genetic epidemiology. 
 
 ## Learning Outcomes
 
