@@ -1,6 +1,6 @@
 ---
-title: "Tutorial II - GWAS Analysis"
-output: html_document
+title: "tutorial 2 - GWAS Analysis"
+output: html
 ---
 
 ##### In this practical we will carry out a complete genome-wide association study (GWAS) on a small example dataset containing about 4,000 individuals and over 300K SNPs using PLINK2. PLINK2 is a widely used, open-source toolkit for GWAS and basic genetic data management. You should have the [**PLINK2**](https://www.cog-genomics.org/plink/2.0/) installed on your machine.
@@ -33,7 +33,7 @@ library(qqman)
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
 cd /Users/macbook/work/Code/Dataset3/
-./plink2 --bfile gwa --maf 0.05 --geno 0.01 --mind 0.1 --hwe 0.00005 --make-bed --out gwa.qc
+plink2 --bfile gwa --maf 0.05 --geno 0.01 --mind 0.1 --hwe 0.00005 --make-bed --out gwa.qc
 ```
 
 Explanation of the main arguments:
@@ -57,7 +57,7 @@ A broader overview of QC options is given here: <https://zzz.bwh.harvard.edu/pli
 We next create a subset of approximately independent SNPs. This LD-pruned set will be used for PCA and removal of related individuals.
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
-./plink2 --bfile gwa.qc --indep-pairwise 500 50 0.05 --out gwa.qc_pruned
+plink2 --bfile gwa.qc --indep-pairwise 500 50 0.05 --out gwa.qc_pruned
 ```
 
 The three numbers supplied to --indep-pairwise are:
@@ -73,7 +73,7 @@ Within each window PLINK computes LD for all SNP pairs, removes one SNP from any
 We then build a new dataset using only the pruned SNPs:
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
-./plink2 --bfile gwa.qc --extract gwa.qc_pruned.prune.in --make-bed --out gwa.qc_pruned
+plink2 --bfile gwa.qc --extract gwa.qc_pruned.prune.in --make-bed --out gwa.qc_pruned
 ```
 
 Additional information on pruning can be found here: <https://zzz.bwh.harvard.edu/plink/summary.shtml#prune>
@@ -87,7 +87,7 @@ Because the linear regression models used later assume that samples are independ
 PLINK2 implements the KING-robust kinship method internally. We can use the --king-cutoff option on the LD-pruned dataset to identify a set of unrelated individuals. A cutoff of 0.0884 corresponds roughly to removing up to 2nd-degree relatives.
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
-./plink2 --bfile gwa.qc_pruned --king-cutoff 0.0884 --out gwa_king
+plink2 --bfile gwa.qc_pruned --king-cutoff 0.0884 --out gwa_king
 ```
 
 This command uses the pruned SNP set to estimate pairwise kinship and then automatically chooses a subset of individuals that are mutually unrelated up to the specified cutoff. It produces ID files such as:
@@ -100,7 +100,7 @@ We then create a dataset of unrelated samples:
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
 cd /Users/macbook/work/Code/Dataset3/
-./plink2 --bfile gwa.qc --keep gwa_king.king.cutoff.in.id --make-bed --out gwa.qc_unrelated
+plink2 --bfile gwa.qc --keep gwa_king.king.cutoff.in.id --make-bed --out gwa.qc_unrelated
 ```
 
 #### Principal-component analysis (PCA)
@@ -110,13 +110,13 @@ To account for population structure, we compute principal components from pruned
 We reuse the same `gwa.qc_pruned.prune.in` file to keep the same set of approximately independent SNPs:
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
-./plink2 --bfile gwa.qc_unrelated --extract gwa.qc_pruned.prune.in --make-bed --out gwa.qc_unrelated_pruned
+plink2 --bfile gwa.qc_unrelated --extract gwa.qc_pruned.prune.in --make-bed --out gwa.qc_unrelated_pruned
 ```
 
 Now perform PCA:
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
-./plink2 --bfile gwa.qc_unrelated_pruned --pca 20 --out gwa_unrel_PCA
+plink2 --bfile gwa.qc_unrelated_pruned --pca 20 --out gwa_unrel_PCA
 ```
 
 `gwa_unrel_PCA.eigenvec` – individual-level principal components (by default, the top 20 PCs).
@@ -137,7 +137,7 @@ You can later experiment with including more PCs to see how the results change.
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
 cd /Users/macbook/work/Code/Dataset3
-./plink2 --bfile gwa.qc --ci 0.95 --logistic --covar gwa_unrel_PCA.eigenvec  -covar-name PC1,PC2,PC3 --adjust --out gwa.qc_assoc
+plink2 --bfile gwa.qc --ci 0.95 --logistic --covar gwa_unrel_PCA.eigenvec  --covar-name PC1,PC2,PC3 --adjust --out gwa.qc_assoc
 ```
 
 Explanation of the main options:
@@ -152,7 +152,7 @@ Explanation of the main options:
 
 -   **--adjust** : produces multiple-testing adjusted p-values.
 
-With PLINK2, the main association results are written to: `gwa.qc_unrelated_assoc.PHENO1.glm.logistic`
+With PLINK2, the main association results are written to: `gwa.qc_assoc.PHENO1.glm.logistic`
 
 #### Manhattan and QQ plot in R
 

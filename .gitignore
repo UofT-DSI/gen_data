@@ -1,3 +1,21 @@
 .DS_Store
 .vscode/
 .sqbpro
+setup_smoke_test.qmd
+setup_smoke_test.html
+setup_smoke_test_files/
+
+# Tutorial-generated artifacts
+02_activities/tutorials/*.log
+02_activities/tutorials/*.nosex
+02_activities/tutorials/*.raw
+02_activities/tutorials/*.hardy
+02_activities/tutorials/*.afreq
+02_activities/tutorials/*.prune.in
+02_activities/tutorials/*.prune.out
+02_activities/tutorials/*.eigenvec
+02_activities/tutorials/*.eigenval
+02_activities/tutorials/*.id
+02_activities/tutorials/*.glm.*
+02_activities/tutorials/snplist.txt
+02_activities/tutorials/samplist.txt

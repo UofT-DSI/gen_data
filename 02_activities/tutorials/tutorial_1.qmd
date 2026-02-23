@@ -1,7 +1,8 @@
 ---
-title: "Tutorial I"
+title: "tutorial 1"
 format: html
 editor: visual
+execute-dir: project
 ---
 
 ##### This tutorial introduces the structure, content, and usage of PLINK binary genotype datasets with 4,000 individuals and more than 300K SNPs. The goal is to help beginners understand how genotype data is stored and accessed in PLINK, and prepare them for downstream tasks like GWAS and QC.
@@ -21,8 +22,6 @@ Please download the three files from the following Google Drive link: <https://d
 You can then save them to your local folder.
 
 ```{r setup, include=FALSE}
-# Set the working directory for the entire R Markdown file
-knitr::opts_knit$set(root.dir = "/Users/macbook/work/Code/Dataset2/")
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -36,14 +35,14 @@ library(dplyr)
 
 ### 2. View the .fam and .bim Files
 
+Sample information file: IDs, sex, phenotype
+
 ```{bash}
-# Sample information file: IDs, sex, phenotype
-cd /Users/macbook/work/Code/Dataset2/
-head gwa.qc.fam
+head ./02_activities/tutorials/gwa.qc.fam
 ```
 
 | **Column Name** | **Description** |
-|----|----|
+|------------------------------------|------------------------------------|
 | **FID** | Family ID (set to 0 if not used) |
 | **IID** | Individual ID (unique for each person) |
 | **PAT** | Paternal ID (set to 0 if unknown) |
@@ -53,16 +52,16 @@ head gwa.qc.fam
 
 ```{bash}
 # SNP annotation file: chromosome, SNP ID, base-pair position, alleles 
-head gwa.qc.bim
+head ./02_activities/tutorials/gwa.qc.bim
 ```
 
 | **Column Name** | **Description** |
-|----|----|
+|------------------------------------|------------------------------------|
 | **CHR** | Chromosome number |
 | **SNP** | SNP ID (e.g., rs number) |
 | **CM** | Genetic distance (usually 0) |
 | **BP** | Physical position in base pairs |
-| **A1** | PLINK’s effect allele (the counted allele) |
+| **A1** | PLINK's effect allele (the counted allele) |
 | **A2** | the other allele (reference/alternative allele depending on context) |
 
 ### 3. Understanding the .bed file
@@ -72,7 +71,7 @@ The .bed file stores encoded genotypes in a compact binary format. It is not hum
 Convert to readable format:
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
-./plink2 --bfile gwa.qc --recode A --out gwa_qc_additive
+plink2 --bfile ./02_activities/tutorials/gwa.qc --recode A --out ./02_activities/tutorials/gwa_qc_additive
 ```
 
 This creates a .raw file with dosage coding:
@@ -85,7 +84,8 @@ This creates a .raw file with dosage coding:
 
 ```{r}
 # Load genotype data
-geno <- fread("gwa_qc_additive.raw")  # columns include FID, IID, and SNP genotype
+
+geno <- fread("./02_activities/tutorials/gwa_qc_additive.raw")  # columns include FID, IID, and SNP genotype
 geno[1:5,1:10]
 ```
 
@@ -96,36 +96,34 @@ geno[1:5,1:10]
 We can test each SNP for deviation from Hardy-Weinberg Equilibrium:
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
-
-./plink2 --bfile gwa.qc --hardy --out gwa_qc_hwe
-
+plink2 --bfile ./02_activities/tutorials/gwa.qc --hardy --out ./02_activities/tutorials/gwa_qc_hwe
 ```
 
 This produces gwa_qc_hwe.hardy containing observed and expected genotype counts plus p-values.
 
 ```{r,message=FALSE, warning=FALSE}
 # View HWE results
-hwe <- fread("gwa_qc_hwe.hardy")
+hwe <- fread("./02_activities/tutorials/gwa_qc_hwe.hardy")
 head(hwe)
 ```
 
-CHROM – Chromosome number.
+CHROM - Chromosome number.
 
-ID – SNP ID (e.g. rsID).
+ID - SNP ID (e.g. rsID).
 
-A1, AX – The two alleles (effect and reference).
+A1, AX - The two alleles (effect and reference).
 
-HOM_A1_CT – Count of A1/A1 homozygotes.
+HOM_A1_CT - Count of A1/A1 homozygotes.
 
-HET_A1_CT – Count of A1/AX heterozygotes.
+HET_A1_CT - Count of A1/AX heterozygotes.
 
-TWO_AX_CT – Count of AX/AX homozygotes.
+TWO_AX_CT - Count of AX/AX homozygotes.
 
-O(HET_A1) – Observed heterozygote frequency (proportion).
+O(HET_A1) - Observed heterozygote frequency (proportion).
 
-E(HET_A1) – Expected heterozygote frequency under HWE.
+E(HET_A1) - Expected heterozygote frequency under HWE.
 
-P – Hardy-Weinberg p-value testing deviation from equilibrium.
+P - Hardy-Weinberg p-value testing deviation from equilibrium.
 
 For QC, SNPs with very low P are often removed, as this may indicate genotyping error.
 
@@ -134,13 +132,13 @@ For QC, SNPs with very low P are often removed, as this may indicate genotyping 
 Calculate and output allele frequencies in your dataset:
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
-./plink2 --bfile gwa.qc --freq --out gwa_qc_freq
+plink2 --bfile ./02_activities/tutorials/gwa.qc --freq --out ./02_activities/tutorials/gwa_qc_freq
 ```
 
 View frequency table: gwa_qc_freq.afreq includes columns for SNP, chromosome, allele counts, MAF.
 
 ```{r,message=FALSE, warning=FALSE}
-freq <- fread("gwa_qc_freq.afreq")
+freq <- fread("./02_activities/tutorials/gwa_qc_freq.afreq")
 head(freq)
 ```
 
@@ -149,12 +147,8 @@ head(freq)
 #### Step 1: Create SNP and sample list files
 
 ```{bash,message=FALSE, warning=FALSE}
-> snplist.txt
-# Create SNP list file with 3 example SNPs
-echo rs1525873 >> snplist.txt
-echo rs2902663 >> snplist.txt
-echo rs343376 >> snplist.txt
-echo rs3813199 >> snplist.txt
+# Create SNP list file with 4 example SNPs
+printf "%s\n" rs1525873 rs2902663 rs343376 rs3813199 > ./02_activities/tutorials/snplist.txt
 
 # Create sample list file with header + 3 samples
 #echo "FID IID" > samplist.txt
@@ -167,16 +161,16 @@ echo rs3813199 >> snplist.txt
 #### Step 2: Subset SNPs and/or samples
 
 ```{bash, results='hide',message=FALSE, warning=FALSE}
-./plink2 --bfile gwa.qc \
-      --extract snplist.txt \
+plink2 --bfile ./02_activities/tutorials/gwa.qc \
+      --extract ./02_activities/tutorials/snplist.txt \
       --recode A \
-      --out geno.additive
+      --out ./02_activities/tutorials/geno.additive
 # --keep samplist.txt can be used to extract a specific list of samples
 ```
 
 ```{r}
 # Load genotype data
-geno_subset <- fread("geno.additive.raw")
+geno_subset <- fread("./02_activities/tutorials/geno.additive.raw")
 geno_subset=na.omit(geno_subset)
 geno_subset$PHENOTYPE=geno_subset$PHENOTYPE-1
 head(geno_subset)
@@ -188,16 +182,15 @@ table(geno_subset$PHENOTYPE)
 The PLINK2 commands are especially useful when working with a large number of SNPs (genome-wide), while R is better suited for loading smaller subsets of genotype data.
 
 ```{r,message=FALSE, warning=FALSE}
-setwd('/Users/macbook/work/Code/Dataset2/')
 set.seed(1234)
-fam_all <- fread(paste0('gwa.qc.fam'))
+fam_all <- fread("./02_activities/tutorials/gwa.qc.fam")
 N=dim(fam_all)[1];N
-bim_all<- fread(paste0('gwa.qc.bim'))
+bim_all<- fread("./02_activities/tutorials/gwa.qc.bim")
 M <- nrow(bim_all);M
 
 indx.SNP=which((bim_all$V2)%in%c('rs1525873','rs2902663','rs343376','rs3813199'))
 
-geno_mat<- readPlinkToMatrixByIndex('gwa.qc', 1:N, indx.SNP)
+geno_mat<- readPlinkToMatrixByIndex('./02_activities/tutorials/gwa.qc', 1:N, indx.SNP)
 
 ```
 
@@ -267,7 +260,7 @@ table(geno_subset$rs1525873_T)
 ##### We visualize the association between the phenotype and the genotype.
 
 ```{r,message=FALSE, warning=FALSE}
-# 1️⃣ Make prediction over continuous range (for smooth curve)
+# Make prediction over continuous range (for smooth curve)
  geno_range <- data.frame(
    rs1525873_T = seq(0, 2, length.out = 100)
  )
@@ -305,7 +298,7 @@ ggplot() +
 
 **Interpretation**: We performed logistic regression to test the association between genotype (rs1525873_T) and the binary phenotype. The regression coefficient for rs1525873_T is 0.14749 (p = 0.00476), indicating that each additional copy of the T allele is associated with increased odds of being a case. The significant p-value suggests evidence of an association between this SNP and the phenotype in our sample.
 
-In practice, when testing genetic associations, we include additional covariates in the model—such as age, sex, and principal components to adjust for confounding effects. We will cover this in more detail later in the course.
+In practice, when testing genetic associations, we include additional covariates in the model, such as age, sex, and principal components to adjust for confounding effects. We will cover this in more detail later in the course.
 
 ### 8. Logistic Regression: Dominance and Recessive Models
 
@@ -327,18 +320,18 @@ model <- glm(PHENOTYPE ~ rs1525873_T, data = geno_subset_dom, family = binomial)
 summary(model)
 ```
 
-Visualize the assocaition between the phenotype and the genotype:
+Visualize the association between the phenotype and the genotype:
 
 ```{r}
-# 1️⃣ Make prediction over continuous range (for smooth curve)
+# Make prediction over continuous range (for smooth curve)
  geno_range <- data.frame(
    rs1525873_T = seq(0, 1, length.out = 100)
  )
  geno_range$predicted_prob <- predict(model, newdata = geno_range, type = "response")
 
 count_data <- geno_subset_dom %>%
-  mutate(PHENOTYPE = round(PHENOTYPE)) %>%   # 确保是0/1
-  filter(!is.na(rs1525873_T), !is.na(PHENOTYPE)) %>%  # 移除NA
+  mutate(PHENOTYPE = round(PHENOTYPE)) %>%
+  filter(!is.na(rs1525873_T), !is.na(PHENOTYPE)) %>%
   group_by(rs1525873_T, PHENOTYPE) %>%
   summarise(count = n(), .groups = "drop")
 
@@ -390,8 +383,8 @@ geno_range <- data.frame(
 
 
 count_data <- geno_subset_dom %>%
-  mutate(PHENOTYPE = round(PHENOTYPE)) %>%   # 确保是0/1
-  filter(!is.na(rs1525873_T), !is.na(PHENOTYPE)) %>%  # 移除NA
+  mutate(PHENOTYPE = round(PHENOTYPE)) %>%
+  filter(!is.na(rs1525873_T), !is.na(PHENOTYPE)) %>%
   group_by(rs1525873_T, PHENOTYPE) %>%
   summarise(count = n(), .groups = "drop")
 

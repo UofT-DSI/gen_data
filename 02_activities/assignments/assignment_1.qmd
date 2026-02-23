@@ -128,7 +128,7 @@ If you like, you may collaborate with others in the cohort. If you choose to do 
 
 #### Submission Parameters
 
--   Submission Due Date: `11:59 PM – 09/18/2025`
+-   Submission Due Date: `11:59 PM – 16/03/2026`
 
 -   Branch name for your repo should be: `assignment-1`
 
@@ -136,7 +136,7 @@ If you like, you may collaborate with others in the cohort. If you choose to do 
 
     -   This R Markdown (`assignment_1.Rmd`) should be populated and should be the only change in your pull request.
 
--   What the pull request link should look like for this assignment: `https://github.com/<your_github_username>/StatGen/pull/<pr_id>`
+-   What the pull request link should look like for this assignment: `https://github.com/<your_github_username>/gen_data/pull/<pr_id>`
 
     -   Open a private window in your browser. Copy and paste the link to your pull request into the address bar. Make sure you can see your pull request properly. This helps the technical facilitator and learning support staff review your submission easily.
 
@@ -149,4 +149,4 @@ Checklist:
 -   Reviewed the PR description guidelines and adhered to them.
 -   Verified that the link is accessible in a private browser window.
 
-If you encounter any difficulties or have questions, please don't hesitate to reach out to our team via our Slack at `#cohort-XX-help`. Our Technical Facilitators and Learning Support staff are here to help you navigate any challenges.
+If you encounter any difficulties or have questions, please don't hesitate to reach out to our team via our Slack help channel. Our Technical Facilitators and Learning Support staff are here to help you navigate any challenges.

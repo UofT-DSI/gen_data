@@ -11,11 +11,11 @@ You will need [**PLINK2**](https://zzz.bwh.harvard.edu/plink/) installed and ava
 
 ### Submission Parameters:
 
--   Submission Due Date: \`FILL IN\`
+-   Submission Due Date: 11:59 PM – 01/04/2026
 -   The branch name for your repo should be: `assignment-2`
 -   What to submit for this assignment:
     -   This Quarto document (assignment_2.qmd) should be populated and should be the only change in your pull request.
--   What the pull request link should look like for this assignment: `https://github.com/<your_github_username>/r/pull/<pr_id>`
+-   What the pull request link should look like for this assignment: `https://github.com/<your_github_username>/gen_data/pull/<pr_id>`
     -   Open a private window in your browser. Copy and paste the link to your pull request into the address bar. Make sure you can see your pull request properly. This helps the technical facilitator and learning support staff review your submission easily.
 
 ### Checklist:
