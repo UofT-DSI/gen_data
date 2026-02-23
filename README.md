@@ -49,7 +49,8 @@ There are two assignments.
   * **Fan Wang** (she/her)  
     [fbaobao926@gmail.com](mailto:fbaobao926@gmail.com)
 * Learning Support Staff:
-
+  * **Eric Sanders** (he/him)
+    [eric.jo.sanders@gmail.com](mailto:eric.jo.sanders@gmail.com)
 
 ## Delivery of the Learning Module
 
