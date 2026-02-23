@@ -38,8 +38,8 @@ Participants should review the [Assignment Submission Guide](https://github.com/
 
 There are two assignments.
 
-1. [Assignment 1](./02_activities/assignments/Assignment1.qmd)
-1. [Assignment 2](./02_activities/assignments/Assignment2.qmd)
+1. [Assignment 1](./02_activities/assignments/assignment_1.qmd)
+1. [Assignment 2](./02_activities/assignments/assignment_2.qmd)
 
 ## Contacts
 

@@ -146,7 +146,7 @@ ___
 ---
 
 # Human Genome
-- 3 billion nucleotides (A,C,G,T) in the whole human genome.s
+- 3 billion nucleotides (A,C,G,T) in the whole human genome.
   – Paired, double helix
 - About 3 million of them differ between people (0.1% difference) - Genetic Variations.
 - Most of these variations are in ‘junk DNA’.
