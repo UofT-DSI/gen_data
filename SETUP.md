@@ -48,4 +48,4 @@ quarto render setup_smoke_test.qmd
 
 If all checks pass without errors, your setup is complete.
 
-For questions or issues, contact the learning support team or email `courses.dsi@utoronto.ca`.
+For questions or issues, contact the learning support team team or email `courses.dsi@utoronto.ca`.
