@@ -1,7 +1,6 @@
 ---
 marp: true
-theme: xaringan-themer
-_class: invert
+theme: dsi_certificates_theme
 paginate: true
 ---
 # Introduction to Statistical Genetics
