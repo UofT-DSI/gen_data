@@ -3,36 +3,7 @@ title: "Assignment #2"
 format: html
 ---
 
-You will need [**PLINK2**](https://zzz.bwh.harvard.edu/plink/) installed and available in your PATH. The dataset for this assignment consists of the following binary PLINK files: `gwa.A2.bed`, `gwa.A2.bim`, `gwa.A2.fam` , available at the following Google Drive link: <https://drive.google.com/drive/folders/1rHoy3z52Yyj985ukjjtLhfIBxchpyYtZ?usp=drive_link>. Please download all three files and save them to your local folder.
-
-## Submission Information
-
-🚨 **Please review our [Assignment Submission Guide](https://github.com/UofT-DSI/onboarding/blob/main/onboarding_documents/submissions.md)** 🚨 for detailed instructions on how to format, branch, and submit your work. Following these guidelines is crucial for your submissions to be evaluated correctly.
-
-### Submission Parameters:
-
--   Submission Due Date: 11:59 PM – 01/04/2026
--   The branch name for your repo should be: `assignment-2`
--   What to submit for this assignment:
-    -   This Quarto document (assignment_2.qmd) should be populated and should be the only change in your pull request.
--   What the pull request link should look like for this assignment: `https://github.com/<your_github_username>/gen_data/pull/<pr_id>`
-    -   Open a private window in your browser. Copy and paste the link to your pull request into the address bar. Make sure you can see your pull request properly. This helps the technical facilitator and learning support staff review your submission easily.
-
-### Checklist:
-
--   Create a branch called `assignment-2`.
--   Ensure that your repository is public.
--   Review [the PR description guidelines](https://github.com/UofT-DSI/onboarding/blob/main/onboarding_documents/submissions.md#guidelines-for-pull-request-descriptions) and adhere to them.
--   Verify that your link is accessible in a private browser window.
-
-### Criteria
-
-| Criteria | Complete | Incomplete |
-|:--------------|:----------------------------------|:----------------------|
-| **Data inspection** | Correct sample and SNP counts; phenotype plot with a brief comment on Gaussianity. | Counts or phenotype description/plot missing or incorrect. |
-| **QC & LD pruning** | Correct PLINK2 QC command and thresholds. | QC/pruning commands, thresholds, or output datasets missing or incorrect. |
-| **Relatedness & PCA** | Correct use of PLINK2 command to obtain unrelated samples and PCA run on pruned SNPs. | Relatedness step, unrelated dataset, or PCA analysis missing or incorrect. |
-| **GWAS & visualisation** | Linear regression GWAS with PCs as covariates; Manhattan and QQ plots produced. | GWAS command, or Manhattan/QQ plots missing or clearly incorrect. |
+You will need **PLINK2** installed and available in your PATH. Please follow the OS-specific setup guide in [`SETUP.md`](../../SETUP.md). The dataset for this assignment consists of the following binary PLINK files: `gwa.A2.bed`, `gwa.A2.bim`, `gwa.A2.fam` , available at the following Google Drive link: <https://drive.google.com/drive/folders/1rHoy3z52Yyj985ukjjtLhfIBxchpyYtZ?usp=drive_link>. Please download all three files and save them in `02_activities/data/`.
 
 #### Question 1: Data inspection
 
@@ -125,3 +96,43 @@ Assume that:
 ```{r}
 # Your code here...
 ```
+
+### Criteria
+
+| Criteria | Complete | Incomplete |
+|:--------------|:----------------------------------|:----------------------|
+| **Data inspection** | Correct sample and SNP counts; phenotype plot with a brief comment on Gaussianity. | Counts or phenotype description/plot missing or incorrect. |
+| **QC & LD pruning** | Correct PLINK2 QC command and thresholds. | QC/pruning commands, thresholds, or output datasets missing or incorrect. |
+| **Relatedness & PCA** | Correct use of PLINK2 command to obtain unrelated samples and PCA run on pruned SNPs. | Relatedness step, unrelated dataset, or PCA analysis missing or incorrect. |
+| **GWAS & visualisation** | Linear regression GWAS with PCs as covariates; Manhattan and QQ plots produced. | GWAS command, or Manhattan/QQ plots missing or clearly incorrect. |
+
+### Submission Information
+
+🚨 **Please review our [Assignment Submission Guide](https://github.com/UofT-DSI/onboarding/blob/main/onboarding_documents/submissions.md)** 🚨 for detailed instructions on how to format, branch, and submit your work. Following these guidelines is crucial for your submissions to be evaluated correctly.
+
+------------------------------------------------------------------------
+
+#### Submission Parameters
+
+-   Submission Due Date: 11:59 PM – 01/04/2026
+
+-   The branch name for your repo should be: `assignment-2`
+
+-   What to submit for this assignment:
+    -   Populate this Quarto document (`assignment_2.qmd`).
+    -   Render the document with Quarto: `quarto render assignment_2.qmd`.
+    -   Submit both `assignment_2.qmd` and the rendered HTML file `assignment_2.html` in your pull request.
+
+-   What the pull request link should look like for this assignment: `https://github.com/<your_github_username>/gen_data/pull/<pr_id>`
+
+    -   Open a private window in your browser. Copy and paste the link to your pull request into the address bar. Make sure you can see your pull request properly. This helps the technical facilitator and learning support team review your submission easily.
+
+------------------------------------------------------------------------
+
+Checklist:
+
+-   Create a branch called `assignment-2`.
+-   Ensure that your repository is public.
+-   Review [the PR description guidelines](https://github.com/UofT-DSI/onboarding/blob/main/onboarding_documents/submissions.md#guidelines-for-pull-request-descriptions) and adhere to them.
+-   Verify that your link is accessible in a private browser window.
+-   Confirm that both `assignment_2.qmd` and `assignment_2.html` are included in the pull request.

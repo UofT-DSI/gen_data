@@ -11,11 +11,11 @@ We will go through comparable code and concepts in the live learning session. If
 
 Please bring questions that you cannot work out on your own to office hours, work periods or share with your peers on Slack. We will work with you through the issue.
 
-You will need to install [PLINK](https://zzz.bwh.harvard.edu/plink/) and run the analyses. PLINK is a free, open-source whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner.
+You will need to install PLINK and run the analyses. Please follow the OS-specific setup guide in [`SETUP.md`](../../SETUP.md). PLINK is a free, open-source whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner.
 
 #### Question 1: Data inspection
 
-Before fitting any models, it is essential to understand the data. Use R or bash code to answer the following questions about the `gwa.qc.A1.fam`, `gwa.qc.A1.bim`, and `gwa.qc.A1.bed` files, available at the following Google Drive link: <https://drive.google.com/drive/folders/11meVqGCY5yAyI1fh-fAlMEXQt0VmRGuz?usp=drive_link>. Please download all three files and save them to your local folder.
+Before fitting any models, it is essential to understand the data. Use R or bash code to answer the following questions about the `gwa.qc.A1.fam`, `gwa.qc.A1.bim`, and `gwa.qc.A1.bed` files, available at the following Google Drive link: <https://drive.google.com/drive/folders/11meVqGCY5yAyI1fh-fAlMEXQt0VmRGuz?usp=drive_link>. Please download all three files from this link and place them in `02_activities/data/`.
 
 (i) Read the .fam file. How many samples does the dataset contain?
 
@@ -134,11 +134,13 @@ If you like, you may collaborate with others in the cohort. If you choose to do 
 
 -   What to submit for this assignment:
 
-    -   This R Markdown (`assignment_1.Rmd`) should be populated and should be the only change in your pull request.
+    -   Populate this Quarto document (`assignment_1.qmd`).
+    -   Render the document with Quarto: `quarto render assignment_1.qmd`.
+    -   Submit both `assignment_1.qmd` and the rendered HTML file `assignment_1.html` in your pull request.
 
 -   What the pull request link should look like for this assignment: `https://github.com/<your_github_username>/gen_data/pull/<pr_id>`
 
-    -   Open a private window in your browser. Copy and paste the link to your pull request into the address bar. Make sure you can see your pull request properly. This helps the technical facilitator and learning support staff review your submission easily.
+    -   Open a private window in your browser. Copy and paste the link to your pull request into the address bar. Make sure you can see your pull request properly. This helps the technical facilitator and learning support team review your submission easily.
 
 ------------------------------------------------------------------------
 
@@ -148,5 +150,6 @@ Checklist:
 -   Ensured that the repository is public.
 -   Reviewed the PR description guidelines and adhered to them.
 -   Verified that the link is accessible in a private browser window.
+-   Confirmed that both `assignment_1.qmd` and `assignment_1.html` are included in the pull request.
 
-If you encounter any difficulties or have questions, please don't hesitate to reach out to our team via our Slack help channel. Our Technical Facilitators and Learning Support staff are here to help you navigate any challenges.
+If you encounter any difficulties or have questions, please don't hesitate to reach out to our team via our Slack help channel. Our technical facilitators and learning support team are here to help you navigate any challenges.

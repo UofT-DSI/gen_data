@@ -7,7 +7,7 @@ execute-dir: project
 
 ##### This tutorial introduces the structure, content, and usage of PLINK binary genotype datasets with 4,000 individuals and more than 300K SNPs. The goal is to help beginners understand how genotype data is stored and accessed in PLINK, and prepare them for downstream tasks like GWAS and QC.
 
-You will need to install [PLINK](https://zzz.bwh.harvard.edu/plink/) and run the analyses. PLINK is a free, open-source whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner. For this tutorial, we are using simulated case/control data.
+You will need to install PLINK and run the analyses. Please follow the OS-specific setup guide in [`SETUP.md`](../../SETUP.md). PLINK is a free, open-source whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner. For this tutorial, we are using simulated case/control data.
 
 ### 1. What is a PLINK Binary Dataset?
 
@@ -17,9 +17,7 @@ A PLINK binary dataset consists of three files:
 -   **gwa.qc.bim** - SNP annotation file: chromosome, SNP ID, base-pair position, alleles
 -   **gwa.qc.fam** - Sample information file: IDs, sex, phenotype
 
-Please download the three files from the following Google Drive link: <https://drive.google.com/drive/folders/1v-FbDqu95wdUje3foFXMdXrBjYEAJTB2?usp=drive_link>
-
-You can then save them to your local folder.
+Please download the three files from the following Google Drive link and place them in `02_activities/data/`: <https://drive.google.com/drive/folders/1v-FbDqu95wdUje3foFXMdXrBjYEAJTB2?usp=drive_link>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -38,7 +36,7 @@ library(dplyr)
 Sample information file: IDs, sex, phenotype
 
 ```{bash}
-head ./02_activities/tutorials/gwa.qc.fam
+head ./02_activities/data/gwa.qc.fam
 ```
 
 | **Column Name** | **Description** |
@@ -52,7 +50,7 @@ head ./02_activities/tutorials/gwa.qc.fam
 
 ```{bash}
 # SNP annotation file: chromosome, SNP ID, base-pair position, alleles 
-head ./02_activities/tutorials/gwa.qc.bim
+head ./02_activities/data/gwa.qc.bim
 ```
 
 | **Column Name** | **Description** |
@@ -71,7 +69,7 @@ The .bed file stores encoded genotypes in a compact binary format. It is not hum
 Convert to readable format:
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
-plink2 --bfile ./02_activities/tutorials/gwa.qc --recode A --out ./02_activities/tutorials/gwa_qc_additive
+plink2 --bfile ./02_activities/data/gwa.qc --recode A --out ./02_activities/data/gwa_qc_additive
 ```
 
 This creates a .raw file with dosage coding:
@@ -85,7 +83,7 @@ This creates a .raw file with dosage coding:
 ```{r}
 # Load genotype data
 
-geno <- fread("./02_activities/tutorials/gwa_qc_additive.raw")  # columns include FID, IID, and SNP genotype
+geno <- fread("./02_activities/data/gwa_qc_additive.raw")  # columns include FID, IID, and SNP genotype
 geno[1:5,1:10]
 ```
 
@@ -96,14 +94,14 @@ geno[1:5,1:10]
 We can test each SNP for deviation from Hardy-Weinberg Equilibrium:
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
-plink2 --bfile ./02_activities/tutorials/gwa.qc --hardy --out ./02_activities/tutorials/gwa_qc_hwe
+plink2 --bfile ./02_activities/data/gwa.qc --hardy --out ./02_activities/data/gwa_qc_hwe
 ```
 
 This produces gwa_qc_hwe.hardy containing observed and expected genotype counts plus p-values.
 
 ```{r,message=FALSE, warning=FALSE}
 # View HWE results
-hwe <- fread("./02_activities/tutorials/gwa_qc_hwe.hardy")
+hwe <- fread("./02_activities/data/gwa_qc_hwe.hardy")
 head(hwe)
 ```
 
@@ -132,13 +130,13 @@ For QC, SNPs with very low P are often removed, as this may indicate genotyping 
 Calculate and output allele frequencies in your dataset:
 
 ```{bash,results='hide',message=FALSE, warning=FALSE}
-plink2 --bfile ./02_activities/tutorials/gwa.qc --freq --out ./02_activities/tutorials/gwa_qc_freq
+plink2 --bfile ./02_activities/data/gwa.qc --freq --out ./02_activities/data/gwa_qc_freq
 ```
 
 View frequency table: gwa_qc_freq.afreq includes columns for SNP, chromosome, allele counts, MAF.
 
 ```{r,message=FALSE, warning=FALSE}
-freq <- fread("./02_activities/tutorials/gwa_qc_freq.afreq")
+freq <- fread("./02_activities/data/gwa_qc_freq.afreq")
 head(freq)
 ```
 
@@ -148,29 +146,29 @@ head(freq)
 
 ```{bash,message=FALSE, warning=FALSE}
 # Create SNP list file with 4 example SNPs
-printf "%s\n" rs1525873 rs2902663 rs343376 rs3813199 > ./02_activities/tutorials/snplist.txt
+printf "%s\n" rs1525873 rs2902663 rs343376 rs3813199 > ./02_activities/data/snplist.txt
 
 # Create sample list file with header + 3 samples
-#echo "FID IID" > samplist.txt
-#echo "0 A2001" >> samplist.txt
-#echo "2 A2003" >> samplist.txt
-#echo "5 A2006" >> samplist.txt
+#echo "FID IID" > ./02_activities/data/samplist.txt
+#echo "0 A2001" >> ./02_activities/data/samplist.txt
+#echo "2 A2003" >> ./02_activities/data/samplist.txt
+#echo "5 A2006" >> ./02_activities/data/samplist.txt
 
 ```
 
 #### Step 2: Subset SNPs and/or samples
 
 ```{bash, results='hide',message=FALSE, warning=FALSE}
-plink2 --bfile ./02_activities/tutorials/gwa.qc \
-      --extract ./02_activities/tutorials/snplist.txt \
+plink2 --bfile ./02_activities/data/gwa.qc \
+      --extract ./02_activities/data/snplist.txt \
       --recode A \
-      --out ./02_activities/tutorials/geno.additive
-# --keep samplist.txt can be used to extract a specific list of samples
+      --out ./02_activities/data/geno.additive
+# --keep ./02_activities/data/samplist.txt can be used to extract a specific list of samples
 ```
 
 ```{r}
 # Load genotype data
-geno_subset <- fread("./02_activities/tutorials/geno.additive.raw")
+geno_subset <- fread("./02_activities/data/geno.additive.raw")
 geno_subset=na.omit(geno_subset)
 geno_subset$PHENOTYPE=geno_subset$PHENOTYPE-1
 head(geno_subset)
@@ -183,14 +181,14 @@ The PLINK2 commands are especially useful when working with a large number of SN
 
 ```{r,message=FALSE, warning=FALSE}
 set.seed(1234)
-fam_all <- fread("./02_activities/tutorials/gwa.qc.fam")
+fam_all <- fread("./02_activities/data/gwa.qc.fam")
 N=dim(fam_all)[1];N
-bim_all<- fread("./02_activities/tutorials/gwa.qc.bim")
+bim_all<- fread("./02_activities/data/gwa.qc.bim")
 M <- nrow(bim_all);M
 
 indx.SNP=which((bim_all$V2)%in%c('rs1525873','rs2902663','rs343376','rs3813199'))
 
-geno_mat<- readPlinkToMatrixByIndex('./02_activities/tutorials/gwa.qc', 1:N, indx.SNP)
+geno_mat<- readPlinkToMatrixByIndex('./02_activities/data/gwa.qc', 1:N, indx.SNP)
 
 ```
 
