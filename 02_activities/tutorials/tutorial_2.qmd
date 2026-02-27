@@ -138,7 +138,7 @@ Explanation of the main options:
 
 -   **--logistic** : performs SNP-wise logistic regression.
 
--   **--covar gwa_unrel_PCA.eigenvec** : uses the PCA output (PC scores for each individual) as a covariate file.
+-   **--covar ./02_activities/data/gwa_unrel_PCA.eigenvec** : uses the PCA output (PC scores for each individual) as a covariate file.
 
 -   **--covar-name PC1,PC2,PC3** : includes PC1, PC2, and PC3 from that file as covariates.
 
