@@ -20,7 +20,8 @@ A PLINK binary dataset consists of three files:
 Please download the three files from the following Google Drive link and place them in `02_activities/data/`: <https://drive.google.com/drive/folders/1v-FbDqu95wdUje3foFXMdXrBjYEAJTB2?usp=drive_link>
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+#knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = normalizePath("../../"))
 ```
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
@@ -36,7 +37,9 @@ library(dplyr)
 Sample information file: IDs, sex, phenotype
 
 ```{bash}
+#pwd
 head ./02_activities/data/gwa.qc.fam
+#head ../data/gwa.qc.fam
 ```
 
 | **Column Name** | **Description** |

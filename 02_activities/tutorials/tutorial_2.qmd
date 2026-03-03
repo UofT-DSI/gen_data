@@ -23,7 +23,8 @@ In this step we perform basic QC: we remove genotyped SNPs and individuals with 
 
 ```{r setup, include=FALSE}
 # Input files are expected in ./02_activities/data/.
-knitr::opts_chunk$set(echo = TRUE)
+#knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = normalizePath("../../"))
 library(data.table)
 library(qqman)
 ```
