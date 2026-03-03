@@ -221,7 +221,7 @@ ___
 
 # Types of Genetic Variants
 
-![Sales Figure, w:700](./images/geneticvariant.png)
+![Sales Figure, w:700](./images/geneticvariant.PNG)
 
 ---
 
@@ -260,7 +260,7 @@ ___
 
 - A Variant in the Hemoglobin Gene Causing Sickle Cell Anemia
 
-    ![Sales Figure, w:600](./images/protein.png) 
+    ![Sales Figure, w:600](./images/protein.PNG) 
  
 
 ---
