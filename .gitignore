@@ -5,23 +5,15 @@ setup_smoke_test.qmd
 setup_smoke_test.html
 setup_smoke_test_files/
 
-# Tutorial-generated artifacts
-02_activities/tutorials/*.log
-02_activities/tutorials/*.nosex
-02_activities/tutorials/*.raw
-02_activities/tutorials/*.hardy
-02_activities/tutorials/*.afreq
-02_activities/tutorials/*.prune.in
-02_activities/tutorials/*.prune.out
-02_activities/tutorials/*.eigenvec
-02_activities/tutorials/*.eigenval
-02_activities/tutorials/*.id
-02_activities/tutorials/*.glm.*
-02_activities/tutorials/snplist.txt
-02_activities/tutorials/samplist.txt
-02_activities/tutorials/gwa.qc.fam
-02_activities/tutorials/gwa.qc.bim
-02_activities/tutorials/gwa.qc.bed
+# Ignore everything inside tutorials
+02_activities/tutorials/*
+
+# Re-allow the folder itself
+!02_activities/tutorials/
+
+# Re-allow only these two files
+!02_activities/tutorials/tutorial_1.qmd
+!02_activities/tutorials/tutorial_2.qmd
 
 # Data directory: keep placeholder only
 02_activities/data/*
