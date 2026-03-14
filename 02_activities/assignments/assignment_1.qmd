@@ -17,95 +17,199 @@ You will need to install PLINK and run the analyses. Please follow the OS-specif
 
 Before fitting any models, it is essential to understand the data. Use R or bash code to answer the following questions about the `gwa.qc.A1.fam`, `gwa.qc.A1.bim`, and `gwa.qc.A1.bed` files, available at the following Google Drive link: <https://drive.google.com/drive/folders/11meVqGCY5yAyI1fh-fAlMEXQt0VmRGuz?usp=drive_link>. Please download all three files from this link and place them in `02_activities/data/`.
 
-(i) Read the .fam file. How many samples does the dataset contain?
-
-```         
-# Your answer here...
+```{r, message=FALSE, warning=FALSE, results='hide'}
+# Load the packages needed for this assignment
+library(data.table)
+library(ggplot2)
+library(seqminer)
+library(HardyWeinberg)
+library(dplyr)
 ```
+
+(i) Read the .fam file. How many samples does the dataset contain?
+     
+```{bash}
+wc -l ../data/gwa.qc.A1.fam
+```
+
+The fam dataset contains 4000 samples
 
 (ii) What is the 'variable type' of the response variable (i.e.Continuous or binary)?
 
-```         
-# Your answer here...
+```{bash}
+head ../data/gwa.qc.A1.fam
 ```
+
+The variable type or phenotype is continuous
 
 (iii) Read the .bim file. How many SNPs does the dataset contain?
 
-```         
-# Your answer here...
+```{bash}
+wc -l ../data/gwa.qc.A1.bim         
 ```
+
+The bim file has 101083 SNPs
 
 #### Question 2: Allele Frequency Estimation
 
 (i) Load the genotype matrix for SNPs rs1861, rs3813199, rs3128342, and rs11804831 using additive coding. What are the allele frequencies (AFs) for these four SNPs?
 
-```         
-# Your code here...
+```{bash,results='hide',message=FALSE, warning=FALSE}
+
+# Create SNP list
+printf "%s\n" rs1861 rs3813199 rs3128342 rs11804831 > ../data/snplist_A1.txt
+cat ../data/snplist_A1.txt
+
+# Subset the 4 SNPs from the PLINK dataset
+plink2 --bfile ../data/gwa.qc.A1 --extract ../data/snplist_A1.txt --make-bed --out ../data/gwa_A1_subset
+
+# Additive coding on the subsetted SNPs
+plink2 --bfile ../data/gwa_A1_subset --export A --out ../data/gwa_A1_subset_additive
+
+# Calculate allele frequencies for the 4-SNP subset
+plink2 --bfile ../data/gwa_A1_subset --freq --out ../data/gwa_A1_subset_freq
 ```
+
+```{r,message=FALSE, warning=FALSE}
+# Load additive-coded genotype matrix
+geno <- fread("../data/gwa_A1_subset_additive.raw")
+head(geno)
+```
+
+```{r,message=FALSE, warning=FALSE}
+# Read and display allele frequencies of four SNPs
+freq <- fread("../data/gwa_A1_subset_freq.afreq")
+af_table <- freq[, .(SNP = ID, AF = ALT_FREQS)]
+af_table
+```
+
+The allele frequencies (AF) of the four SNPs are as follows: rs1861 = 0.0539859, rs3813199 = 0.0569126, rs3128342 = 0.3051210, rs11804831 = 0.1543410
 
 (ii) What are the minor allele frequencies (MAFs) for these four SNPs?
 
-```         
-# Your code here...
+```{r,message=FALSE, warning=FALSE}
+maf_table <- freq[, .(SNP = ID, AF = ALT_FREQS, MAF = pmin(ALT_FREQS, 1 - ALT_FREQS))]
+maf_table
 ```
+
+Since the estimated allele frequencies of these SNPs are <0.5 from the ALT_FREQS column of the PLINK frequency output, ALT is already the minor allele. Therefore, ALT_FREQS = minor allele frequencies.
 
 #### Question 3: Hardy–Weinberg Equilibrium (HWE) Test
 
 (i) Conduct the Hardy–Weinberg Equilibrium (HWE) test for all SNPs in the .bim file. Then, load the file containing the HWE p-value results and display the first few rows of the resulting data frame.
 
-```         
-# Your code here...
+```{bash,results='hide',message=FALSE, warning=FALSE}
+plink2 --bfile ../data/gwa.qc.A1 --hardy --out ../data/gwa_qc_A1_hwe
+```
+
+```{r, message=FALSE, warning=FALSE}
+hwe <- fread("../data/gwa_qc_A1_hwe.hardy")
+head(hwe)  
 ```
 
 (ii) What are the HWE p-values for SNPs rs1861, rs3813199, rs3128342, and rs11804831?
 
-```         
-# Your code here...
+```{r, message=FALSE, warning=FALSE}     
+# Create a subset of the four SNPs
+snps_interest <- c("rs1861", "rs3813199", "rs3128342", "rs11804831")
+hwe_subset <- hwe[ID %in% snps_interest, .(SNP = ID, HWE_P = P)]
+hwe_subset
 ```
+
+The HWE p-values for the four SNPs are as follows: rs1861 = 0.274719, rs3813199 = 1.000000, rs3128342 = 0.330273, rs11804831 = 0.113354
 
 #### Question 4: Genetic Association Test
 
 (i) Conduct a linear regression to test the association between SNP rs1861 and the phenotype. What is the p-value?
 
-```         
-# Your code here...
+```{r, message=FALSE, warning=FALSE}         
+# Linear regression model
+geno <- fread("../data/gwa_A1_subset_additive.raw")
+model <- lm(PHENOTYPE ~ rs1861_C, data = geno)
+summary(model)
 ```
+
+The p-value for the association between SNP rs1861 and the phenotype is <2e-16.
 
 (ii) How would you interpret the beta coefficient from this regression?
 
-```         
-# Your answer here...
-```
+The regression coefficient for rs1861 is 0.97382 (p <2e-16), indicating that each additional copy of the C allele is associated with an increase of approximately 0.97 units of the phenotype on average. The significant p-value suggests evidence of an association between this SNP and the phenotype in our sample.
 
 (iii) Plot the scatterplot of phenotype versus the genotype of SNP rs1861. Add the regression line to the plot.
 
-```         
-# Your code here...
+```{r, message=FALSE, warning=FALSE}          
+# Load the genotype data
+geno <- fread("../data/gwa_A1_subset_additive.raw")
+
+# Remove missing values before plotting
+plot_data_add <- geno[!is.na(rs1861_C) & !is.na(PHENOTYPE), ]
+
+# Create scatterplot with regression line assuming outcome is phenotype and predictor is genotype of SNP rs1861
+p <- ggplot(plot_data_add, aes(x = factor(rs1861_C), y = PHENOTYPE)) +
+  geom_point(color = "blue", alpha = 0.5) +
+  geom_smooth(aes(group = 1), method = "lm", color = "red") +
+  labs(
+    title = "Scatterplot showing the association between SNP rs1861 and phenotype",
+    x = "Genotype (number of C alleles)",
+    y = "Phenotype"
+  ) +
+  theme_minimal()
+
+p
 ```
 
 (iv) Convert the genotype coding for rs1861 to recessive coding.
 
-```         
-# Your code here...
+```{r, message=FALSE, warning=FALSE}            
+# Load genotype data
+geno <- fread("../data/gwa_A1_subset_additive.raw")
+
+# Convert coding for rs1861 to recessive coding
+geno_recessive <- geno
+geno_recessive$rs1861_recessive <- ifelse(geno_recessive$rs1861_C == 2, 1, 0)
+
+# Check recoding
+table(geno_recessive$rs1861_C, geno_recessive$rs1861_recessive, useNA = "ifany")
 ```
 
 (v) Conduct a linear regression to test the association between the recessive-coded rs1861 and the phenotype. What is the p-value?
 
-```         
-# Your code here...
+```{r, message=FALSE, warning=FALSE}         
+# Linear regression model using recessive coding
+model_recessive <- lm(PHENOTYPE ~ rs1861_recessive, data = geno_recessive)
+summary(model_recessive)
 ```
+
+The p-value for the association between SNP rs1861 and the phenotype using recessive coding is <2e-16.
 
 (vi) Plot the scatterplot of phenotype versus the recessive-coded genotype of rs1861. Add the regression line to the plot.
 
-```         
-# Your code here...
+```{r, message=FALSE, warning=FALSE}         
+# Create scatterplot with regression line assuming outcome is phenotype and predictor is genotype of SNP rs1861 using recessive coding
+plot_data_rec <- geno_recessive[!is.na(rs1861_recessive) & !is.na(PHENOTYPE), ]
+
+p_rec <- ggplot(plot_data_rec,
+                aes(x = factor(rs1861_recessive), y = PHENOTYPE)) +
+  geom_point(color = "blue", alpha = 0.5) +
+  geom_smooth(aes(group = 1), method = "lm", color = "red") +
+  labs(
+    title = "Scatterplot showing the association between recessive-coded rs1861 \nand phenotype",
+    x = "Recessive genotype (1 = two copies of allele)",
+    y = "Phenotype"
+  ) +
+  theme_minimal()
+
+p_rec
 ```
 
 (vii) Which model fits better? Justify your answer.
 
-```         
-# Your answer here...
+```{r, message=FALSE, warning=FALSE}
+AIC(model)
+AIC(model_recessive)
 ```
+
+The additive model fits better than the recessive model. In the linear regression analyses, the additive model had a higher R-squared value compared to the recessive model (0.08924 vs. 0.08582). Furthermore, the AIC of the additive model (11276.91) is lower than the AIC of the recessive model (11291.74), indicating that the additive coding provides a better overall model fit. This suggests that the effect of rs1861 on the phenotype is better captured by an allele-dose (additive) effect rather than a recessive effect.
 
 ### Criteria
 
