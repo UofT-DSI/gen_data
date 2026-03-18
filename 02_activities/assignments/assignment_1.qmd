@@ -18,10 +18,9 @@ You will need to install PLINK and run the analyses. Please follow the OS-specif
 Before fitting any models, it is essential to understand the data. Use R or bash code to answer the following questions about the `gwa.qc.A1.fam`, `gwa.qc.A1.bim`, and `gwa.qc.A1.bed` files, available at the following Google Drive link: <https://drive.google.com/drive/folders/11meVqGCY5yAyI1fh-fAlMEXQt0VmRGuz?usp=drive_link>. Please download all three files from this link and place them in `02_activities/data/`.
 ```{r}
 
-
-fam_file <- "/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.fam"
-bim_file <- "/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.bim"
-bed_file <- "/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.bed"
+fam_file <- "../data/gwa.qc.A1.fam"
+bim_file <- "../data/gwa.qc.A1.bim"
+bed_file <- "../data/gwa.qc.A1.bed"
 
 
 fam_data <- read.table(fam_file, header = FALSE)
@@ -48,13 +47,13 @@ cat("Genotype matrix dimensions (samples x SNPs):", dim(geno_matrix), "\n")
 
 
 ```{r}
-fam_file <- "/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.fam"
-bim_file <- "/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.bim"
-bed_file <- "/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.bed"
+ffam_file <- "../data/gwa.qc.A1.fam"
+bim_file <- "../data/gwa.qc.A1.bim"
+bed_file <- "../data/gwa.qc.A1.bed"
 ```
 ```{r}
 # Read the data file
-data <- read.table("/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.fam", header = FALSE)
+data <- read.table("../data/gwa.qc.A1.fam", header = FALSE)
 
 # Display number of rows
 nrow(data)
@@ -150,7 +149,7 @@ maf_values
 (i) Conduct the Hardy–Weinberg Equilibrium (HWE) test for all SNPs in the .bim file. Then, load the file containing the HWE p-value results and display the first few rows of the resulting data frame.
 
 ```  {r}       
-hwe_results <- read.table("/Users/athira/Desktop/gen_data/02_activities/data/gwa_hwe.hwe", header = TRUE)
+hwe_results <- read.table("../data/gwa_hwe.hwe", header = TRUE)
 head(hwe_results)
 ```
 
@@ -175,7 +174,7 @@ hwe_results %>%
 
 ```{r}
 # Read in the phenotype from .fam
-fam_data <- read.table("/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.fam", header = FALSE)
+fam_data <- read.table("../data/gwa.qc.A1.fam", header = FALSE)
 geno_matrix <- as(geno_matrix, "numeric")  # make sure numeric
 
 # Add phenotype to genotype subset
