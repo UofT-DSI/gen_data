@@ -16,96 +16,293 @@ You will need to install PLINK and run the analyses. Please follow the OS-specif
 #### Question 1: Data inspection
 
 Before fitting any models, it is essential to understand the data. Use R or bash code to answer the following questions about the `gwa.qc.A1.fam`, `gwa.qc.A1.bim`, and `gwa.qc.A1.bed` files, available at the following Google Drive link: <https://drive.google.com/drive/folders/11meVqGCY5yAyI1fh-fAlMEXQt0VmRGuz?usp=drive_link>. Please download all three files from this link and place them in `02_activities/data/`.
+```{r}
+
+
+fam_file <- "/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.fam"
+bim_file <- "/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.bim"
+bed_file <- "/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.bed"
+
+
+fam_data <- read.table(fam_file, header = FALSE)
+cat("Number of samples:", nrow(fam_data), "\n")
+head(fam_data)
+
+bim_data <- read.table(bim_file, header = FALSE)
+cat("Number of SNPs:", nrow(bim_data), "\n")
+head(bim_data)
+
+library(snpStats)
+
+plink_data <- read.plink(
+  bed = bed_file,
+  bim = bim_file,   # pass path, NOT the data frame
+  fam = fam_file    # pass path, NOT the data frame
+)
+
+geno_matrix <- plink_data$genotypes
+cat("Genotype matrix dimensions (samples x SNPs):", dim(geno_matrix), "\n")
+```
 
 (i) Read the .fam file. How many samples does the dataset contain?
 
-```         
-# Your answer here...
+
+```{r}
+fam_file <- "/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.fam"
+bim_file <- "/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.bim"
+bed_file <- "/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.bed"
+```
+```{r}
+# Read the data file
+data <- read.table("/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.fam", header = FALSE)
+
+# Display number of rows
+nrow(data)
+
+# Display first few rows
+head(data)
+```
+
+
+
+
+
+
+
 ```
 
 (ii) What is the 'variable type' of the response variable (i.e.Continuous or binary)?
 
-```         
-# Your answer here...
+```
+```{r}
+data <- read.table(fam_file, header = FALSE)
+```
+```{r}
+table(data$V6)
 ```
 
 (iii) Read the .bim file. How many SNPs does the dataset contain?
 
-```         
-# Your answer here...
+
+```{r}       
+# Read the .bim file
+bbim_data <- read.table(bim_file, header = FALSE)
+# Number of SNPs
+num_snps <- nrow(bim_data)
+cat("The dataset contains", num_snps, "SNPs.\n")
 ```
 
 #### Question 2: Allele Frequency Estimation
 
 (i) Load the genotype matrix for SNPs rs1861, rs3813199, rs3128342, and rs11804831 using additive coding. What are the allele frequencies (AFs) for these four SNPs?
+```{r}
+ # Load required library
+library(snpStats)
 
-```         
-# Your code here...
+# Read PLINK files
+plink_data <- read.plink(
+  bed = bed_file,
+  bim = bim_file,
+  fam = fam_file
+)
+
+# Extract genotype matrix
+geno_matrix <- plink_data$genotypes
+
+# Subset SNPs of interest
+snps_of_interest <- c("rs1861", "rs3813199", "rs3128342", "rs11804831")
+geno_sub <- geno_matrix[, snps_of_interest]
+
+# Convert to numeric (0,1,2)
+geno_numeric <- as(geno_sub, "numeric")
+
+# Function to calculate allele frequency
+calc_af <- function(snp_vector) {
+  sum(snp_vector, na.rm = TRUE) / (2 * sum(!is.na(snp_vector)))
+}
+
+# Compute allele frequencies
+allele_freqs <- apply(geno_numeric, 2, calc_af)
+
+# Print results
+allele_freqs
 ```
 
 (ii) What are the minor allele frequencies (MAFs) for these four SNPs?
 
-```         
-# Your code here...
+``` {r}        
+# Function to calculate minor allele frequency
+calc_maf <- function(snp_vector) {
+  af <- sum(snp_vector, na.rm = TRUE) / (2 * sum(!is.na(snp_vector)))  # allele freq
+  maf <- min(af, 1 - af)  # minor allele freq
+  return(maf)
+}
+
+# Compute MAFs for all SNPs in geno_numeric
+maf_values <- apply(geno_numeric, 2, calc_maf)
+
+# Print results
+maf_values
 ```
 
 #### Question 3: Hardy–Weinberg Equilibrium (HWE) Test
 
 (i) Conduct the Hardy–Weinberg Equilibrium (HWE) test for all SNPs in the .bim file. Then, load the file containing the HWE p-value results and display the first few rows of the resulting data frame.
 
-```         
-# Your code here...
+```  {r}       
+hwe_results <- read.table("/Users/athira/Desktop/gen_data/02_activities/data/gwa_hwe.hwe", header = TRUE)
+head(hwe_results)
 ```
 
 (ii) What are the HWE p-values for SNPs rs1861, rs3813199, rs3128342, and rs11804831?
 
-```         
-# Your code here...
+``` {r}      
+
+library(dplyr)
+
+# Now filter SNPs
+snps_of_interest <- c("rs1861", "rs3813199", "rs3128342", "rs11804831")
+
+hwe_results %>%
+  filter(SNP %in% snps_of_interest) %>%
+  select(SNP, P)
 ```
 
 #### Question 4: Genetic Association Test
 
 (i) Conduct a linear regression to test the association between SNP rs1861 and the phenotype. What is the p-value?
 
-```         
-# Your code here...
+
+```{r}
+# Read in the phenotype from .fam
+fam_data <- read.table("/Users/athira/Desktop/gen_data/02_activities/data/gwa.qc.A1.fam", header = FALSE)
+geno_matrix <- as(geno_matrix, "numeric")  # make sure numeric
+
+# Add phenotype to genotype subset
+geno_df <- as.data.frame(geno_numeric)
+geno_df$PHENOTYPE <- fam_data$V6  # column 6 is phenotype
+
+# Fit linear regression for rs1861
+model <- lm(PHENOTYPE ~ rs1861, data = geno_df)
+
+# Summary to get p-value
+summary(model)$coefficients
+
+# Extract p-value for rs1861
+p_value <- summary(model)$coefficients["rs1861", "Pr(>|t|)"]
+
+# Print it
+cat("SNP: rs1861\nLinear regression p-value:", p_value, "\n")
 ```
 
 (ii) How would you interpret the beta coefficient from this regression?
 
-```         
-# Your answer here...
-```
+```{r}
+summary(model)$coefficients
+# Extract beta (estimate) and p-value for rs1861
+beta <- summary(model)$coefficients["rs1861", "Estimate"]
+pval <- summary(model)$coefficients["rs1861", "Pr(>|t|)"]
 
+cat("rs1861: Beta =", beta, ", p-value =", pval, "\n")
+
+cat ("The beta coefficient for rs1861 is approximately 0.974, indicating that each additional copy of the minor allele is associated with an increase of about 0.974 units in the phenotype under an additive model.\n")
+```
 (iii) Plot the scatterplot of phenotype versus the genotype of SNP rs1861. Add the regression line to the plot.
 
-```         
-# Your code here...
+```{r} 
+library(ggplot2)
+library(dplyr)
+
+# Create prediction data (smooth curve)
+geno_range <- data.frame(
+  rs1861 = seq(0, 2, length.out = 100)
+)
+
+geno_range$predicted <- predict(model, newdata = geno_range)
+
+# Prepare count data (for point sizes)
+count_data <- geno_df %>%
+  mutate(PHENOTYPE = round(PHENOTYPE)) %>%
+  filter(!is.na(rs1861), !is.na(PHENOTYPE)) %>%
+  group_by(rs1861, PHENOTYPE) %>%
+  summarise(count = n(), .groups = "drop")
+
+# Plot
+p <- ggplot() +
+  geom_point(
+    data = count_data,
+    aes(x = rs1861, y = PHENOTYPE, size = count),
+    color = "blue"
+  ) +
+  geom_line(
+    data = geno_range,
+    aes(x = rs1861, y = predicted),
+    color = "red",
+    size = 1.2
+  ) +
+  scale_size_continuous(range = c(2, 10)) +
+  labs(
+    title = "Phenotype vs Genotype (rs1861)",
+    x = "Genotype (0/1/2)",
+    y = "Phenotype",
+    size = "Count"
+  ) +
+  coord_cartesian(xlim = c(-0.5, 2.5), ylim = c(-0.1, 1.1)) +
+  theme_minimal()
+
+print(p)
 ```
 
 (iv) Convert the genotype coding for rs1861 to recessive coding.
 
-```         
-# Your code here...
+``` {r}      
+# Create a new variable with recessive coding
+geno_df$rs1861_rec <- ifelse(geno_df$rs1861 == 2, 1, 0)
+
+# Check result
+table(geno_df$rs1861, geno_df$rs1861_rec)
 ```
 
 (v) Conduct a linear regression to test the association between the recessive-coded rs1861 and the phenotype. What is the p-value?
 
-```         
-# Your code here...
+```{r}
+# Fit linear regression with recessive coding
+model_rec <- lm(PHENOTYPE ~ rs1861_rec, data = geno_df)
+
+# Extract p-value
+p_value_rec <- summary(model_rec)$coefficients["rs1861_rec", "Pr(>|t|)"]
+
+# Print result
+cat("Recessive model p-value:", p_value_rec, "\n")
 ```
 
 (vi) Plot the scatterplot of phenotype versus the recessive-coded genotype of rs1861. Add the regression line to the plot.
 
-```         
-# Your code here...
+``` {r}       
+# Scatterplot
+plot(geno_df$rs1861_rec, geno_df$PHENOTYPE,
+     xlab = "Recessive Genotype (rs1861)",
+     ylab = "Phenotype",
+     main = "Phenotype vs Recessive rs1861",
+     pch = 16)
+
+# Add regression line
+abline(model_rec, col = "red", lwd = 2)
 ```
 
 (vii) Which model fits better? Justify your answer.
 
-```         
-# Your answer here...
+```{r}       
+# R-squared for additive model
+summary(model)$r.squared
+
+# R-squared for recessive model
+summary(model_rec)$r.squared
+
+# Compare model fits
+cat("The additive model fits slightly better than the recessive model because its R-squared is higher (0.0892 vs 0.0858), even though both p-values are highly significant.\n")
 ```
+
 
 ### Criteria
 
