@@ -229,14 +229,11 @@ print(p1)
 ``
 # Your code here...
 
-```  {r,message=FALSE, warning=FALSE}      
-# Make a copy for recessive data
-geno_subset_rec <- geno_subset  
+``
+# Your code here...
 
-# Apply the recessive logic (only 2 becomes 1, everything else is 0)
-geno_subset_rec[, 7:ncol(geno_subset_rec)] <- as.data.frame(
-  lapply(geno_subset[, 7:ncol(geno_subset)], function(x) ifelse(x == 2, 1, 0))
-)
+```         
+# Your code here...
 ```
 
 (v) Conduct a linear regression to test the association between the recessive-coded rs1861 and the phenotype. What is the p-value?
@@ -244,12 +241,11 @@ geno_subset_rec[, 7:ncol(geno_subset_rec)] <- as.data.frame(
 ``
 # Your code here...
 
-``` {r,message=FALSE, warning=FALSE}        
-# Fit linear regression model
-model <- glm(PHENOTYPE ~ rs1861_C, data = geno_subset_rec, family = gaussian)
-summary(model)
+``
+# Your code here...
 
-# The p-value for the association between the recessive-coded rs1861 and the phenotype is p < 2e-16, which is highly significant. This suggests that there is a strong association between the recessive genotype of SNP rs1861 and the phenotype being studied. The interpretation of this result would depend on the context of the phenotype and the specific coding used for the recessive model, but it indicates that individuals with two copies of the alternative allele (coded as 1) have a significantly different phenotype compared to those with zero or one copy (coded as 0).
+```         
+# Your code here...
 ```
 
 (vi) Plot the scatterplot of phenotype versus the recessive-coded genotype of rs1861. Add the regression line to the plot.
@@ -257,31 +253,11 @@ summary(model)
 ``
 # Your code here...
 
-``` {r,message=FALSE, warning=FALSE}
+``
+# Your code here...
 
-# 1. Clean the data using your new recessive dataframe
-clean_data_rec <- geno_subset_rec %>%
-  filter(!is.na(rs1861_C), !is.na(PHENOTYPE))
-
-# 2. Build the continuous scatterplot
-p4 <- ggplot(clean_data_rec, aes(x = rs1861_C, y = PHENOTYPE)) +
-  # Add points with slight horizontal jitter
-  geom_jitter(width = 0.05, height = 0, color = "blue", alpha = 0.3, size = 2) +
-  # Automatically draw the linear regression line
-  geom_smooth(method = "lm", color = "red", se = TRUE, linewidth = 1.2) +
-  labs(
-    title = "Linear Regression: Continuous Phenotype ~ Recessive Genotype",
-    # Updated x-axis label to reflect recessive biology
-    x = "Genotype (0 = Carrier/No Alt, 1 = Exactly 2 Copies of Alt)",
-    y = "Continuous Phenotype"
-  ) +
-  # Lock the x-axis to exactly 0 and 1
-  scale_x_continuous(breaks = c(0, 1)) +
-  coord_cartesian(xlim = c(-0.5, 1.5)) +
-  theme_minimal()
-
-# 3. Display the plot
-print(p4)
+```         
+# Your code here...
 ```
 
 (vii) Which model fits better? Justify your answer.

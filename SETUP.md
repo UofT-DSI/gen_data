@@ -13,7 +13,7 @@ Before using this repo, complete the relevant steps in the [environment setup gu
 Open a Terminal and install the required packages:
 
 ```bash
-R --vanilla -e "cran_packages <- c('data.table','ggplot2','seqminer','HardyWeinberg','dplyr','qqman','knitr'); missing <- setdiff(cran_packages, rownames(installed.packages())); if (length(missing)) install.packages(missing, repos='https://cloud.r-project.org')"
+R --vanilla -e "cran_packages <- c('data.table','ggplot2','seqminer','HardyWeinberg','dplyr','qqman','knitr','metafor'); missing <- setdiff(cran_packages, rownames(installed.packages())); if (length(missing)) install.packages(missing, repos='https://cloud.r-project.org')"
 ```
 
 These packages cover the tutorials and assignment workflows in this repository.
@@ -36,7 +36,7 @@ plink2 --version
 2. Verify required R packages:
 
 ```bash
-R --vanilla -e "pkgs <- c('data.table','ggplot2','seqminer','HardyWeinberg','dplyr','qqman','knitr'); missing <- setdiff(pkgs, rownames(installed.packages())); if (length(missing)) { cat('Missing packages:\\n'); print(missing); quit(status = 1) } else { cat('All required packages are installed.\\n') }"
+R --vanilla -e "pkgs <- c('data.table','ggplot2','seqminer','HardyWeinberg','dplyr','qqman','knitr','metafor'); missing <- setdiff(pkgs, rownames(installed.packages())); if (length(missing)) { cat('Missing packages:\\n'); print(missing); quit(status = 1) } else { cat('All required packages are installed.\\n') }"
 ```
 
 3. Run a Quarto smoke test (no external data required):

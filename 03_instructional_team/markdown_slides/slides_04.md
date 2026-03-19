@@ -133,7 +133,7 @@ $$
 T=\sum \frac{(O-E)^2}{E} \sim \chi_{(I-1)(J-1)}^2.
 $$
 
-- E：expected counts under the null hypothesis of homogeneity using pooled estimate $\tilde{\pi}_j=\frac{n_j}{n}.$
+- Expected counts under the null hypothesis of homogeneity using pooled estimate: $\tilde{\pi}_j=\frac{n_j}{n}.$
 
 - df $=(I-1)(J-1)$: number of independent counts $(I(J-1))$ - the number of independent parameters estimated under the null from the data $(J-1)$.
 
@@ -157,23 +157,6 @@ $$
 
 ---
 
-# Association Testing (1 df test)
-
-- For example:
-
-|  | aa | Aa | Total |
-| :---: | :---: | :---: | :---: |
-| Cases | $r_0$ | $r_1$ | $r$ |
-| Controls | $s_0$ | $s_1$ | $s$ |
-| Total | $n_0$ | $n_1$ | $n$ |
-
-
-$$
-T=\frac{\left(r_0-\frac{r n_0}{n}\right)^2}{\frac{r n_0}{n}}+\frac{\left(r_1-\frac{r n_1}{n}\right)^2}{\frac{r n_1}{n}}+\frac{\left(s_0-\frac{s n_0}{n}\right)^2}{\frac{s n_0}{n}}+\frac{\left(s_1-\frac{s n_1}{n}\right)^2}{\frac{s n_1}{n}} \sim \chi_1^2 .
-$$
-
----
-
 # Association Testing - Dominant model
 
 -
@@ -187,15 +170,25 @@ $$
 
 $$
 \begin{aligned}
-& H_0: P(Y=1 \mid A A)=P(Y=1 \mid A a)=P(Y=1 \mid a a) \\
+& H_0: P(Y=1 \mid A A \text { or } A a)=P(Y=1 \mid a a) \\
 & H_A: P(Y=1 \mid A A \text { or } A a) \neq P(Y=1 \mid a a)
 \end{aligned}
 $$
 
-- Replace $r_{1}$ with $r_{1}+r_{2}$ with 1 df chi-square test.
-- Optimal when the true disease model is dominant but not for recessive.
+- One df Pearson test of independence:
 
----
+$$
+\chi^2=\sum(O-E)^2 / E.
+$$
+
+- e.g. $\mathrm{E}[$ Case \& Aa or AA $]=\left(r \cdot (\mathrm{n}_{1}+\mathrm{n}_{2})\right) / \mathrm{n}$.
+-----
+
+# Exercise 
+
+- If we want to test whether a disease follows a recessive inheritance pattern, how should we collapse the genotypes and set up the chi-square test for association?
+
+-----
 
 # Exercise 
 
@@ -247,7 +240,7 @@ $$
   | **Unexposed** | c           | d           | c+d   |
 
 $$
-OR = \frac{a/c}{b/d} = \frac{ad}{bc}.
+OR = \frac{a/b}{c/d} = \frac{ad}{bc}.
 $$
 
 - When the outcome is rare, $\mathrm{OR} \approx \mathrm{RR}$.
@@ -783,7 +776,7 @@ $$
   - No closed-form solution $\rightarrow$ need iterative methods (Newton-Raphson, Fisher scoring, etc.)
 
 ---
-# Logistic Regression Likelihood (More Advanced)
+# *Logistic Regression Likelihood (More Advanced)
 - |  | aa | Aa | Total |
   | :---: | :---: | :---: | :---: |
   | Cases | $r_0$ | $r_1$ | $r$ |
@@ -801,7 +794,7 @@ $$
 
 ---
 
-# MLE Derivation Details (More Advanced)
+# *MLE Derivation Details (More Advanced)
 
 - Note that $r_0: Y=1, X=0$, $r_{1}: Y=1, X=1$, $s_0: Y=0, X=0$, $s_1: Y=0, X=1$.  We can simplify the log likelihood:
 
@@ -819,7 +812,7 @@ $$
 
 ----
 
-# MLE Derivation Details (More Advanced)
+# *MLE Derivation Details (More Advanced)
 
 - Obtain the score functions
 
@@ -833,7 +826,7 @@ $$
 
 ---
 
-# MLE Derivation Details (More Advanced)
+# *MLE Derivation Details (More Advanced)
 
 - Calculate the MLE
 
@@ -872,7 +865,7 @@ $$
 
 ----
 
-# Logistic Regression Inference
+# *Logistic Regression Inference
 
 - LRT
 
@@ -892,7 +885,7 @@ $$
 
 
 ----
-# Logistic Regression Inference 
+# *Logistic Regression Inference 
 
 $$
 \begin{gathered}
@@ -910,7 +903,7 @@ $$
 
 ----
 
-# Logistic Regression Inference 
+# *Logistic Regression Inference 
 
 - Score test involves the score function and the Fisher's information evaluated under the null hypothesis that $\beta=0$.
 
@@ -928,7 +921,7 @@ $$
 
 ----
 
-# Exercise
+# *Exercise
 
 - The data below come from the study by Knowler et al. (1988), on the association between IDDM type 2 and a haplotype from the GM system human immunoglobulin $G$. These data include all individuals in a sample of 4,920 Native Americans of the Pima and Papago tribes. In this example, think of the GM haplotype as just an allele at a suspected DSL.
 
@@ -940,7 +933,7 @@ $$
   
 ----
 
-# Exercise
+# *Exercise
 
 -  We can reformulate the data:
 

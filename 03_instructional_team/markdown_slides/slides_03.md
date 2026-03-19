@@ -490,7 +490,7 @@ $$ p(AA \mid \text { affected })=\frac{p^2_{A}}{p^2_{A}+2 p_{A}(1-p_{A})^2}=\fra
 - Hypothesis testing: can we reject the $H_0$ that $p=p_0=1 / 2$ ?
 
 
----
+------
 
 # Segregation Analysis - Autosomal Dominant Disease
 
@@ -500,41 +500,48 @@ $$ p(AA \mid \text { affected })=\frac{p^2_{A}}{p^2_{A}+2 p_{A}(1-p_{A})^2}=\fra
   - Mendelian transition from parents to one sib is independent of that of the transition to another sib.
   - However, if there are contributing covariates, then affected siblings are not independent due to common shared environmental effect.
 
-- MLE: $\hat{p}=\frac{n_{\text {Affected }}}{n}.$
----
+------
 
-# *Segregation Analysis - Autosomal Dominant Disease
+# Tests
 
-- Hypothesis testing - Likelihood Ratio Test.
-  $$
-H_0: p=p_0=\frac{1}{2}.$$
+- Binomial exact test: 
 
 $$
-\begin{aligned}
-T= & 2(I(\hat{p})-I(\tilde{p}))=2\left(I(\hat{p})-I\left(p_0\right)\right)=2 \sum \text { observed } \times \log \frac{\text { observed }}{\text { expected }} \\
-= & 2\left(n_{\text {Affected }} \log \left(\frac{n_{\text {Affected }}}{n p_0}\right)+\left(n-n_{\text {Affected }}\right) \log \left(\frac{n-n_{\text {Affected }}}{n\left(1-p_0\right)}\right)\right) \\
-& =2\left(n_{\text {Affected }} \log \left(\frac{\hat{p}}{1 / 2}\right)+\left(n-n_{\text {Affected }}\right) \log \left(\frac{1-\hat{p}}{1 / 2}\right)\right) \sim \chi_1^2
-\end{aligned}
+n_{affected} \sim \text{Binomial}(n, 1/2) ~\text{under}~ H_{0}.
 $$
 
----
+```r
+     binom.test(n_affected, n, p = 0.5)$p.value
+```
+- Normal approximation to Binomial test:
 
-# *Notes 
+$$
+n_{affected} \sim N\left(np, np(1-p)\right), \text{where } p = \frac{1}{2} \text{ under } H_0.
+$$
 
-#### Other tests:
+```r
+    z <- (n_affected - n/2) / sqrt(n/4)
+    2 * pnorm(-abs(z))
+```
 
-- Binomial exact test.
-
-  $$\text { p-value }=2 P\left(r \geq r_{o b s}\right) \text { if } r_{o b s} \geq n / 2, \text { or }=2 P\left(r \leq r_{o b s}\right) \text { if } r_{o b s}<n / 2 .$$
-
-- Normal approximation to Binomial test (with or without continuity correction).
-  $$ r \sim N(n p, n p(1-p)).$$
-
-
-- Pearson $\chi_r^2$ test.
+-------
 
 
----
+# Tests
+
+- Likelihood Ratio Test:
+
+$$
+T= 2\left(I(\hat{p})-I\left(p_0\right)\right)=2 \sum \text { observed } \times \log \frac{\text { observed }}{\text { expected }} \sim \chi_1^2 ~\text{under}~ H_{0}.
+$$
+
+```r 
+pchisq(T, df = 1, lower.tail = FALSE)
+```
+
+------
+
+<!---
 
 # *Notes
 
@@ -545,8 +552,7 @@ $$
 
 - Subject to regularity conditions, the two tests have approximately the same power function for large samples (large-sample equivalence). In that case, we may choose the test that is most convenient computationally.
 
-
----
+--->
 
 # *Segregation Analysis - Autosomal Recessive Disease
 
