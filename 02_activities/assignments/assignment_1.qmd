@@ -2,6 +2,15 @@
 title: "Assignment #1"
 format: html
 ---
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = normalizePath("../../"))
+
+
+```{r, message=FALSE, warning=FALSE}
+library(data.table)
+library(ggplot2)
+library(dplyr)
+```
 
 ## Assignment 1
 
@@ -21,18 +30,35 @@ Before fitting any models, it is essential to understand the data. Use R or bash
 
 ```         
 # Your answer here...
+```{r}
+fam <- fread("./02_activities/data/gwa.qc.A1.fam", header = FALSE)
+nrow(fam)
 ```
 
 (ii) What is the 'variable type' of the response variable (i.e.Continuous or binary)?
 
 ```         
 # Your answer here...
+
+```{r}
+table(fam$V6)
+unique(fam$V6)
+```{r}
+if(length(unique(fam$V6)) > 2) {
+  "Continuous"
+} else {
+  "Binary"
+}
 ```
 
 (iii) Read the .bim file. How many SNPs does the dataset contain?
 
 ```         
 # Your answer here...
+```r
+```{r}
+bim <- fread("./02_activities/data/gwa.qc.A1.bim", header = FALSE)
+nrow(bim)
 ```
 
 #### Question 2: Allele Frequency Estimation
@@ -41,12 +67,36 @@ Before fitting any models, it is essential to understand the data. Use R or bash
 
 ```         
 # Your code here...
+```{r}
+geno_subset <- fread("./02_activities/data/gwa_qc_A1_subset.raw")
+geno_subset <- na.omit(geno_subset)
+head(geno_subset)
+```
+```In additive coding:
+- 0, 1, 2 counts the number of **A2/reference** alleles in the `.raw` file
+
+Compute AF as:
+
+```r
+```{r}
+snps <- c("rs1861", "rs3813199", "rs3128342", "rs11804831")
+
+af <- sapply(snps, function(snp) {
+  x <- geno_subset[[grep(paste0("^", snp, "_"), names(geno_subset), value = TRUE)]]
+  sum(x, na.rm = TRUE) / (2 * sum(!is.na(x)))
+})
+
+af
 ```
 
 (ii) What are the minor allele frequencies (MAFs) for these four SNPs?
 
 ```         
 # Your code here...
+```r
+```{r}
+maf <- pmin(af, 1 - af)
+maf
 ```
 
 #### Question 3: Hardy–Weinberg Equilibrium (HWE) Test
@@ -55,12 +105,20 @@ Before fitting any models, it is essential to understand the data. Use R or bash
 
 ```         
 # Your code here...
+```{r}
+hwe <- fread("./02_activities/data/gwa_qc_A1_hwe.hardy")
+head(hwe)
 ```
+
 
 (ii) What are the HWE p-values for SNPs rs1861, rs3813199, rs3128342, and rs11804831?
 
 ```         
 # Your code here...
+```r
+```{r}
+hwe[ID %in% c("rs1861", "rs3813199", "rs3128342", "rs11804831"),
+    .(ID, P)]
 ```
 
 #### Question 4: Genetic Association Test
@@ -69,43 +127,108 @@ Before fitting any models, it is essential to understand the data. Use R or bash
 
 ```         
 # Your code here...
+```r
+```{r}
+names(geno_subset)
+grep("^rs1861_", names(geno_subset), value = TRUE)
+```
+```r
+```{r}
+rs1861_name <- grep("^rs1861_", names(geno_subset), value = TRUE)
+geno_subset$rs1861_geno <- geno_subset[[rs1861_name]]
+head(geno_subset$rs1861_geno)
+```
+```{r}
+table(geno_subset$PHENOTYPE)
+summary(geno_subset$PHENOTYPE)
+```
+```r
+```{r}
+model_add <- lm(PHENOTYPE ~ rs1861_geno, data = geno_subset)
+summary(model_add)
+```
+```r
+```{r}
+summary(model_add)$coefficients["rs1861_geno", "Pr(>|t|)"]
 ```
 
 (ii) How would you interpret the beta coefficient from this regression?
 
 ```         
 # Your answer here...
+```The beta coefficient represents the expected change in phenotype for each 1-unit increase in additive genotype coding at rs1861, holding all else constant.
 ```
 
 (iii) Plot the scatterplot of phenotype versus the genotype of SNP rs1861. Add the regression line to the plot.
 
 ```         
 # Your code here...
+```r
+```{r}
+p_add <- ggplot(geno_subset, aes(x = rs1861_geno, y = PHENOTYPE)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  theme_minimal() +
+  labs(
+    title = "Phenotype vs additive-coded rs1861",
+    x = "Additive genotype",
+    y = "Phenotype"
+  )
+
+print(p_add)
 ```
 
 (iv) Convert the genotype coding for rs1861 to recessive coding.
 
 ```         
 # Your code here...
+```r
+```{r}
+geno_subset$rs1861_rec <- ifelse(geno_subset$rs1861_geno == 2, 1, 0)
+table(geno_subset$rs1861_rec)
 ```
 
 (v) Conduct a linear regression to test the association between the recessive-coded rs1861 and the phenotype. What is the p-value?
 
 ```         
 # Your code here...
+```r
+```{r}
+model_rec <- lm(PHENOTYPE ~ rs1861_rec, data = geno_subset)
+summary(model_rec)
+summary(model_rec)$coefficients["rs1861_rec", "Pr(>|t|)"]
 ```
 
 (vi) Plot the scatterplot of phenotype versus the recessive-coded genotype of rs1861. Add the regression line to the plot.
 
 ```         
 # Your code here...
+```r
+```{r}
+p_rec <- ggplot(geno_subset, aes(x = rs1861_rec, y = PHENOTYPE)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  theme_minimal() +
+  labs(
+    title = "Phenotype vs recessive-coded rs1861",
+    x = "Recessive-coded genotype",
+    y = "Phenotype"
+  )
+
+print(p_rec)
 ```
 
 (vii) Which model fits better? Justify your answer.
 
 ```         
 # Your answer here...
+```r
+```{r}
+AIC(model_add, model_rec)
+summary(model_add)$adj.r.squared
+summary(model_rec)$adj.r.squared
 ```
+The better-fitting model is the one with the lower AIC and/or higher adjusted R-squared. So model_add better fit
 
 ### Criteria
 
