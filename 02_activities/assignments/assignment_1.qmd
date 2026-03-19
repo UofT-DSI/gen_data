@@ -17,94 +17,257 @@ You will need to install PLINK and run the analyses. Please follow the OS-specif
 
 Before fitting any models, it is essential to understand the data. Use R or bash code to answer the following questions about the `gwa.qc.A1.fam`, `gwa.qc.A1.bim`, and `gwa.qc.A1.bed` files, available at the following Google Drive link: <https://drive.google.com/drive/folders/11meVqGCY5yAyI1fh-fAlMEXQt0VmRGuz?usp=drive_link>. Please download all three files from this link and place them in `02_activities/data/`.
 
-(i) Read the .fam file. How many samples does the dataset contain?
 
-```         
-# Your answer here...
+```{r setup, include=FALSE}
+# Set up a consistent path for all chunks of code
+knitr::opts_knit$set(root.dir = normalizePath("../../"))
+
+
+# Force Quarto to use Git Bash for all {bash} chunks
+knitr::opts_chunk$set(engine.path = list(bash = "C:/Program Files/Git/bin/bash.exe"))
 ```
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+library(data.table)
+library(ggplot2)
+library(seqminer)
+library(HardyWeinberg)
+library(dplyr)
+```
+
+(i) Read the .fam file. How many samples does the dataset contain?
+```{bash}
+cd ~/Downloads/DSI_Files/gen_data/02_activities/data
+pwd
+head gwa.qc.A1.fam
+```
+```{r}
+# Read the .fam file
+fam_file <- read.table("~/Downloads/DSI_Files/gen_data/02_activities/data/gwa.qc.A1.fam", header = FALSE)
+
+# Count the number of samples and display the result
+num_samples <- nrow(fam_file)
+print(paste("Number of samples in the dataset:", num_samples))
+```
+
+
+
+# Your answer here...
+```4000 samples
 
 (ii) What is the 'variable type' of the response variable (i.e.Continuous or binary)?
 
 ```         
 # Your answer here...
-```
+Continuous.
+
 
 (iii) Read the .bim file. How many SNPs does the dataset contain?
 
-```         
+```{r}
+# Read the .bim file
+bim_file <- read.table("~/Downloads/DSI_Files/gen_data/02_activities/data/gwa.qc.A1.bim", header = FALSE)
+
+# Count the number of SNPs and display the result
+num_snps <- nrow(bim_file)
+print(paste("Number of SNPs in the dataset:", num_snps))
+```       
 # Your answer here...
-```
+101083 SNPs.
 
 #### Question 2: Allele Frequency Estimation
 
 (i) Load the genotype matrix for SNPs rs1861, rs3813199, rs3128342, and rs11804831 using additive coding. What are the allele frequencies (AFs) for these four SNPs?
 
-```         
 # Your code here...
+```{bash,message=FALSE, warning=FALSE}
+# Step 1: Create SNP list file with 4 example SNPs
+printf "%s\n" rs1861 rs3813199 rs3128342 rs11804831 > ~/Downloads/DSI_Files/gen_data/02_activities/data/snplist.txt
 ```
+
+```{bash, results='hide',message=FALSE, warning=FALSE}
+# Step 2: Extract genotypes for the specified SNPs and recode to additive format
+/c/PLINK/plink2.exe --bfile ~/Downloads/DSI_Files/gen_data/02_activities/data/gwa.qc.A1 \
+      --extract ~/Downloads/DSI_Files/gen_data/02_activities/data/snplist.txt \
+      --recode A \
+      --out ~/Downloads/DSI_Files/gen_data/02_activities/data/geno.additive
+```
+
+```{r}
+# Step 3: Load genotype data matrix
+geno_subset <- fread("~/Downloads/DSI_Files/gen_data/02_activities/data/geno.additive.raw")
+geno_subset=na.omit(geno_subset)
+geno_subset$PHENOTYPE=geno_subset$PHENOTYPE-1
+head(geno_subset)
+```
+
+```{bash, results='hide',message=FALSE, warning=FALSE}
+# Step 4: Calculate allele frequencies for the specified SNPs
+/c/PLINK/plink2.exe --bfile ~/Downloads/DSI_Files/gen_data/02_activities/data/gwa.qc.A1 \
+      --extract ~/Downloads/DSI_Files/gen_data/02_activities/data/snplist.txt \
+      --freq \
+      --out ~/Downloads/DSI_Files/gen_data/02_activities/data/gwa_qc_A1_freqs
+
+# The allele frequencies will be saved in the file gwa_qc_A1_freqs.afreq with column ALT_FREQS representing the allele frequencies for the specified SNPs.
+```
+
+```{r,message=FALSE, warning=FALSE}
+# Step 5: View allele frequencies of the specified SNPs
+freq <- fread("~/Downloads/DSI_Files/gen_data/02_activities/data/gwa_qc_A1_freqs.afreq")
+head(freq)
+```
+
 
 (ii) What are the minor allele frequencies (MAFs) for these four SNPs?
 
-```         
-# Your code here...
+```   {bash, results='hide',message=FALSE, warning=FALSE}   
+# Calculate minor allele frequencies (MAFs) for the specified SNPs   
+awk 'NR==1 {print "SNP_ID\tMAF"} NR>1 {maf = ($6 > 0.5) ? 1 - $6 : $6; print $2 "\t" maf}' ~/Downloads/DSI_Files/gen_data/02_activities/data/gwa_qc_A1_freqs.afreq
+
+# The MAFs will be calculated based on the ALT_FREQS column in the gwa_qc_A1_freqs.afreq file. The output will show the SNP ID and its corresponding MAF. Since the MAF is the frequency of the less common allele, it is calculated as 1 - ALT_FREQS if ALT_FREQS is greater than 0.5, otherwise it is just ALT_FREQS.
 ```
 
 #### Question 3: Hardy–Weinberg Equilibrium (HWE) Test
 
 (i) Conduct the Hardy–Weinberg Equilibrium (HWE) test for all SNPs in the .bim file. Then, load the file containing the HWE p-value results and display the first few rows of the resulting data frame.
+        
+```{bash,results='hide',message=FALSE, warning=FALSE}
+# Conduct HWE test for all SNPs in the .bim file
+/c/PLINK/plink2.exe --bfile ~/Downloads/DSI_Files/gen_data/02_activities/data/gwa.qc.A1 --hardy --out ~/Downloads/DSI_Files/gen_data/02_activities/data/gwa_qc_A1_hwe
+```
 
-```         
-# Your code here...
+This produces gwa_qc_A1_hwe.hardy containing observed and expected genotype counts plus p-values.
+
+```{r,message=FALSE, warning=FALSE}
+# View HWE results
+hwe <- fread("~/Downloads/DSI_Files/gen_data/02_activities/data/gwa_qc_A1_hwe.hardy")
+head(hwe)
 ```
 
 (ii) What are the HWE p-values for SNPs rs1861, rs3813199, rs3128342, and rs11804831?
 
-```         
-# Your code here...
+``` {bash, results='hide',message=FALSE, warning=FALSE} 
+# Extract HWE p-values for the specified SNPs       
+grep -wFf ~/Downloads/DSI_Files/gen_data/02_activities/data/snplist.txt ~/Downloads/DSI_Files/gen_data/02_activities/data/gwa_qc_A1_hwe.hardy | awk '{print $2 "\t" $10}'
 ```
 
 #### Question 4: Genetic Association Test
 
 (i) Conduct a linear regression to test the association between SNP rs1861 and the phenotype. What is the p-value?
+       
+```{r,message=FALSE, warning=FALSE}
+#Pick SNP rs1861
+table(geno_subset$rs1861_C)
+freq[freq$ID=='rs1861',]
+head(geno_subset)
+```
 
-```         
-# Your code here...
+The C allele is the major allele, with frequency 1 - 0.0539859.
+
+```{r,message=FALSE, warning=FALSE}
+# Fit linear regression model
+model <- glm(PHENOTYPE ~ rs1861_C, data = geno_subset, family = gaussian)
+
+# View model summary
+summary(model)
+table(geno_subset$rs1861_C)
+
+# The p value for the association between SNP rs1861 and the phenotype is p < 2e-16, which is highly significant. This suggests that there is a strong association between the genotype of SNP rs1861 and the phenotype being studied. 
 ```
 
 (ii) How would you interpret the beta coefficient from this regression?
 
 ```         
-# Your answer here...
+# The beta coefficient for rs1861_C represents the change in the phenotype associated with each additional copy of the C allele. If the beta coefficient is positive, it indicates that the presence of the C allele is associated with an increase in the phenotype. Conversely, if the beta coefficient is negative, it suggests that the C allele is associated with a decrease in the phenotype. The magnitude of the beta coefficient indicates the strength of this association, while its sign (positive or negative) indicates the direction of the effect.
+
+## In this case, since the beta coefficient is positive (i.e., +0.96698), it suggests that individuals with more copies of the C allele tend to have higher values of the phenotype. The exact interpretation would depend on the context of the phenotype being studied and the units of measurement for both the genotype and the phenotype.
 ```
 
 (iii) Plot the scatterplot of phenotype versus the genotype of SNP rs1861. Add the regression line to the plot.
 
-```         
-# Your code here...
+       
+```{r,message=FALSE, warning=FALSE}
+
+# 1. Clean the data (remove missing genotypes or phenotypes)
+clean_data <- geno_subset %>%
+  filter(!is.na(rs1861_C), !is.na(PHENOTYPE))
+
+# 2. Build the scatterplot
+p1 <- ggplot(clean_data, aes(x = rs1861_C, y = PHENOTYPE)) +
+  # Add points with horizontal jitter and transparency to prevent overlapping
+  geom_jitter(width = 0.1, height = 0, color = "blue", alpha = 0.3, size = 2) +
+  # Automatically calculate and draw the linear regression line (with confidence interval)
+  geom_smooth(method = "lm", color = "red", se = TRUE, linewidth = 1.2) +
+  labs(
+    title = "Linear Regression: Continuous Phenotype ~ Genotype (rs1861)",
+    x = "Genotype (Number of Alternative Alleles: 0, 1, 2)",
+    y = "Phenotype Measurement"
+  ) +
+  # Lock the x-axis to our discrete genotype categories
+  scale_x_continuous(breaks = c(0, 1, 2)) +
+  coord_cartesian(xlim = c(-0.5, 2.5)) +
+  # Apply a clean, minimal theme
+  theme_minimal()
+
+# 3. Display the plot
+print(p1)
 ```
 
 (iv) Convert the genotype coding for rs1861 to recessive coding.
 
-```         
-# Your code here...
+```  {r,message=FALSE, warning=FALSE}      
+# Make a copy for recessive data
+geno_subset_rec <- geno_subset  
+
+# Apply the recessive logic (only 2 becomes 1, everything else is 0)
+geno_subset_rec[, 7:ncol(geno_subset_rec)] <- as.data.frame(
+  lapply(geno_subset[, 7:ncol(geno_subset)], function(x) ifelse(x == 2, 1, 0))
+)
 ```
 
 (v) Conduct a linear regression to test the association between the recessive-coded rs1861 and the phenotype. What is the p-value?
 
-```         
-# Your code here...
+``` {r,message=FALSE, warning=FALSE}        
+# Fit linear regression model
+model <- glm(PHENOTYPE ~ rs1861_C, data = geno_subset_rec, family = gaussian)
+summary(model)
+
+# The p-value for the association between the recessive-coded rs1861 and the phenotype is p < 2e-16, which is highly significant. This suggests that there is a strong association between the recessive genotype of SNP rs1861 and the phenotype being studied. The interpretation of this result would depend on the context of the phenotype and the specific coding used for the recessive model, but it indicates that individuals with two copies of the alternative allele (coded as 1) have a significantly different phenotype compared to those with zero or one copy (coded as 0).
 ```
 
 (vi) Plot the scatterplot of phenotype versus the recessive-coded genotype of rs1861. Add the regression line to the plot.
 
-```         
-# Your code here...
+``` {r,message=FALSE, warning=FALSE}
+
+# 1. Clean the data using your new recessive dataframe
+clean_data_rec <- geno_subset_rec %>%
+  filter(!is.na(rs1861_C), !is.na(PHENOTYPE))
+
+# 2. Build the continuous scatterplot
+p4 <- ggplot(clean_data_rec, aes(x = rs1861_C, y = PHENOTYPE)) +
+  # Add points with slight horizontal jitter
+  geom_jitter(width = 0.05, height = 0, color = "blue", alpha = 0.3, size = 2) +
+  # Automatically draw the linear regression line
+  geom_smooth(method = "lm", color = "red", se = TRUE, linewidth = 1.2) +
+  labs(
+    title = "Linear Regression: Continuous Phenotype ~ Recessive Genotype",
+    # Updated x-axis label to reflect recessive biology
+    x = "Genotype (0 = Carrier/No Alt, 1 = Exactly 2 Copies of Alt)",
+    y = "Continuous Phenotype"
+  ) +
+  # Lock the x-axis to exactly 0 and 1
+  scale_x_continuous(breaks = c(0, 1)) +
+  coord_cartesian(xlim = c(-0.5, 1.5)) +
+  theme_minimal()
+
+# 3. Display the plot
+print(p4)
 ```
 
 (vii) Which model fits better? Justify your answer.
 
 ```         
-# Your answer here...
+# To determine which model fits better, we can compare the two linear regression models (additive vs. recessive) using metrics such as the Akaike Information Criterion (AIC) or the R-squared value. The model with the lower AIC or higher R-squared would be considered a better fit to the data. Additionally, we can look at the significance of the coefficients and the overall p-values for each model to assess which one provides a more meaningful association between the genotype and the phenotype. In this case, since both models have highly significant p-values, we would need to compare their AIC values or R-squared values to make a final determination on which model fits better. The additive model with an AIC of 10988 compared with 11000 for the recessive model suggests that the additive model fits the data better, as it has a lower AIC value. This indicates that the additive model provides a better balance of goodness-of-fit and model complexity compared to the recessive model.
 ```
 
 ### Criteria
