@@ -9,22 +9,40 @@ You will need **PLINK2** installed and available in your PATH. Please follow the
 
 Before you run any models, first get familiar with the dataset. You may find `data.table::fread()` in R helpful for reading `.bim` and `.fam` files.
 
-(i) Read the `.fam` file. How many samples does the dataset contain?
+(i) Read the `.fam` file. How many samples does the dataset contain? 4000
 
 ```{r}
-# Your code here...
+# Load necessary library
+library(data.table)
+
+# Read the .fam file
+fam_data <- fread("../data/gwa.A2.fam")
+
+# Get the number of samples
+num_samples <- nrow(fam_data)
+num_samples
 ```
 
-(ii) Read the `.bim` file. How many SNPs does the dataset contain?
+(ii) Read the `.bim` file. How many SNPs does the dataset contain? 306102
 
 ```{r}
-# Your code here...
+# Read the .bim file
+bim_data <- fread("../data/gwa.A2.bim")
+
+# Get the number of SNPs
+num_snps <- nrow(bim_data)
+num_snps
 ```
 
 (iii) Make a histogram (or density plot) of the phenotype. Does it look roughly Gaussian?
 
 ```{r}
-# Your code here...
+phenotype <- fam_data$V6
+hist(phenotype,
+     main = "Phenotype Distribution",
+     xlab = "Phenotype",
+     col  = "lightblue",
+     border = "black")
 ```
 
 #### Question 2: Quality control (QC)
@@ -34,7 +52,13 @@ Now we will perform QC using PLINK2 for the genotype files in `gwa.A2`.
 (i) Using PLINK2 from the command line (bash), perform basic QC with the following filters: MAF ≥ 0.05, SNP missingness (`--geno`) ≤ 0.01, individual missingness (`--mind`) ≤ 0.10, and HWE p-value ≥ 0.00005, and output the QC’ed dataset as `gwa.qc.A2`.
 
 ```{bash}
-# Your code here...
+plink2 --bfile ../data/gwa.A2 \
+    --maf 0.05 \
+    --geno 0.01 \
+    --mind 0.10 \
+    --hwe 0.00005 \
+    --make-bed \
+    --out ../data/gwa.qc.A2
 ```
 
 #### Question 3: Relatedness
@@ -44,19 +68,27 @@ In this question, you will use **PLINK2’s built-in KING-robust kinship** (`--k
 i)  Perform LD pruning on `gwa.qc.A2` using PLINK2 with the following parameters: `--indep-pairwise 500 50 0.05`, and then generate a new dataset containing only the pruned SNPs.
 
 ```{bash}
-# Your code here...
+plink2 --bfile ../data/gwa.qc.A2 \
+    --indep-pairwise 500 50 0.05 \
+    --out ../data/gwa.qc.A2.pruned
 ```
 
 (ii) Use PLINK2 on the LD-pruned dataset to identify a set of unrelated individuals up to (approximately) 2nd-degree relatives (use a kinship cutoff of 0.0884).
 
 ```{bash}
-# Your code here...
+plink2 --bfile ../data/gwa.qc.A2 \
+    --extract ../data/gwa.qc.A2.pruned.prune.in \
+    --king-cutoff 0.0884 \
+    --out ../data/gwa.qc.A2.king
 ```
 
 (iii) Using the unrelated individual list from part (ii), create a dataset containing only unrelated individuals and name it `gwa.qc_unrelated.A2`.
 
 ```{bash}
-# Your code here...
+plink2 --bfile ../data/gwa.qc.A2 \
+    --keep ../data/gwa.qc.A2.king.king.cutoff.in.id \
+    --make-bed \
+    --out ../data/gwa.qc_unrelated.A2
 ```
 
 #### Question 4: principal component analysis (PCA)
@@ -66,7 +98,10 @@ i)  Perform LD pruning on `gwa.qc.A2` using PLINK2 with the following parameters
     (Hint: Refer to the PCA section in the GWAS Tutorial II. You should use a `*.prune.in` file to select a set of independent SNPs before performing PCA.)
 
 ```{bash}
-# Your code here...
+plink2 --bfile ../data/gwa.qc_unrelated.A2 \
+    --extract ../data/gwa.qc.A2.pruned.prune.in \
+    --pca 3 \
+    --out ../data/gwa.qc_unrelated.A2.pca
 ```
 
 #### Question 5: GWAS analyses
@@ -82,19 +117,55 @@ Assume that:
 (i) Using PLINK2, run a linear regression GWAS using `gwa.qc_unrelated.A2` as the input dataset. Adjust for PCs 1–3 as covariates.
 
 ```{bash}
-# Your code here...
+plink2 --bfile ../data/gwa.qc_unrelated.A2 \
+    --covar ../data/gwa.qc_unrelated.A2.pca.eigenvec \
+    --covar-name PC1,PC2,PC3 \
+    --linear hide-covar \
+    --out ../data/gwa.qc_unrelated.A2.gwas
 ```
 
 (ii) Create a Manhattan plot of the GWAS results.
 
 ```{r}
-# Your code here...
+library(data.table)
+library(qqman)
+
+# Read GWAS output (PLINK2 names it *.PHENO1.glm.linear)
+gwas <- fread("../data/gwa.qc_unrelated.A2.gwas.PHENO1.glm.linear")
+
+# Rename columns to match qqman expectations
+setnames(gwas,
+         old = c("#CHROM", "POS", "ID", "P"),
+         new = c("CHR",    "BP",  "SNP", "P"))
+
+# Remove NA p-values (e.g. monomorphic or non-ADD test rows)
+gwas_clean <- gwas[TEST == "ADD" & !is.na(P)]
+
+# Manhattan plot
+manhattan(gwas_clean,
+          chr  = "CHR",
+          bp   = "BP",
+          snp  = "SNP",
+          p    = "P",
+          main = "Manhattan Plot – GWAS Results",
+          suggestiveline = -log10(1e-5),   # blue dashed line
+          genomewideline = -log10(5e-8),   # red dashed line
+          col  = c("steelblue3", "orange3"))
+#
 ```
 
 (iii) Create a QQ plot of the GWAS p-values.
 
 ```{r}
-# Your code here...
+# QQ plot of observed vs expected -log10(p-values)
+qq(gwas_clean$P,
+   main = "QQ Plot of GWAS P-values")
+
+# Compute genomic inflation factor (lambda)
+chisq <- qchisq(gwas_clean$P, df = 1, lower.tail = FALSE)
+lambda <- median(chisq, na.rm = TRUE) / qchisq(0.5, df = 1)
+cat("Genomic inflation factor (lambda):", round(lambda, 4), "\n")
+# Lambda near 1.0 indicates no systematic inflation; >1.05 may suggest population stratification
 ```
 
 ### Criteria
@@ -136,3 +207,4 @@ Checklist:
 -   Review [the PR description guidelines](https://github.com/UofT-DSI/onboarding/blob/main/onboarding_documents/submissions.md#guidelines-for-pull-request-descriptions) and adhere to them.
 -   Verify that your link is accessible in a private browser window.
 -   Confirm that both `assignment_2.qmd` and `assignment_2.html` are included in the pull request.
+
